@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<meta name="supported-color-schemes" content="dark">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drink Compositor v3</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#2c1f0e;--parchment:#f5efe0;--amber:#c17f3a;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Lora',Georgia,serif;background:#1a1008 !important;color:#f5efe0 !important;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:16px 12px 40px;}
+h1{font-family:'Playfair Display',serif;font-size:.95rem;letter-spacing:.14em;text-transform:uppercase;color:#c17f3a !important;margin-bottom:14px;}
+#preview-wrap{width:180px;height:230px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;overflow:visible;background:#1a1008 !important;border-radius:8px;}
+#preview-svg{width:100%;height:100%;overflow:visible;}
+#controls{width:100%;max-width:400px;background:#1a1008 !important;}
+.section{border-bottom:1px solid rgba(255,255,255,.15);padding:11px 0;}
+.section:last-child{border-bottom:none;}
+.section-label{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:#c17f3a !important;margin-bottom:8px;}
+/* Two-row vessel grid */
+.vessel-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;}
+/* Single-row scrolling for citrus/garnish/extras */
+.option-row{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;flex-wrap:nowrap;}
+.option-row::-webkit-scrollbar{display:none;}
+/* Narrower buttons */
+.opt-btn{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:4px;background:#2a1a08 !important;border:1.5px solid rgba(255,255,255,.18);border-radius:5px;padding:6px 3px 5px;cursor:pointer;width:50px;transition:all .15s ease;}
+.opt-btn:hover{border-color:var(--amber);background:rgba(193,127,58,.12);}
+.opt-btn.active{background:#f5efe0 !important;border-color:#f5efe0 !important;}
+.opt-btn.active .opt-label{color:#2c1f0e;}.opt-btn.active .opt-icon svg{filter:brightness(0.5);}
+/* Vessel buttons slightly wider to fill grid */
+.vessel-grid .opt-btn{width:100%;background:#2a1a08 !important;}
+.opt-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;}
+.opt-icon svg{width:100%;height:100%;}
+.opt-label{font-size:.48rem;letter-spacing:.04em;text-transform:uppercase;text-align:center;line-height:1.2;white-space:pre-line;color:#c8b898 !important;}
+.color-row{display:flex;align-items:center;gap:8px;}
+.color-clear-btn{background:#2a1a08 !important;border:1.5px solid rgba(255,255,255,.25);border-radius:5px;color:#c8b898 !important;font-family:'Lora',serif;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;padding:7px 10px;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.color-clear-btn:hover{border-color:var(--amber);}
+.color-clear-btn.active{background:#f5efe0 !important;border-color:#f5efe0 !important;color:#2c1f0e !important;}
+input[type="color"]{width:48px;height:36px;border:1.5px solid rgba(255,255,255,.2);border-radius:5px;background:none;cursor:pointer;padding:2px;}
+.color-hex{font-size:.68rem;color:#a08060 !important;font-family:monospace;}
+#json-out{margin-top:16px;width:100%;max-width:400px;background:#2a1a08 !important;border:1px solid rgba(255,255,255,.15);border-radius:5px;padding:10px 12px;font-family:monospace;font-size:.66rem;color:#c17f3a !important;line-height:1.6;white-space:pre-wrap;word-break:break-all;}
+</style>
+</head>
+<body style="background:#1a1008 !important;color:#f5efe0 !important;"><div id="app-shell" style="background:#1a1008;min-height:100vh;width:100%;display:flex;flex-direction:column;align-items:center;padding:0;">
+<script>document.documentElement.style.setProperty("background","#1a1008","important");document.body.style.setProperty("background","#1a1008","important");document.body.style.setProperty("color","#f5efe0","important");</script>
+<h1>Drink Compositor</h1>
+<div id="preview-wrap">
+  <svg id="preview-svg" viewBox="0 0 180 230" xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
+    <defs>
+      <linearGradient id="gl-body" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%"   stop-color="rgba(150,195,230,0.16)"/>
+        <stop offset="25%"  stop-color="rgba(200,230,255,0.38)"/>
+        <stop offset="52%"  stop-color="rgba(220,240,255,0.08)"/>
+        <stop offset="76%"  stop-color="rgba(200,230,255,0.32)"/>
+        <stop offset="100%" stop-color="rgba(150,195,230,0.13)"/>
+      </linearGradient>
+      <linearGradient id="gl-hl" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%"  stop-color="rgba(255,255,255,0)"/>
+        <stop offset="20%" stop-color="rgba(255,255,255,0.60)"/>
+        <stop offset="40%" stop-color="rgba(255,255,255,0.07)"/>
+        <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+      </linearGradient>
+      <linearGradient id="gl-rim" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%"   stop-color="rgba(255,255,255,0.75)"/>
+        <stop offset="100%" stop-color="rgba(255,255,255,0.12)"/>
+      </linearGradient>
+      <linearGradient id="gl-stem" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%"  stop-color="rgba(160,205,240,0.45)"/>
+        <stop offset="30%" stop-color="rgba(220,240,255,0.80)"/>
+        <stop offset="55%" stop-color="rgba(200,230,255,0.30)"/>
+        <stop offset="80%" stop-color="rgba(215,238,255,0.75)"/>
+        <stop offset="100%" stop-color="rgba(160,205,240,0.40)"/>
+      </linearGradient>
+      <linearGradient id="gl-base" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%"   stop-color="rgba(200,228,255,0.48)"/>
+        <stop offset="100%" stop-color="rgba(155,198,230,0.16)"/>
+      </linearGradient>
+      <!-- glass wall thickness: inset liquid 5px from vessel walls -->
+      <clipPath id="cp-rocks">    <path d="M44,68 L44,162 L136,162 L136,68 Z"/></clipPath>
+      <clipPath id="cp-collins">  <path d="M76,22 L76,172 L104,172 L104,22 Z"/></clipPath>
+      <clipPath id="cp-highball"> <path d="M66,34 L66,166 L114,166 L114,34 Z"/></clipPath>
+      <clipPath id="cp-coupe">    <path d="M26,54 Q26,100 90,108 Q154,100 154,54 Z"/></clipPath>
+      <clipPath id="cp-cocktail"> <path d="M30,28 L87,108 Q90,114 93,108 L150,28 Z"/></clipPath>
+      <clipPath id="cp-nicknora"> <path d="M56,52 Q52,120 90,126 Q128,120 124,52 Z"/></clipPath>
+      <clipPath id="cp-flute">    <path d="M74,18 L72,111 L108,111 L106,18 Z"/></clipPath>
+      <clipPath id="cp-snifter">  <path d="M50,50 Q47,122 68,148 Q90,158 112,148 Q133,122 130,50 Z"/></clipPath>
+      <clipPath id="cp-port">     <path d="M60,56 Q58,122 90,128 Q122,122 120,56 Z"/></clipPath>
+      <clipPath id="cp-irish">    <path d="M71,24 L71,164 L109,164 L109,24 Z"/></clipPath>
+      <clipPath id="cp-tropical"> <path d="M65,42 Q60,106 65,152 Q90,163 115,152 Q120,106 115,42 Q90,34 65,42 Z"/></clipPath>
+      <clipPath id="cp-julep">    <path d="M49,36 L53,166 L127,166 L131,36 Z"/></clipPath>
+      <clipPath id="cp-mule">     <path d="M46,26 Q38,96 42,166 L138,166 Q142,96 134,26 Z"/></clipPath>
+      <!-- Show only exterior (below visual rim) for wedge on opaque vessels -->
+      <clipPath id="cp-opaque-exterior-mule"><rect x="-200" y="20" width="600" height="300"/></clipPath>
+    </defs>
+    <g id="vessel-layer"></g>
+    <g id="liquid-layer"></g>
+    <g id="float-layer"></g>
+    <g id="ice-layer"></g>
+    <g id="vessel-mask-layer"></g>
+    <g id="garnish-layer"></g>
+    <g id="extras-layer"></g>
+    <g id="vessel-rim-cover-layer"></g>
+  </svg>
+</div>
+<div id="controls">
+  <div class="section"><div class="section-label">Vessel</div><div class="vessel-grid" id="vessel-row"></div></div>
+  <div class="section"><div class="section-label">Drink Color</div>
+    <div class="color-row">
+      <button class="color-clear-btn active" id="color-clear-btn">Clear</button>
+      <input type="color" id="color-picker" value="#8B3A2A">
+      <span class="color-hex" id="color-hex">—</span>
+      <select id="float-select" style="background:#2a1a08;border:1.5px solid rgba(255,255,255,.25);border-radius:5px;color:#c8b898;font-size:.6rem;padding:4px 6px;font-family:Lora,serif;letter-spacing:.06em;">
+        <option value="">No float</option>
+        <option value="wine">Red wine float</option>
+        <option value="rum">Dark rum float</option>
+      </select>
+    </div>
+  </div>
+  <div class="section"><div class="section-label">Ice</div><div class="option-row" id="ice-row"></div></div>
+  <div class="section"><div class="section-label">Citrus</div><div class="option-row" id="citrus-row" style="flex-wrap:wrap;gap:4px 4px;"></div></div>
+  <div class="section"><div class="section-label">Garnishes</div><div class="option-row" id="garnish-row"></div></div>
+  <div class="section"><div class="section-label">Extras</div><div class="option-row" id="extras-row"></div></div>
+</div>
+<pre id="json-out"></pre>
+<script>
+/* ── VESSEL ICONS (outline glassware) ── */
+const VI={
+  rocks:`<svg viewBox="0 0 32 32"><rect x="4" y="7" width="24" height="20" rx="2" fill="none" stroke="#c8a870" stroke-width="1.8"/><line x1="4" y1="11" x2="28" y2="11" stroke="#c8a870" stroke-width="1" opacity="0.45"/></svg>`,
+  collins:`<svg viewBox="0 0 32 32"><rect x="11" y="2" width="10" height="28" rx="2" fill="none" stroke="#c8a870" stroke-width="1.8"/></svg>`,
+  highball:`<svg viewBox="0 0 32 32"><rect x="9" y="3" width="14" height="25" rx="2" fill="none" stroke="#c8a870" stroke-width="1.8"/></svg>`,
+  coupe:`<svg viewBox="0 0 32 32"><path d="M2,9 Q2,22 16,24 Q30,22 30,9 Z" fill="none" stroke="#c8a870" stroke-width="1.8"/><line x1="16" y1="24" x2="16" y2="30" stroke="#c8a870" stroke-width="1.8"/><line x1="10" y1="30" x2="22" y2="30" stroke="#c8a870" stroke-width="1.8"/></svg>`,
+  cocktail:`<svg viewBox="0 0 32 32"><polygon points="16,24 2,5 30,5" fill="none" stroke="#c8a870" stroke-width="1.8"/><line x1="16" y1="24" x2="16" y2="30" stroke="#c8a870" stroke-width="1.8"/><line x1="10" y1="30" x2="22" y2="30" stroke="#c8a870" stroke-width="1.8"/></svg>`,
+  'nick-nora':`<svg viewBox="0 0 32 32"><path d="M6,7 L26,7 C26,7 28,20 16,24 C4,20 6,7 6,7 Z" fill="none" stroke="#c8a870" stroke-width="1.8"/><line x1="16" y1="24" x2="16" y2="29" stroke="#c8a870" stroke-width="1.8"/><line x1="10" y1="29" x2="22" y2="29" stroke="#c8a870" stroke-width="1.8"/></svg>`,
+  flute:`<svg viewBox="0 0 32 32"><path d="M8,2 L7,18 L25,18 L24,2 Z" fill="none" stroke="#c8a870" stroke-width="1.8"/><line x1="16" y1="18" x2="16" y2="30" stroke="#c8a870" stroke-width="1.8"/><line x1="10" y1="30" x2="22" y2="30" stroke="#c8a870" stroke-width="1.8"/></svg>`,
+  snifter:`<svg viewBox="0 0 32 32"><path d="M4,8 Q2,21 9,26 Q16,30 23,26 Q30,21 28,8 Z" fill="none" stroke="#c8a870" stroke-width="1.8"/><line x1="16" y1="26" x2="16" y2="31" stroke="#c8a870" stroke-width="2.2"/><ellipse cx="16" cy="32" rx="4" ry="1.2" fill="#c8a870" opacity="0.38"/></svg>`,
+  port:`<svg viewBox="0 0 32 32"><path d="M6,14 Q6,25 16,27 Q26,25 26,14 Q24,7 16,6 Q8,7 6,14 Z" fill="none" stroke="#c8a870" stroke-width="1.8"/><line x1="16" y1="27" x2="16" y2="32" stroke="#c8a870" stroke-width="1.8"/></svg>`,
+  irish:`<svg viewBox="0 0 32 32"><rect x="9" y="4" width="14" height="24" rx="3" fill="none" stroke="#c8a870" stroke-width="1.8"/><path d="M23,10 Q29,13 29,18 Q29,23 23,25" fill="none" stroke="#c8a870" stroke-width="1.6"/></svg>`,
+  tropical:`<svg viewBox="0 0 32 32"><path d="M8,8 Q6,18 8,27 Q16,31 24,27 Q26,18 24,8 Q16,5 8,8 Z" fill="none" stroke="#c8a870" stroke-width="1.8"/></svg>`,
+  julep:`<svg viewBox="0 0 32 32"><path d="M6,6 L7,27 L25,27 L26,6 Z" fill="none" stroke="#c8a870" stroke-width="1.8"/><line x1="6" y1="6" x2="26" y2="6" stroke="#c8a870" stroke-width="2.2"/></svg>`,
+  mule:`<svg viewBox="0 0 32 32"><path d="M6,5 Q3,18 5,27 L27,27 Q29,18 26,5 Z" fill="#c86820" stroke="#7a3a10" stroke-width="1.5"/><path d="M6,5 Q16,3 26,5 Q26,8 24,9 Q16,7 8,9 Q6,8 6,5 Z" fill="#d07020"/><path d="M27,10 Q33,13 33,16 Q33,20 27,23" fill="none" stroke="#8a4010" stroke-width="1.8"/></svg>`,
+};
+
+/* ── ICE ICONS ── */
+const II={
+  huge:`<svg viewBox="0 0 32 32"><rect x="7" y="7" width="18" height="18" rx="3" fill="none" stroke="#c8a870" stroke-width="1.8"/><line x1="7" y1="13" x2="25" y2="13" stroke="#c8a870" stroke-width="0.8" opacity="0.5"/><line x1="13" y1="7" x2="13" y2="25" stroke="#c8a870" stroke-width="0.8" opacity="0.5"/></svg>`,
+  cubes:`<svg viewBox="0 0 32 32"><rect x="3" y="14" width="12" height="12" rx="2" fill="none" stroke="#c8a870" stroke-width="1.6"/><rect x="17" y="10" width="12" height="12" rx="2" fill="none" stroke="#c8a870" stroke-width="1.6"/><rect x="10" y="21" width="11" height="10" rx="2" fill="none" stroke="#c8a870" stroke-width="1.3" opacity="0.65"/></svg>`,
+  crushed:`<svg viewBox="0 0 32 32"><polygon points="9,26 4,16 11,10 15,18 9,22" fill="none" stroke="#c8a870" stroke-width="1.5"/><polygon points="22,24 17,13 25,8 29,17 23,21" fill="none" stroke="#c8a870" stroke-width="1.5"/><polygon points="11,31 8,25 14,23 16,28" fill="none" stroke="#c8a870" stroke-width="1.2" opacity="0.65"/></svg>`,
+};
+
+/* ── CITRUS ICONS — proper vector shapes ── */
+const CI={
+  /* TWISTS: tight S-curve ribbon suggesting spiral */
+  'lemon-twist':`<svg viewBox="0 0 32 32"><path d="M6,27 C5,18 12,16 16,12 C20,8 22,5 26,5" fill="none" stroke="#e8c830" stroke-width="3.5" stroke-linecap="round"/><path d="M8,25 C7,17 13,15 17,11" fill="none" stroke="#f7f09a" stroke-width="1.5" stroke-linecap="round" opacity="0.55"/><circle cx="26" cy="5" r="2" fill="#e8c830"/><circle cx="6" cy="27" r="2" fill="#e8c830"/></svg>`,
+  'lime-twist':`<svg viewBox="0 0 32 32"><path d="M6,27 C5,18 12,16 16,12 C20,8 22,5 26,5" fill="none" stroke="#6ab04c" stroke-width="3.5" stroke-linecap="round"/><path d="M8,25 C7,17 13,15 17,11" fill="none" stroke="#a0d878" stroke-width="1.5" stroke-linecap="round" opacity="0.55"/><circle cx="26" cy="5" r="2" fill="#6ab04c"/><circle cx="6" cy="27" r="2" fill="#6ab04c"/></svg>`,
+  'orange-twist':`<svg viewBox="0 0 32 32"><path d="M6,27 C5,18 12,16 16,12 C20,8 22,5 26,5" fill="none" stroke="#e07828" stroke-width="3.5" stroke-linecap="round"/><path d="M8,25 C7,17 13,15 17,11" fill="none" stroke="#f8c080" stroke-width="1.5" stroke-linecap="round" opacity="0.55"/><circle cx="26" cy="5" r="2" fill="#e07828"/><circle cx="6" cy="27" r="2" fill="#e07828"/></svg>`,
+  /* WEDGES: quarter-round with rind, pith, segments */
+  'lemon-wedge':`<svg viewBox="0 0 32 26"><!-- Half-disc: flat face at y=2, arc downward --><path d="M2,2 A14,14 0 0,0 30,2 Z" fill="#f5df60" stroke="#c8a810" stroke-width="1.2"/><!-- RIND band --><path d="M2,2 A14,14 0 0,1 30,2 L28,2 A12,12 0 0,1 4,2 Z" fill="#c8a810"/><!-- PITH band --><path d="M4,2 A12,12 0 0,1 28,2 L26,2 A10,10 0 0,1 6,2 Z" fill="rgba(255,255,255,0.55)"/><!-- Spokes from (16,2) downward into disc --><line x1="16" y1="2" x2="6"  y2="12" stroke="#c8a810" stroke-width="0.8" opacity="0.4"/><line x1="16" y1="2" x2="11" y2="14" stroke="#c8a810" stroke-width="0.8" opacity="0.4"/><line x1="16" y1="2" x2="16" y2="16" stroke="rgba(255,255,255,0.75)" stroke-width="1"/><line x1="16" y1="2" x2="21" y2="14" stroke="#c8a810" stroke-width="0.8" opacity="0.4"/><line x1="16" y1="2" x2="26" y2="12" stroke="#c8a810" stroke-width="0.8" opacity="0.4"/><!-- Slit: downward from centre --><line x1="16" y1="2" x2="16" y2="7" stroke="#c8a810" stroke-width="1.8" opacity="0.9"/></svg>`,  'lime-wedge':`<svg viewBox="0 0 32 26"><!-- Half-disc: flat face at y=2, arc downward --><path d="M2,2 A14,14 0 0,0 30,2 Z" fill="#8aca6a" stroke="#4a8030" stroke-width="1.2"/><!-- RIND band --><path d="M2,2 A14,14 0 0,1 30,2 L28,2 A12,12 0 0,1 4,2 Z" fill="#4a8030"/><!-- PITH band --><path d="M4,2 A12,12 0 0,1 28,2 L26,2 A10,10 0 0,1 6,2 Z" fill="rgba(255,255,255,0.55)"/><!-- Spokes from (16,2) downward into disc --><line x1="16" y1="2" x2="6"  y2="12" stroke="#4a8030" stroke-width="0.8" opacity="0.4"/><line x1="16" y1="2" x2="11" y2="14" stroke="#4a8030" stroke-width="0.8" opacity="0.4"/><line x1="16" y1="2" x2="16" y2="16" stroke="rgba(255,255,255,0.75)" stroke-width="1"/><line x1="16" y1="2" x2="21" y2="14" stroke="#4a8030" stroke-width="0.8" opacity="0.4"/><line x1="16" y1="2" x2="26" y2="12" stroke="#4a8030" stroke-width="0.8" opacity="0.4"/><!-- Slit: downward from centre --><line x1="16" y1="2" x2="16" y2="7" stroke="#4a8030" stroke-width="1.8" opacity="0.9"/></svg>`,  'orange-wedge':`<svg viewBox="0 0 32 26"><!-- Half-disc: flat face at y=2, arc downward --><path d="M2,2 A14,14 0 0,0 30,2 Z" fill="#f0a050" stroke="#c06020" stroke-width="1.2"/><!-- RIND band --><path d="M2,2 A14,14 0 0,1 30,2 L28,2 A12,12 0 0,1 4,2 Z" fill="#c06020"/><!-- PITH band --><path d="M4,2 A12,12 0 0,1 28,2 L26,2 A10,10 0 0,1 6,2 Z" fill="rgba(255,255,255,0.55)"/><!-- Spokes from (16,2) downward into disc --><line x1="16" y1="2" x2="6"  y2="12" stroke="#c06020" stroke-width="0.8" opacity="0.4"/><line x1="16" y1="2" x2="11" y2="14" stroke="#c06020" stroke-width="0.8" opacity="0.4"/><line x1="16" y1="2" x2="16" y2="16" stroke="rgba(255,255,255,0.75)" stroke-width="1"/><line x1="16" y1="2" x2="21" y2="14" stroke="#c06020" stroke-width="0.8" opacity="0.4"/><line x1="16" y1="2" x2="26" y2="12" stroke="#c06020" stroke-width="0.8" opacity="0.4"/><!-- Slit: downward from centre --><line x1="16" y1="2" x2="16" y2="7" stroke="#c06020" stroke-width="1.8" opacity="0.9"/></svg>`,  /* PEELS: broad quadrangle with slight curve, showing rind color and lighter inner pith */
+  'lemon-peel':`<svg viewBox="0 0 32 32">
+    <path d="M5,26 Q6,8 14,5 Q22,5 27,6 Q26,12 18,14 Q10,16 5,26 Z" fill="#e8c830" stroke="#c8a810" stroke-width="1"/>
+    <path d="M6,24 Q8,10 14,7 Q20,7 24,8 Q23,13 17,15 Q10,17 6,24 Z" fill="#f5ef90" opacity="0.55"/>
+  </svg>`,
+  'lime-peel':`<svg viewBox="0 0 32 32">
+    <path d="M5,26 Q6,8 14,5 Q22,5 27,6 Q26,12 18,14 Q10,16 5,26 Z" fill="#6ab04c" stroke="#4a8030" stroke-width="1"/>
+    <path d="M6,24 Q8,10 14,7 Q20,7 24,8 Q23,13 17,15 Q10,17 6,24 Z" fill="#a0d878" opacity="0.55"/>
+  </svg>`,
+  'orange-peel':`<svg viewBox="0 0 32 32">
+    <path d="M5,26 Q6,8 14,5 Q22,5 27,6 Q26,12 18,14 Q10,16 5,26 Z" fill="#e07828" stroke="#a05010" stroke-width="1"/>
+    <path d="M6,24 Q8,10 14,7 Q20,7 24,8 Q23,13 17,15 Q10,17 6,24 Z" fill="#f8c080" opacity="0.55"/>
+  </svg>`,
+};
+
+/* ── GARNISH ICONS ── */
+const GA={
+  cherry:`<svg viewBox="0 0 32 32">
+    <!-- Luxardo: dark single cherry sunk at bottom, stem up -->
+    <circle cx="16" cy="22" r="8" fill="#4a0a0a" stroke="#2a0505" stroke-width="1.2"/>
+    <circle cx="13" cy="19" r="3" fill="#6a1010" opacity="0.5"/>
+    <path d="M16,14 Q14,6 10,4" fill="none" stroke="#3a5020" stroke-width="1.5" stroke-linecap="round"/>
+  </svg>`,
+  strawberry:`<svg viewBox="0 0 32 32">
+    <!-- strawberry slice: cross-section with white core, green top fringe -->
+    <path d="M5,12 Q5,26 16,28 Q27,26 27,12 Q22,8 16,8 Q10,8 5,12 Z" fill="#d94040" stroke="#a02020" stroke-width="1"/>
+    <!-- white core -->
+    <ellipse cx="16" cy="20" rx="6" ry="7" fill="rgba(255,255,255,0.7)"/>
+    <!-- striations -->
+    <line x1="10" y1="13" x2="8" y2="22" stroke="#a02020" stroke-width="0.7" opacity="0.5"/>
+    <line x1="22" y1="13" x2="24" y2="22" stroke="#a02020" stroke-width="0.7" opacity="0.5"/>
+    <line x1="13" y1="9" x2="12" y2="28" stroke="#a02020" stroke-width="0.6" opacity="0.35"/>
+    <line x1="19" y1="9" x2="20" y2="28" stroke="#a02020" stroke-width="0.6" opacity="0.35"/>
+    <!-- green fringe top -->
+    <path d="M10,10 Q8,4 12,5 Q13,2 16,4 Q19,2 20,5 Q24,4 22,10" fill="#3a7a20" stroke="#2a5a10" stroke-width="0.8"/>
+  </svg>`,
+  olive:`<svg viewBox="0 0 32 32">
+    <!-- 3-olive skewer, angled -->
+    <line x1="4" y1="28" x2="28" y2="4" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
+    <ellipse cx="10" cy="22" rx="5" ry="6.5" fill="#6b9e52" stroke="#4a7030" stroke-width="1" transform="rotate(-45,10,22)"/>
+    <ellipse cx="16" cy="16" rx="5" ry="6.5" fill="#7aae60" stroke="#4a7030" stroke-width="1" transform="rotate(-45,16,16)"/>
+    <ellipse cx="22" cy="10" rx="5" ry="6.5" fill="#6b9e52" stroke="#4a7030" stroke-width="1" transform="rotate(-45,22,10)"/>
+  </svg>`,
+  celery:`<svg viewBox="0 0 32 32">
+    <!-- stalk: rectangular with flat ends and striations -->
+    <rect x="12" y="6" width="8" height="20" rx="1" fill="#7ab840" stroke="#4a8020" stroke-width="1"/>
+    <line x1="14" y1="6" x2="14" y2="26" stroke="#4a8020" stroke-width="0.6" opacity="0.5"/>
+    <line x1="17" y1="6" x2="17" y2="26" stroke="#4a8020" stroke-width="0.6" opacity="0.5"/>
+    <!-- serrated leaf top -->
+    <path d="M10,8 Q7,4 10,2 Q12,4 12,6" fill="#5a9e2a" stroke="#3a7010" stroke-width="0.7"/>
+    <path d="M13,6 Q11,2 14,1 Q16,3 14,6" fill="#5a9e2a" stroke="#3a7010" stroke-width="0.7"/>
+    <path d="M17,6 Q18,2 21,2 Q22,4 20,6" fill="#5a9e2a" stroke="#3a7010" stroke-width="0.7"/>
+    <path d="M20,8 Q23,4 26,5 Q26,8 22,9" fill="#5a9e2a" stroke="#3a7010" stroke-width="0.7"/>
+  </svg>`,
+  'pineapple-wedge':`<svg viewBox="0 0 32 32">
+    <!-- Half-disc: flat edge at top (y=8), arc curves below -->
+    <path d="M2,8 A14,14 0 0 1 30,8 Z" fill="#f5c830" stroke="#8a5a08" stroke-width="1.2"/>
+    <!-- Rind arc band -->
+    <path d="M2,8 A14,14 0 0 1 30,8 L28,8 A12,12 0 0 0 4,8 Z" fill="#8a5a08"/>
+    <!-- Spokes -->
+    <line x1="16" y1="8" x2="5" y2="17" stroke="#c8a010" stroke-width="0.7" opacity="0.4"/>
+    <line x1="16" y1="8" x2="10" y2="20" stroke="#c8a010" stroke-width="0.7" opacity="0.4"/>
+    <line x1="16" y1="8" x2="16" y2="22" stroke="rgba(255,230,100,0.8)" stroke-width="1"/>
+    <line x1="16" y1="8" x2="22" y2="20" stroke="#c8a010" stroke-width="0.7" opacity="0.4"/>
+    <line x1="16" y1="8" x2="27" y2="17" stroke="#c8a010" stroke-width="0.7" opacity="0.4"/>
+    <!-- Slit -->
+    <line x1="16" y1="8" x2="16" y2="13" stroke="#8a5a08" stroke-width="1.5" opacity="0.9"/>
+  </svg>`,
+  'cucumber-slice':`<svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="13" fill="#81c784" stroke="#4caf50" stroke-width="1.4"/><circle cx="16" cy="16" r="8" fill="#a5d6a7"/><circle cx="16" cy="16" r="4" fill="#c8e6c9"/><line x1="6" y1="11" x2="14" y2="23" stroke="#4caf50" stroke-width="0.7" opacity="0.5"/><line x1="18" y1="10" x2="26" y2="22" stroke="#4caf50" stroke-width="0.7" opacity="0.5"/><line x1="10" y1="24" x2="22" y2="10" stroke="#4caf50" stroke-width="0.6" opacity="0.4"/></svg>`,
+};
+
+/* ── EXTRAS ICONS ── */
+const EX={
+  umbrella:`<svg viewBox="0 0 32 32">
+    <!-- cocktail umbrella: rounded triangle, radial striations, upright -->
+    <path d="M16,2 Q4,12 4,20 Q10,18 16,20 Q22,18 28,20 Q28,12 16,2 Z" fill="#4fc3f7" stroke="#0288d1" stroke-width="1"/>
+    <!-- radial stripes -->
+    <line x1="16" y1="2" x2="4" y2="20" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+    <line x1="16" y1="2" x2="10" y2="21" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+    <line x1="16" y1="2" x2="16" y2="21" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+    <line x1="16" y1="2" x2="22" y2="21" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+    <line x1="16" y1="2" x2="28" y2="20" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+    <!-- highlight -->
+    <path d="M16,2 Q10,10 6,18 Q11,15 16,16" fill="rgba(255,255,255,0.2)"/>
+    <!-- straight stem -->
+    <line x1="16" y1="20" x2="16" y2="31" stroke="#0288d1" stroke-width="1.4" stroke-linecap="round"/>
+  </svg>`,
+  'salted-rim':`<svg viewBox="0 0 32 32">
+    <!-- rock salt: irregular chunky crystals -->
+    <rect x="3" y="12" width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.85)" transform="rotate(15,5,14)"/>
+    <rect x="10" y="8" width="5" height="5" rx="0.5" fill="rgba(255,255,255,0.75)" transform="rotate(-8,12,10)"/>
+    <rect x="18" y="9" width="4" height="3" rx="0.5" fill="rgba(255,255,255,0.9)" transform="rotate(20,20,10)"/>
+    <rect x="25" y="12" width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.8)" transform="rotate(-12,27,14)"/>
+    <rect x="6" y="17" width="3" height="3" rx="0.5" fill="rgba(255,255,255,0.7)"/>
+    <rect x="14" y="7" width="3" height="4" rx="0.5" fill="rgba(255,255,255,0.8)" transform="rotate(5,15,9)"/>
+    <rect x="22" y="16" width="4" height="3" rx="0.5" fill="rgba(255,255,255,0.75)" transform="rotate(-18,24,17)"/>
+    <ellipse cx="16" cy="14" rx="14" ry="3.5" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  </svg>`,
+  'tajin-rim':`<svg viewBox="0 0 32 32">
+    <!-- tajin: reddish orange spice rim -->
+    <rect x="3" y="12" width="4" height="3" rx="0.5" fill="#d04020" transform="rotate(10,5,13)"/>
+    <rect x="10" y="8" width="3" height="3" rx="0.5" fill="#e05028" transform="rotate(-5,11,9)"/>
+    <rect x="17" y="9" width="4" height="3" rx="0.5" fill="#c83018" transform="rotate(18,19,10)"/>
+    <rect x="24" y="12" width="3" height="4" rx="0.5" fill="#d84020" transform="rotate(-10,25,14)"/>
+    <rect x="6" y="16" width="3" height="3" rx="0.5" fill="#e05830"/>
+    <rect x="14" y="7" width="3" height="3" rx="0.5" fill="#d04820" transform="rotate(8,15,8)"/>
+    <rect x="21" y="16" width="4" height="3" rx="0.5" fill="#c83018" transform="rotate(-15,23,17)"/>
+    <ellipse cx="16" cy="14" rx="14" ry="3.5" fill="none" stroke="rgba(200,60,20,0.4)" stroke-width="1"/>
+  </svg>`,
+  straw:`<svg viewBox="0 0 32 32"><rect x="14" y="1" width="5" height="30" rx="2.5" fill="#4caf50" stroke="#2e7d32" stroke-width="0.8"/><rect x="14.5" y="1.5" width="2" height="29" rx="1" fill="rgba(255,255,255,0.25)"/></svg>`,
+  'whipped-cream':`<svg viewBox="0 0 32 32">
+    <!-- scalloped mounds, flat base -->
+    <path d="M3,22 Q3,18 7,18 Q7,13 11,14 Q11,9 16,9 Q21,9 21,14 Q25,13 25,18 Q29,18 29,22 Z" fill="white" stroke="#ddd" stroke-width="0.8"/>
+    <path d="M3,22 L29,22" stroke="#ddd" stroke-width="0.5"/>
+  </svg>`,
+  'mint-sprig':`<svg viewBox="0 0 32 32">
+    <!-- mint: deeper green, scalloped leaf edges -->
+    <line x1="16" y1="30" x2="16" y2="10" stroke="#2e7d32" stroke-width="1.4"/>
+    <!-- left leaf: scalloped -->
+    <path d="M16,20 C12,20 8,17 9,13 C10,9 14,10 16,12 Z" fill="#2e7d32" stroke="#1b5e20" stroke-width="0.7"/>
+    <path d="M10,16 C9,14 10,12 12,12" fill="none" stroke="#4caf50" stroke-width="0.6" opacity="0.7"/>
+    <!-- right leaf: scalloped -->
+    <path d="M16,15 C20,14 24,11 23,7 C22,4 18,5 16,8 Z" fill="#2e7d32" stroke="#1b5e20" stroke-width="0.7"/>
+    <path d="M22,10 C22,8 20,6 18,7" fill="none" stroke="#4caf50" stroke-width="0.6" opacity="0.7"/>
+    <!-- small top leaf -->
+    <path d="M16,10 C14,8 13,5 15,4 C17,3 18,6 16,8 Z" fill="#388e3c" stroke="#1b5e20" stroke-width="0.7"/>
+  </svg>`,
+};
+
+/* ── DATA ── */
+const VESSELS=[
+  {id:'rocks',label:'Rocks'},{id:'collins',label:'Collins'},{id:'highball',label:'Highball'},
+  {id:'coupe',label:'Coupe'},{id:'cocktail',label:'Martini'},{id:'nick-nora',label:'Nick &\nNora'},
+  {id:'flute',label:'Flute'},{id:'snifter',label:'Snifter'},
+  {id:'irish',label:'Irish'},{id:'tropical',label:'Tropical'},{id:'julep',label:'Julep'},{id:'mule',label:'Mule'}
+];
+const ICE=[{id:'huge',label:'Huge'},{id:'cubes',label:'Cubes'},{id:'crushed',label:'Crushed'}];
+const CITRUS=[
+  {id:'lemon-twist',label:'Lemon\nTwist'},{id:'lemon-wedge',label:'Lemon\nWedge'},{id:'lemon-peel',label:'Lemon\nPeel'},
+  {id:'lime-twist',label:'Lime\nTwist'},{id:'lime-wedge',label:'Lime\nWedge'},{id:'lime-peel',label:'Lime\nPeel'},
+  {id:'spacer-row',label:''},  // row break spacer
+  {id:'orange-twist',label:'Orange\nTwist'},{id:'orange-wedge',label:'Orange\nWedge'},{id:'orange-peel',label:'Orange\nPeel'},
+];
+const GARNISHES=[
+  {id:'cherry',label:'Cherry'},{id:'strawberry',label:'Straw-\nberry'},{id:'olive',label:'Olive'},
+  {id:'celery',label:'Celery'},{id:'pineapple-wedge',label:'Pine-\napple'},{id:'cucumber-slice',label:'Cucum-\nber'},
+];
+const EXTRAS=[
+  {id:'umbrella',label:'Umbrella'},{id:'salted-rim',label:'Salted\nRim'},{id:'tajin-rim',label:'Tajin\nRim'},
+  {id:'straw',label:'Straw'},{id:'whipped-cream',label:'Whipped\nCream'},{id:'mint-sprig',label:'Mint\nSprig'},
+];
+
+const S={vessel:'rocks',color:null,float:null,ice:null,citrus:null,garnish:new Set(),extras:new Set()};
+const FLAT=new Set(['rocks','coupe','cocktail','nick-nora','snifter']);
+
+/* ── GEOMETRY: all coords relative to 180×230 viewBox
+   inner = glass inner diameter (liquid fill region)
+   outer = glass outer wall coords
+   top/bot = inner liquid column top/bottom at full fill ── */
+const GEO={
+  rocks:    {top:64,  bot:162, lf:0.35, ihw:46, ohw:54, clipId:'cp-rocks'},
+  collins:  {top:20,  bot:172, lf:0.40, ihw:14, ohw:18, clipId:'cp-collins'},
+  highball: {top:32,  bot:166, lf:0.40, ihw:24, ohw:30, clipId:'cp-highball'},
+  coupe:    {top:52,  bot:108, lf:0.10, ihw:60, ohw:68, clipId:'cp-coupe'},
+  cocktail: {top:26,  bot:110, lf:0.08, ihw:52, ohw:62, clipId:'cp-cocktail'},
+  'nick-nora':{top:50, bot:124, lf:0.14, ihw:34, ohw:40, clipId:'cp-nicknora'},
+  flute:    {top:16,  bot:111, lf:0.42, ihw:18, ohw:22, clipId:'cp-flute'},
+  snifter:  {top:48,  bot:150, lf:0.28, ihw:40, ohw:50, clipId:'cp-snifter'},
+  port:     {top:52,  bot:128, lf:0.16, ihw:30, ohw:36, clipId:'cp-port'},
+  irish:    {top:22,  bot:164, lf:0.42, ihw:19, ohw:23, clipId:'cp-irish'},
+  tropical: {top:40,  bot:154, lf:0.38, ihw:28, ohw:34, clipId:'cp-tropical'},
+  julep:    {top:34,  bot:166, lf:0.38, ihw:40, ohw:46, clipId:'cp-julep'},
+  mule:     {top:32,  bot:164, lf:0.38, ihw:44, ohw:52, clipId:'cp-mule'},
+};
+
+/* ── VESSEL DRAWING: glass aesthetic with visible walls ── */
+function drawVessel(id){
+  const G='url(#gl-body)',H='url(#gl-hl)',R='url(#gl-rim)',ST='url(#gl-stem)',BA='url(#gl-base)',E='rgba(200,228,255,0.55)';
+  const v={
+    rocks:`
+      <path d="M38,64 L38,166 Q38,172 44,172 L136,172 Q142,172 142,166 L142,64 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/>
+      <rect x="38" y="64" width="104" height="4" fill="${R}"/>
+      <rect x="42" y="70" width="14" height="96" rx="2" fill="${H}" opacity="0.65"/>`,
+    collins:`
+      <path d="M72,20 L72,174 Q72,180 78,180 L102,180 Q108,180 108,174 L108,20 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/>
+      <rect x="72" y="20" width="36" height="4" fill="${R}"/>
+      <rect x="75" y="26" width="8" height="150" rx="2" fill="${H}" opacity="0.6"/>`,
+    highball:`
+      <path d="M60,32 L60,168 Q60,175 66,175 L114,175 Q120,175 120,168 L120,32 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/>
+      <rect x="60" y="32" width="60" height="4" fill="${R}"/>
+      <rect x="64" y="38" width="10" height="130" rx="2" fill="${H}" opacity="0.6"/>`,
+    coupe:`
+      <path d="M22,52 Q22,100 90,108 Q158,100 158,52 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/>
+      <line x1="22" y1="52" x2="158" y2="52" stroke="${E}" stroke-width="2.2"/>
+      <rect x="22" y="52" width="136" height="4" fill="${R}"/>
+      <path d="M22,52 Q52,104 90,108" fill="${H}" opacity="0.40"/>
+      <rect x="87.5" y="108" width="5" height="67" fill="${ST}" stroke="${E}" stroke-width="0.8"/>
+      <ellipse cx="90" cy="181" rx="26" ry="6" fill="${BA}"/>
+      <ellipse cx="90" cy="178" rx="18" ry="4" fill="${G}" stroke="${E}" stroke-width="1"/>`,
+    cocktail:`
+      <!-- MARTINI/COCKTAIL GLASS — refined geometry -->
+      <!-- Outer bowl: straight sides, blunted bottom apex (8px flat) -->
+      <path d="M26,26 L87,108 L87,112 Q90,114 93,112 L93,108 L154,26 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/>
+      <!-- Rim line -->
+      <line x1="26" y1="26" x2="154" y2="26" stroke="${E}" stroke-width="2.2"/>
+      <rect x="26" y="26" width="128" height="4" fill="${R}"/>
+      <!-- Inner bowl walls (parallel, ~4px inside outer) to show glass thickness -->
+      <path d="M32,26 L90,106 L148,26 Z" fill="rgba(0,0,0,0.01)"/>
+      <!-- Left wall thickness highlight -->
+      <path d="M26,26 L87,108 L91,108 L34,26 Z" fill="${H}" opacity="0.55"/>
+      <!-- Right wall: darker edge -->
+      <path d="M146,26 L93,108 L89,108 L150,26 Z" fill="rgba(200,228,255,0.08)"/>
+      <!-- Bowl interior liquid area reference (transparent center) -->
+      <!-- Stem: tapers from 6px at join to 3px mid, widens to 5px at foot join -->
+      <path d="M87,112 Q88,140 88,176 L92,176 Q92,140 93,112 Z" fill="${ST}" stroke="${E}" stroke-width="0.7"/>
+      <!-- Base -->
+      <ellipse cx="90" cy="183" rx="26" ry="6" fill="${BA}"/>
+      <ellipse cx="90" cy="180" rx="20" ry="4" fill="${G}" stroke="${E}" stroke-width="1"/>`,
+    'nick-nora':`
+      <path d="M52,50 Q48,118 90,124 Q132,118 128,50 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/>
+      <path d="M52,50 Q90,44 128,50" stroke="${R}" stroke-width="3"/>
+      <path d="M52,50 Q62,116 90,124" fill="${H}" opacity="0.38"/>
+      <rect x="87.5" y="124" width="5" height="52" fill="${ST}" stroke="${E}" stroke-width="0.8"/>
+      <ellipse cx="90" cy="181" rx="26" ry="5.5" fill="${BA}"/>
+      <ellipse cx="90" cy="178" rx="18" ry="4" fill="${G}" stroke="${E}" stroke-width="1"/>`,
+    flute:`
+      <path d="M70,16 L68,111 L112,111 L110,16 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/>
+      <line x1="70" y1="16" x2="110" y2="16" stroke="${E}" stroke-width="2.2"/>
+      <rect x="70" y="16" width="40" height="4" fill="${R}"/>
+      <rect x="73" y="20" width="10" height="88" rx="2" fill="${H}" opacity="0.58"/>
+      <rect x="88" y="111" width="4" height="68" fill="${ST}" stroke="${E}" stroke-width="0.7"/>
+      <ellipse cx="90" cy="184" rx="22" ry="5" fill="${BA}"/>
+      <ellipse cx="90" cy="181" rx="12" ry="3" fill="${G}" stroke="${E}" stroke-width="1"/>`,
+    snifter:`
+      <path d="M40,48 Q36,124 66,150 Q90,162 114,150 Q144,124 140,48 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/>
+      <line x1="40" y1="48" x2="140" y2="48" stroke="${E}" stroke-width="2.2"/>
+      <rect x="40" y="48" width="100" height="4" fill="${R}"/>
+      <path d="M40,48 Q56,130 66,150" fill="${H}" opacity="0.36"/>
+      <path d="M66,150 Q80,162 90,162 Q100,162 114,150" fill="none" stroke="${ST}" stroke-width="5"/>
+      <rect x="87" y="162" width="6" height="14" fill="${ST}" stroke="${E}" stroke-width="0.8"/>
+      <ellipse cx="90" cy="180" rx="28" ry="6" fill="${BA}"/>
+      <ellipse cx="90" cy="176" rx="16" ry="3.5" fill="${G}" stroke="${E}" stroke-width="1"/>`,
+    port:`
+      <path d="M54,52 Q50,124 90,130 Q130,124 126,52 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/>
+      <path d="M54,52 Q90,46 126,52" stroke="${R}" stroke-width="3"/>
+      <path d="M54,52 Q66,122 90,130" fill="${H}" opacity="0.36"/>
+      <rect x="87.5" y="130" width="5" height="46" fill="${ST}" stroke="${E}" stroke-width="0.8"/>
+      <ellipse cx="90" cy="181" rx="26" ry="5.5" fill="${BA}"/>
+      <ellipse cx="90" cy="178" rx="16" ry="3.5" fill="${G}" stroke="${E}" stroke-width="1"/>`,
+    irish:`
+      <path d="M66,22 L66,168 Q66,174 72,174 L108,174 Q114,174 114,168 L114,22 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/>
+      <path d="M110,52 Q126,62 124,94 Q122,126 110,132" fill="none" stroke="${E}" stroke-width="6.5" stroke-linecap="round"/>
+      <path d="M110,56 Q122,65 120,94 Q118,123 110,128" fill="none" stroke="${H}" stroke-width="3.5" stroke-linecap="round" opacity="0.42"/>
+      <rect x="66" y="22" width="48" height="4" fill="${R}"/>
+      <rect x="70" y="28" width="9" height="140" rx="2" fill="${H}" opacity="0.56"/>
+      <ellipse cx="90" cy="178" rx="22" ry="5" fill="${G}" stroke="${E}" stroke-width="1.2"/>
+      <ellipse cx="90" cy="174" rx="10" ry="7" fill="${G}" stroke="${E}" stroke-width="1.2"/>
+      <ellipse cx="90" cy="183" rx="28" ry="5" fill="${BA}"/>`,
+    tropical:`
+      <path d="M56,40 Q50,108 56,156 Q90,170 124,156 Q130,108 124,40 Q90,30 56,40 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/>
+      <path d="M56,40 Q90,30 124,40" stroke="${R}" stroke-width="3"/>
+      <path d="M56,40 Q58,110 62,156" fill="${H}" opacity="0.46"/>
+      <ellipse cx="90" cy="168" rx="36" ry="7" fill="${BA}"/>`,
+    julep:`
+      <path d="M44,34 L48,170 L132,170 L136,34 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/>
+      <line x1="44" y1="34" x2="136" y2="34" stroke="${E}" stroke-width="2.8"/>
+      <rect x="45" y="34" width="90" height="4" fill="${R}"/>
+      <path d="M44,34 L50,76 L52,170" fill="${H}" opacity="0.48"/>
+      <ellipse cx="90" cy="172" rx="46" ry="7" fill="${BA}"/>`,
+    mule:`
+      <!-- Hammered copper mug: biconvex sides, curled rim, handle, hammered texture -->
+      <!-- Body: copper gradient -->
+      <defs>
+        <linearGradient id="copper-body" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="#7a3a10"/>
+          <stop offset="22%"  stop-color="#c86820"/>
+          <stop offset="48%"  stop-color="#e08830"/>
+          <stop offset="72%"  stop-color="#b85e18"/>
+          <stop offset="100%" stop-color="#6a3010"/>
+        </linearGradient>
+      </defs>
+      <!-- Slightly biconvex body — wider in middle -->
+      <!-- Opaque background first, then copper gradient on top -->
+      <path d="M38,24 Q30,96 36,170 L144,170 Q150,96 142,24 Z" fill="#7a3a10" stroke="#6a3010" stroke-width="1.5"/>
+      <path d="M38,24 Q30,96 36,170 L144,170 Q150,96 142,24 Z" fill="url(#copper-body)" stroke="#6a3010" stroke-width="1.5"/>
+      <!-- Curled rim accent at top -->
+      <path d="M38,24 Q90,18 142,24 Q142,30 138,32 Q90,26 42,32 Q38,30 38,24 Z" fill="#d07020" stroke="#8a4010" stroke-width="1"/>
+      <!-- Hammered texture: irregular small ellipses -->
+      <ellipse cx="58" cy="60"  rx="5" ry="3.5" fill="rgba(0,0,0,0.10)" transform="rotate(20,58,60)"/>
+      <ellipse cx="80" cy="50"  rx="4" ry="3"   fill="rgba(0,0,0,0.08)" transform="rotate(-10,80,50)"/>
+      <ellipse cx="110" cy="55" rx="5" ry="3"   fill="rgba(0,0,0,0.09)" transform="rotate(30,110,55)"/>
+      <ellipse cx="68" cy="90"  rx="5" ry="4"   fill="rgba(0,0,0,0.08)" transform="rotate(-15,68,90)"/>
+      <ellipse cx="100" cy="85" rx="4" ry="3.5" fill="rgba(0,0,0,0.10)" transform="rotate(10,100,85)"/>
+      <ellipse cx="55" cy="120" rx="5" ry="3"   fill="rgba(0,0,0,0.09)" transform="rotate(25,55,120)"/>
+      <ellipse cx="118" cy="110"rx="4" ry="3.5" fill="rgba(0,0,0,0.08)" transform="rotate(-20,118,110)"/>
+      <ellipse cx="75" cy="140" rx="5" ry="3"   fill="rgba(0,0,0,0.09)" transform="rotate(5,75,140)"/>
+      <ellipse cx="108" cy="145"rx="4" ry="4"   fill="rgba(0,0,0,0.08)" transform="rotate(-30,108,145)"/>
+      <!-- Highlight left edge -->
+      <path d="M38,24 Q32,96 36,170" fill="none" stroke="rgba(220,140,60,0.55)" stroke-width="6" stroke-linecap="round"/>
+      <!-- Handle: right side C-curve -->
+      <path d="M142,60 Q164,60 166,96 Q164,132 142,132" fill="none" stroke="#b85e18" stroke-width="7" stroke-linecap="round"/>
+      <path d="M142,64 Q160,64 162,96 Q160,128 142,128" fill="none" stroke="#e08030" stroke-width="3.5" stroke-linecap="round" opacity="0.6"/>
+      <!-- Steel straw indicator (renders via extras) -->
+      `,
+  };
+  return v[id]||v.rocks;
+}
+
+/* ── OPAQUE VESSEL MASK — redraws walls over liquid/ice for non-glass vessels ── */
+const OPAQUE_VESSELS=new Set(['mule']);
+function drawVesselMask(id){
+  if(!OPAQUE_VESSELS.has(id))return'';
+  if(id==='mule'){
+    // Full opaque redraw of entire body — completely hides liquid and ice
+    return `
+      <!-- Solid base fill first — fully opaque copper dark -->
+      <path d="M38,24 Q30,96 36,170 L144,170 Q150,96 142,24 Z" fill="#7a3a10"/>
+      <!-- Copper gradient on top of solid base — fully opaque -->
+      <path d="M38,24 Q30,96 36,170 L144,170 Q150,96 142,24 Z" fill="url(#copper-body)"/>
+      <!-- Bottom band -->
+      <path d="M36,168 L144,168 L144,174 L36,174 Z" fill="#6a3010"/>
+      <!-- Hammered texture -->
+      <ellipse cx="58" cy="60"  rx="5" ry="3.5" fill="rgba(0,0,0,0.12)" transform="rotate(20,58,60)"/>
+      <ellipse cx="80" cy="50"  rx="4" ry="3"   fill="rgba(0,0,0,0.10)" transform="rotate(-10,80,50)"/>
+      <ellipse cx="110" cy="55" rx="5" ry="3"   fill="rgba(0,0,0,0.11)" transform="rotate(30,110,55)"/>
+      <ellipse cx="68" cy="90"  rx="5" ry="4"   fill="rgba(0,0,0,0.10)" transform="rotate(-15,68,90)"/>
+      <ellipse cx="100" cy="85" rx="4" ry="3.5" fill="rgba(0,0,0,0.12)" transform="rotate(10,100,85)"/>
+      <ellipse cx="55" cy="120" rx="5" ry="3"   fill="rgba(0,0,0,0.11)" transform="rotate(25,55,120)"/>
+      <ellipse cx="118" cy="110"rx="4" ry="3.5" fill="rgba(0,0,0,0.10)" transform="rotate(-20,118,110)"/>
+      <ellipse cx="75" cy="140" rx="5" ry="3"   fill="rgba(0,0,0,0.11)" transform="rotate(5,75,140)"/>
+      <ellipse cx="108" cy="145"rx="4" ry="4"   fill="rgba(0,0,0,0.10)" transform="rotate(-30,108,145)"/>
+      <!-- Left edge highlight -->
+      <path d="M38,24 Q32,96 36,170" fill="none" stroke="rgba(220,140,60,0.55)" stroke-width="6" stroke-linecap="round"/>
+      <!-- Right edge shadow -->
+      <path d="M142,24 Q150,96 144,170" fill="none" stroke="rgba(80,20,0,0.4)" stroke-width="5" stroke-linecap="round"/>
+      <!-- Curled rim accent -->
+      <path d="M38,24 Q90,18 142,24 Q142,30 138,32 Q90,26 42,32 Q38,30 38,24 Z" fill="#d07020" stroke="#8a4010" stroke-width="1"/>
+      <!-- Handle: drawn last so it's on top of everything -->
+      <path d="M142,60 Q164,60 166,96 Q164,132 142,132" fill="none" stroke="#6a2e0a" stroke-width="9" stroke-linecap="round"/>
+      <path d="M142,60 Q164,60 166,96 Q164,132 142,132" fill="none" stroke="#b85e18" stroke-width="6" stroke-linecap="round"/>
+      <path d="M142,64 Q160,64 162,96 Q160,128 142,128" fill="none" stroke="#e08030" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+    `;
+  }
+  return'';
+}
+
+/* ── POST-GARNISH RIM COVER — hides garnish interior on opaque vessels ── */
+function drawVesselRimCover(id){
+  if(!OPAQUE_VESSELS.has(id))return'';
+  if(id==='mule'){
+    // Redraw only the curled rim band — covers the wedge interior inside the bowl
+    // without touching the exterior portion hanging outside the mug.
+    // Interior region: x=38..142, y=18..36 (the rim band zone)
+    return `
+      <!-- Rim band cover: hides wedge half inside the bowl -->
+      <path d="M38,24 Q90,18 142,24 Q142,32 138,34 Q90,28 42,34 Q38,32 38,24 Z"
+        fill="#7a3a10"/>
+      <path d="M38,24 Q90,18 142,24 Q142,32 138,34 Q90,28 42,34 Q38,32 38,24 Z"
+        fill="url(#copper-body)"/>
+      <path d="M38,24 Q90,18 142,24 Q142,30 138,32 Q90,26 42,32 Q38,30 38,24 Z"
+        fill="#d07020" stroke="#8a4010" stroke-width="1"/>
+    `;
+  }
+  return'';
+}
+
+/* ── LIQUID ── */
+function drawLiquid(vessel,color){
+  if(!color)return'';
+  const g=GEO[vessel]||GEO.rocks;
+  const fillY=g.top+(g.bot-g.top)*g.lf;
+  const hw=g.ihw; // inner half-width
+  const c=color, op='0.88';
+  const meniscus=`<line x1="${90-hw}" y1="${fillY}" x2="${90+hw}" y2="${fillY}" stroke="rgba(255,255,255,0.28)" stroke-width="1.2"/>`;
+  const fills={
+    rocks:`<rect x="${90-hw}" y="${fillY}" width="${hw*2}" height="${g.bot-fillY}" fill="${c}" opacity="${op}" clip-path="url(#${g.clipId})"/>`,
+    collins:`<rect x="${90-hw}" y="${fillY}" width="${hw*2}" height="${g.bot-fillY}" fill="${c}" opacity="${op}" clip-path="url(#${g.clipId})"/>`,
+    highball:`<rect x="${90-hw}" y="${fillY}" width="${hw*2}" height="${g.bot-fillY}" fill="${c}" opacity="${op}" clip-path="url(#${g.clipId})"/>`,
+    coupe:`<path d="M${90-hw},${fillY} Q90,${fillY+4} ${90+hw},${fillY} Q142,115 90,120 Q38,115 ${90-hw},${fillY} Z" fill="${c}" opacity="${op}" clip-path="url(#${g.clipId})"/>`,
+    cocktail:`<path d="M${90-(hw*(1-(fillY-26)/84))},${fillY} L${90+(hw*(1-(fillY-26)/84))},${fillY} L87,108 Q90,114 93,108 L${90+(hw*(1-(fillY-26)/84))},${fillY} Z" fill="${c}" opacity="0.86" clip-path="url(#${g.clipId})"/>`,
+    'nick-nora':`<path d="M${90-hw},${fillY} Q90,${fillY+2} ${90+hw},${fillY} Q126,68 90,73 Q54,68 ${90-hw},${fillY} Z" fill="${c}" opacity="${op}" clip-path="url(#${g.clipId})"/>`,
+    flute:`<rect x="${90-hw}" y="${fillY}" width="${hw*2}" height="${g.bot-fillY}" fill="${c}" opacity="${op}" clip-path="url(#${g.clipId})"/>`,
+    snifter:`<path d="M${90-hw},${fillY} L${90+hw},${fillY} Q140,124 114,150 Q90,162 66,150 Q40,124 ${90-hw},${fillY} Z" fill="${c}" opacity="0.86" clip-path="url(#${g.clipId})"/>`,
+    port:`<path d="M${90-hw},${fillY} Q90,${fillY-2} ${90+hw},${fillY} Q122,124 90,130 Q58,124 ${90-hw},${fillY} Z" fill="${c}" opacity="${op}" clip-path="url(#${g.clipId})"/>`,
+    irish:`<rect x="${90-hw}" y="${fillY}" width="${hw*2}" height="${g.bot-fillY}" fill="${c}" opacity="${op}" clip-path="url(#${g.clipId})"/>`,
+    tropical:`<path d="M${90-hw+((fillY-40)*0.15)},${fillY} Q90,${fillY-4} ${90+hw-((fillY-40)*0.15)},${fillY} Q124,108 124,156 Q90,170 56,156 Q50,108 ${90-hw+((fillY-40)*0.15)},${fillY} Z" fill="${c}" opacity="0.86" clip-path="url(#${g.clipId})"/>`,
+    julep:`<path d="M${90-hw+((fillY-34)*0.05)},${fillY} L${90+hw-((fillY-34)*0.05)},${fillY} L132,170 L48,170 Z" fill="${c}" opacity="0.86" clip-path="url(#${g.clipId})"/>`,
+    mule:`<rect x="${90-hw}" y="${fillY}" width="${hw*2}" height="${g.bot-fillY}" fill="${c}" opacity="${op}" clip-path="url(#${g.clipId})"/>`,
+  };
+  return (fills[vessel]||fills.rocks)+meniscus;
+}
+
+/* ── FLOAT LAYER ── */
+function drawFloat(vessel,color,floatType){
+  if(!color||!floatType)return'';
+  const g=GEO[vessel]||GEO.rocks;
+  const fillY=g.top+(g.bot-g.top)*g.lf;
+  const hw=g.ihw;
+  // Dark rum float: rich mahogany brown, clearly distinct from base drink
+  // Wine float: deep burgundy
+  // Float sits ON TOP of drink at meniscus, visibly thick (~16px)
+  const fc=floatType==='wine'?'rgba(120,0,40,0.82)':'rgba(60,15,0,0.85)';
+  const fh=16; // float height in px — thick enough to be clearly visible
+  return `<rect x="${90-hw+1}" y="${fillY-fh}" width="${hw*2-2}" height="${fh}" fill="${fc}" rx="1" clip-path="url(#${g.clipId})"/>
+          <!-- Float surface highlight — shows the interface between float and drink -->
+          <line x1="${90-hw+1}" y1="${fillY-fh}" x2="${90+hw-1}" y2="${fillY-fh}"
+            stroke="rgba(180,80,20,0.55)" stroke-width="1.5"/>
+          <!-- Bottom interface -->
+          <line x1="${90-hw}" y1="${fillY}" x2="${90+hw}" y2="${fillY}"
+            stroke="rgba(255,255,255,0.20)" stroke-width="0.8"/>`;
+}
+
+/* ── ICE: fills from meniscus to vessel bottom, inset from walls ── */
+function drawIce(type,vessel){
+  if(!type)return'';
+  const g=GEO[vessel]||GEO.rocks;
+  const fillY=g.top+(g.bot-g.top)*g.lf;
+  const botY=g.bot-4;
+  const cx=90, hw=g.ihw;
+  const ic='rgba(208,234,255,0.50)',is='rgba(172,214,255,0.72)';
+  const iStr=`fill="${ic}" stroke="${is}" stroke-width="1.1"`;
+
+  if(type==='huge'){
+    const iceH=botY-fillY;
+    const sz=Math.min(hw*1.55, iceH*0.82);
+    const iy=fillY+(iceH-sz)*0.5+sz*0.5;
+    return `<rect x="${cx-sz*0.5}" y="${iy-sz*0.5}" width="${sz}" height="${sz}" rx="4" ${iStr} transform="rotate(8,${cx},${iy})"/>
+            <line x1="${cx-sz*0.36}" y1="${iy-sz*0.36}" x2="${cx-sz*0.3}" y2="${iy+sz*0.18}" stroke="rgba(255,255,255,0.26)" stroke-width="1.6" stroke-linecap="round"/>`;
+  }
+  if(type==='cubes'){
+    const iceH=botY-fillY;
+    const sz=Math.min(hw*0.68, iceH*0.46);
+    const parts=[];
+    const rows=iceH>sz*2.4?2:1;
+    for(let r=0;r<rows;r++){
+      const iy=fillY+sz*0.5+r*(sz+5)+3;
+      const cols2=hw>sz*0.9?2:1;
+      for(let cc=0;cc<cols2;cc++){
+        const ix=cx+(cc-(cols2-1)*0.5)*(sz+4);
+        parts.push(`<rect x="${(ix-sz*0.5).toFixed(1)}" y="${(iy-sz*0.5).toFixed(1)}" width="${sz.toFixed(1)}" height="${sz.toFixed(1)}" rx="2.5" ${iStr} transform="rotate(${r*3+cc*5-3},${ix.toFixed(1)},${iy.toFixed(1)})"/>`);
+      }
+    }
+    return parts.join('');
+  }
+  if(type==='crushed'){
+    // Fill region as tinted rect, then draw crisp individual shard outlines on top — no hazy background polygon
+    const shards=[];
+    const count=Math.round(hw*0.7);
+    for(let i=0;i<count;i++){
+      const sx=cx-hw*0.85+Math.random()*hw*1.7;
+      const sy=fillY+4+Math.random()*(botY-fillY-12);
+      const points=[];
+      const n=5+Math.floor(Math.random()*2);
+      for(let j=0;j<n;j++){
+        const a=(j/n)*Math.PI*2+(Math.random()-0.5)*0.4;
+        const r=4+Math.random()*6;
+        points.push(`${(sx+Math.cos(a)*r).toFixed(1)},${(sy+Math.sin(a)*r).toFixed(1)}`);
+      }
+      shards.push(`<polygon points="${points.join(' ')}" fill="rgba(218,240,255,0.48)" stroke="rgba(180,218,255,0.72)" stroke-width="0.9"/>`);
+    }
+    return shards.join('');
+  }
+  return'';
+}
+
+/* ── GARNISH COMPOSITE ── */
+function drawGarnish(id,vessel,slot){
+  const g=GEO[vessel]||GEO.rocks;
+  const flat=FLAT.has(vessel);
+  const rimY=g.top+3;
+  const offsets=[0,-22,22,-36,36];
+  const x=90+(offsets[slot]||0);
+  const y=rimY;
+
+  if(id==='cherry'){
+    // Luxardo: dark single cherry that sinks — placed low in glass
+    const fillY=g.top+(g.bot-g.top)*g.lf;
+    const botY=g.bot-12;
+    const cy2=fillY+(botY-fillY)*0.6; // sinks toward bottom
+    const cx2=x===90?90:x*0.3+90*0.7; // pull toward center for sunk look
+    return `<circle cx="${cx2}" cy="${cy2}" r="9" fill="#3a0808" stroke="#220404" stroke-width="1"/>
+            <circle cx="${cx2-2}" cy="${cy2-3}" r="3.5" fill="#5a1010" opacity="0.5"/>
+            <path d="M${cx2} ${cy2-9} Q${cx2+8} ${cy2-26} ${cx2+14} ${cy2-32}" fill="none" stroke="#2e4a18" stroke-width="1.6" stroke-linecap="round"/>`;
+  }
+
+  if(id==='strawberry'){
+    const sy=flat?y-4:y-10;
+    return `<path d="M${x-14} ${sy+10} Q${x-14} ${sy+24} ${x} ${sy+26} Q${x+14} ${sy+24} ${x+14} ${sy+10} Q${x+10} ${sy+4} ${x} ${sy+4} Q${x-10} ${sy+4} ${x-14} ${sy+10} Z" fill="#d94040" stroke="#a02020" stroke-width="1"/>
+            <ellipse cx="${x}" cy="${sy+18}" rx="6" ry="7" fill="rgba(255,255,255,0.68)"/>
+            <line x1="${x-10}" y1="${sy+9}" x2="${x-13}" y2="${sy+20}" stroke="#a02020" stroke-width="0.7" opacity="0.5"/>
+            <line x1="${x+10}" y1="${sy+9}" x2="${x+13}" y2="${sy+20}" stroke="#a02020" stroke-width="0.7" opacity="0.5"/>
+            <line x1="${x-5}" y1="${sy+5}" x2="${x-6}" y2="${sy+26}" stroke="#a02020" stroke-width="0.6" opacity="0.35"/>
+            <line x1="${x+5}" y1="${sy+5}" x2="${x+6}" y2="${sy+26}" stroke="#a02020" stroke-width="0.6" opacity="0.35"/>
+            <path d="M${x-10} ${sy+8} Q${x-8} ${sy+2} ${x-4} ${sy+3} Q${x-2} ${sy} ${x} ${sy+1} Q${x+2} ${sy} ${x+4} ${sy+3} Q${x+8} ${sy+2} ${x+10} ${sy+8}" fill="#3a7a20" stroke="#2a5a10" stroke-width="0.8"/>`;
+  }
+
+  if(id==='olive'){
+    // 3-olive skewer
+    if(flat){
+      return `<line x1="${x-30}" y1="${y}" x2="${x+30}" y2="${y-5}" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
+              <ellipse cx="${x-18}" cy="${y-2}" rx="8" ry="6.5" fill="#6b9e52" stroke="#4a7030" stroke-width="1" transform="rotate(-10,${x-18},${y-2})"/>
+              <ellipse cx="${x}" cy="${y-3}" rx="8" ry="6.5" fill="#7aae60" stroke="#4a7030" stroke-width="1" transform="rotate(-10,${x},${y-3})"/>
+              <ellipse cx="${x+18}" cy="${y-4.5}" rx="8" ry="6.5" fill="#6b9e52" stroke="#4a7030" stroke-width="1" transform="rotate(-10,${x+18},${y-4.5})"/>`;
+    }else{
+      return `<line x1="${x+6}" y1="${y+22}" x2="${x+30}" y2="${y-10}" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
+              <ellipse cx="${x+12}" cy="${y+12}" rx="7.5" ry="6" fill="#6b9e52" stroke="#4a7030" stroke-width="1" transform="rotate(-35,${x+12},${y+12})"/>
+              <ellipse cx="${x+18}" cy="${y+2}" rx="7.5" ry="6" fill="#7aae60" stroke="#4a7030" stroke-width="1" transform="rotate(-35,${x+18},${y+2})"/>
+              <ellipse cx="${x+24}" cy="${y-8}" rx="7.5" ry="6" fill="#6b9e52" stroke="#4a7030" stroke-width="1" transform="rotate(-35,${x+24},${y-8})"/>`;
+    }
+  }
+
+  if(id==='celery'){
+    // Stalk base at vessel bottom, top extends above rim
+    // Stalk: from g.bot up to g.top, leaves above g.top
+    const stalkBot=g.bot-4;
+    const stalkTop=g.top;   // stalk ends at rim
+    const leafTop=g.top-24; // leaves extend 24px above rim
+    const stalkH=stalkBot-stalkTop;
+    const sx=flat?x:x+10; // shift right for non-flat vessels
+    const tilt=flat?-8:15;
+    // Stalk: rectangular with flat ends and striations
+    return `<g transform="rotate(${tilt},${sx},${stalkBot})">
+      <rect x="${sx-4}" y="${stalkTop}" width="8" height="${stalkH}" rx="1"
+        fill="#7ab840" stroke="#4a8020" stroke-width="1"/>
+      <line x1="${sx-1.5}" y1="${stalkTop}" x2="${sx-1.5}" y2="${stalkBot}"
+        stroke="#4a8020" stroke-width="0.6" opacity="0.45"/>
+      <line x1="${sx+1.5}" y1="${stalkTop}" x2="${sx+1.5}" y2="${stalkBot}"
+        stroke="#4a8020" stroke-width="0.6" opacity="0.45"/>
+      <!-- Individual serrated leaves — NOT a single arch -->
+      <path d="M${sx-4} ${stalkTop}
+               C${sx-14} ${stalkTop-6} ${sx-16} ${stalkTop-18} ${sx-6} ${stalkTop-22}
+               C${sx-2} ${stalkTop-24} ${sx} ${stalkTop-20} ${sx-4} ${stalkTop}"
+        fill="#5a9e2a" stroke="#3a7010" stroke-width="0.8"/>
+      <path d="M${sx} ${stalkTop-4}
+               C${sx-6} ${stalkTop-14} ${sx-4} ${stalkTop-28} ${sx+2} ${stalkTop-30}
+               C${sx+6} ${stalkTop-32} ${sx+8} ${stalkTop-26} ${sx+4} ${stalkTop-12}
+               C${sx+2} ${stalkTop-6} ${sx} ${stalkTop-4} ${sx} ${stalkTop-4}"
+        fill="#4a8e1a" stroke="#3a7010" stroke-width="0.8"/>
+      <path d="M${sx+4} ${stalkTop}
+               C${sx+14} ${stalkTop-4} ${sx+18} ${stalkTop-16} ${sx+10} ${stalkTop-20}
+               C${sx+6} ${stalkTop-22} ${sx+4} ${stalkTop-18} ${sx+4} ${stalkTop}"
+        fill="#5a9e2a" stroke="#3a7010" stroke-width="0.8"/>
+    </g>`;
+  }
+
+  if(id==='pineapple-wedge'){
+    // HALF-DISC — identical physics to citrus wedge, but r ~2x larger.
+    // Canonical: flat face horizontal at y=0, arc sweeps DOWNWARD (sweep=0).
+    // Built at origin, transformed to rim anchor then rotated 180°.
+    // Pineapple anatomy: bronze-brown rind arc, gold flesh, concentric striation arcs,
+    // radial spokes from centre downward, slit downward through rind only.
+    const r = Math.max(28, Math.min(42, g.ohw * 0.9));
+    const rindT = r * 0.16;
+    const innerR = r - rindT;
+    const slitD = rindT; // slit through rind only for pineapple
+
+    // Narrow vessel offset (same logic as citrus)
+    const narrowOffset = g.ohw < 30 ? Math.max(0, r - g.ohw * 0.5) : 0;
+    const ax = 90 + g.ohw + narrowOffset + 4; // +4: pineapple sits slightly further out
+    const rimTopOverrides = { mule: 20 };
+    const visualRimTop = rimTopOverrides[vessel] !== undefined ? rimTopOverrides[vessel] : g.top;
+    const ay = visualRimTop + slitD;
+
+    // Spokes: from (0,0) downward, same sin/cos pattern as citrus
+    const segAngles = [-70,-42,-14,14,42,70];
+    const segs = segAngles.map(a => {
+      const rad = a * Math.PI / 180;
+      const ex = (innerR * Math.sin(rad)).toFixed(1);
+      const ey = (innerR * Math.cos(rad)).toFixed(1);
+      return `<line x1="0" y1="0" x2="${ex}" y2="${ey}" stroke="#c8a010" stroke-width="0.9" opacity="0.4"/>`;
+    }).join('');
+
+    // Concentric striation arcs at 35%, 55%, 72% of innerR — drawn downward (sweep=0)
+    const stripes = [0.35, 0.55, 0.72].map(frac => {
+      const sr = (innerR * frac).toFixed(1);
+      return `<path d="M${-sr},0 A${sr},${sr} 0 0,0 ${sr},0" fill="none" stroke="#c8a010" stroke-width="0.8" opacity="0.45"/>`;
+    }).join('');
+
+    return `<g transform="translate(${ax},${ay}) rotate(180)">
+      <!-- FLESH body: flat face at y=0, arc downward (sweep=0) -->
+      <path d="M${-r},0 A${r},${r} 0 0,0 ${r},0 Z"
+        fill="#f5c830" stroke="#8a5a08" stroke-width="1.2"/>
+      <!-- Concentric flesh striations -->
+      ${stripes}
+      <!-- Radial spokes downward into disc -->
+      ${segs}
+      <!-- Centre division: light -->
+      <line x1="0" y1="0" x2="0" y2="${innerR}"
+        stroke="rgba(255,230,100,0.85)" stroke-width="1.2"/>
+      <!-- RIND: bronze-brown arc band, outer sweep=0, inner sweep=1 (closing) -->
+      <path d="M${-r},0 A${r},${r} 0 0,0 ${r},0
+               L${innerR},0 A${innerR},${innerR} 0 0,1 ${-innerR},0 Z"
+        fill="#8a5a08" stroke="#6a3a04" stroke-width="0.8"/>
+      <!-- SLIT: downward from centre through rind — grips rim -->
+      <line x1="0" y1="0" x2="0" y2="${slitD}"
+        stroke="#8a5a08" stroke-width="2.2" opacity="0.9"/>
+    </g>`;
+  }
+
+  if(id==='cucumber-slice'){
+    // Cucumber is dense — sinks and rests on interior bottom of glass
+    const r=11;
+    // cx centred in vessel inner width, offset slightly by slot
+    const innerOffset=(offsets[slot]||0)*0.3; // reduced offset, pulled toward centre
+    const cx3=90+innerOffset;
+    // cy: rests on vessel bottom interior
+    const cy3=g.bot-r-2;
+    // Render with slight opacity to read as submerged
+    return `<circle cx="${cx3}" cy="${cy3}" r="${r}" fill="#81c784" stroke="#4caf50" stroke-width="1.2" opacity="0.82"/>
+            <circle cx="${cx3}" cy="${cy3}" r="${r*0.65}" fill="#a5d6a7" opacity="0.82"/>
+            <circle cx="${cx3}" cy="${cy3}" r="${r*0.32}" fill="#c8e6c9" opacity="0.82"/>
+            <line x1="${cx3-6}" y1="${cy3-7}" x2="${cx3+4}" y2="${cy3+5}" stroke="#4caf50" stroke-width="0.7" opacity="0.4"/>
+            <line x1="${cx3+6}" y1="${cy3-7}" x2="${cx3-4}" y2="${cy3+5}" stroke="#4caf50" stroke-width="0.7" opacity="0.4"/>`;
+  }
+  return'';
+}
+
+/* ── CITRUS COMPOSITE ── */
+function drawCitrus(citrusId,vessel){
+  if(!citrusId)return'';
+  const g=GEO[vessel]||GEO.rocks;
+  const flat=FLAT.has(vessel);
+  const rimY=g.top;
+  const s=Math.max(0.9,Math.min(1.3,g.ihw/36));
+  // Position: right side of rim
+  const rx=flat?90+g.ohw-6:90+g.ohw+2;
+  const ry=flat?rimY+4:rimY+14;
+  const fruit=citrusId.split('-')[0];
+  const type=citrusId.includes('twist')?'twist':citrusId.includes('wedge')?'wedge':'peel';
+
+  const cols={lemon:{f:'#f5df60',s:'#c8a810',d:'#d4b820',l:'#f9ef88'},
+              lime:{f:'#8aca6a',s:'#4a8030',d:'#5a9040',l:'#aadd88'},
+              orange:{f:'#f0a050',s:'#a05010',d:'#c06020',l:'#f8c080'}};
+  const col=cols[fruit]||cols.lemon;
+
+  if(type==='twist'){
+    // S-curve spiral ribbon
+    const x=rx-8*s, y2=ry+2*s;
+    return `<path d="M${x} ${y2} C${x-16*s} ${y2-14*s} ${x+8*s} ${y2-26*s} ${x+16*s} ${y2-10*s} C${x+24*s} ${y2+4*s} ${x+8*s} ${y2+20*s} ${x-2*s} ${y2+12*s}" fill="none" stroke="${col.f}" stroke-width="${4.5*s}" stroke-linecap="round"/>
+            <path d="M${x+1*s} ${y2} C${x-11*s} ${y2-10*s} ${x+8*s} ${y2-22*s} ${x+13*s} ${y2-6*s}" fill="none" stroke="${col.l}" stroke-width="${2*s}" stroke-linecap="round" opacity="0.5"/>`;
+  }
+  if(type==='wedge'){
+    // ── HALF-DISC WEDGE — canonical: flat face HORIZONTAL at y=0, arc downward ──
+    //
+    // At origin: flat edge from (-r,0) to (+r,0). Arc sweeps DOWNWARD (positive y).
+    // Centre of flat face = (0,0) = the rim anchor point.
+    // Spokes radiate from (0,0) downward into the disc (positive y).
+    // Slit goes from (0,0) downward (+y) through rind+pith = into the fruit below rim.
+    // Half disc below rim = outside glass (hanging down). Upper half = inside glass.
+    //
+    // Rotation to match vessel wall:
+    //   Horizontal rim (coupe, cocktail, rocks, snifter, mule): 0° — no rotation needed
+    //   ~45° wall (tropical, nick-nora): rotate -45° (CCW)
+    //   Near-vertical wall (collins, highball, irish, flute, julep): rotate -90° (CCW)
+    //
+    // All vessels: arc points DOWN (180° rotation of canonical).
+    // Narrow tall vessels get an outward offset so the wedge clears the vessel wall.
+    const wallAng = 180;
+
+    const r = Math.max(14, Math.min(24, g.ohw * 0.58));
+    const rindT = r * 0.18;
+    const pithT = r * 0.12;
+    const innerR = r - rindT - pithT;
+    const slitD = rindT + pithT;
+
+    // Narrow vessels: push anchor outward so wedge clears vessel wall
+    const narrowOffset = g.ohw < 30 ? Math.max(0, r - g.ohw * 0.5) : 0;
+    const ax = 90 + g.ohw + narrowOffset;
+    // Per-vessel visual rim top (may differ from g.top due to decorative rim elements)
+    const rimTopOverrides = { mule: 20 };
+    const visualRimTop = rimTopOverrides[vessel] !== undefined ? rimTopOverrides[vessel] : g.top;
+    // Shift down by slitD so pith/pulp boundary (not flat face centre) lands on rim
+    const ay = visualRimTop + slitD;
+
+    // Spokes: from (0,0) downward into disc. Angles from +y axis (downward).
+    // cos/sin with angle from +y: x=sin(a)*innerR, y=cos(a)*innerR
+    const segAngles = [-70,-42,-14,14,42,70];
+    const segs = segAngles.map(a => {
+      const rad = a * Math.PI / 180;
+      const ex = (innerR * Math.sin(rad)).toFixed(1);
+      const ey = (innerR * Math.cos(rad)).toFixed(1);
+      return `<line x1="0" y1="0" x2="${ex}" y2="${ey}" stroke="${col.s}" stroke-width="0.8" opacity="0.35"/>`;
+    }).join('');
+
+    // All elements grouped — rotate as a single unit around anchor point
+    return `<g transform="translate(${ax},${ay}) rotate(${wallAng})">
+      <!-- PULP body: flat face at y=0, arc sweeps DOWNWARD (sweep=0 goes through +y) -->
+      <path d="M${-r},0 A${r},${r} 0 0,0 ${r},0 Z"
+        fill="${col.f}" stroke="${col.s}" stroke-width="1"/>
+      <!-- Spokes: from (0,0) downward into disc — grouped with disc -->
+      ${segs}
+      <!-- Centre division: white, straight downward -->
+      <line x1="0" y1="0" x2="0" y2="${innerR}"
+        stroke="rgba(255,255,255,0.75)" stroke-width="1.2"/>
+      <!-- PITH: white arc band — outer arc sweep=0 (down), inner arc sweep=1 (up, closing path) -->
+      <path d="M${-(r-rindT)},0 A${r-rindT},${r-rindT} 0 0,0 ${r-rindT},0
+               L${innerR},0 A${innerR},${innerR} 0 0,1 ${-innerR},0 Z"
+        fill="rgba(255,255,255,0.62)"/>
+      <!-- RIND: outer arc sweep=0 (down), inner arc sweep=1 (up, closing path) -->
+      <path d="M${-r},0 A${r},${r} 0 0,0 ${r},0
+               L${r-rindT},0 A${r-rindT},${r-rindT} 0 0,1 ${-(r-rindT)},0 Z"
+        fill="${col.d}" stroke="${col.s}" stroke-width="0.8"/>
+      <!-- SLIT: downward into disc (+y) through rind+pith — grips the rim -->
+      <line x1="0" y1="0" x2="0" y2="${slitD}"
+        stroke="${col.s}" stroke-width="2" opacity="0.9"/>
+    </g>`;
+  }
+  if(type==='peel'){
+    const px=rx-8*s, py2=ry+6*s;
+    return `<path d="M${px-13*s} ${py2+10*s} C${px-20*s} ${py2-8*s} ${px+8*s} ${py2-14*s} ${px+16*s} ${py2+4*s} C${px+20*s} ${py2+14*s} ${px+7*s} ${py2+20*s} ${px-2*s} ${py2+16*s}" fill="${col.f}" stroke="${col.s}" stroke-width="1.1" opacity="0.95"/>
+            <path d="M${px-11*s} ${py2+8*s} C${px-17*s} ${py2-6*s} ${px+7*s} ${py2-10*s} ${px+13*s} ${py2+5*s}" fill="none" stroke="${col.l}" stroke-width="${1.1*s}" opacity="0.45"/>`;
+  }
+  return'';
+}
+
+/* ── EXTRAS COMPOSITE ── */
+function drawExtras(set,vessel){
+  const g=GEO[vessel]||GEO.rocks;
+  const topY=g.top;
+  const flat=FLAT.has(vessel);
+  const fillY=g.top+(g.bot-g.top)*g.lf;
+  const botY=g.bot-4;
+  const parts=[];
+
+  if(set.has('umbrella')){
+    // Umbrella body is UPRIGHT (vertical). Only the wooden stick is at an angle.
+    // Umbrella center above rim; stick goes diagonally down into drink
+    const ux=100, uy=topY-32; // umbrella centered above rim, upright
+    const stickTopX=ux, stickTopY=uy+32;
+    const stickBotX=ux+28, stickBotY=topY+60; // stick angled right into drink
+    parts.push(`
+      <!-- Umbrella canopy upright -->
+      <path d="M${ux} ${uy} Q${ux-22} ${uy+20} ${ux-20} ${uy+32} Q${ux} ${uy+26} ${ux+20} ${uy+32} Q${ux+22} ${uy+20} ${ux} ${uy} Z" fill="#4fc3f7" stroke="#0288d1" stroke-width="1"/>
+      <line x1="${ux}" y1="${uy}" x2="${ux-20}" y2="${uy+32}" stroke="rgba(255,255,255,0.30)" stroke-width="0.9"/>
+      <line x1="${ux}" y1="${uy}" x2="${ux-10}" y2="${uy+33}" stroke="rgba(255,255,255,0.30)" stroke-width="0.9"/>
+      <line x1="${ux}" y1="${uy}" x2="${ux}" y2="${uy+33}" stroke="rgba(255,255,255,0.30)" stroke-width="0.9"/>
+      <line x1="${ux}" y1="${uy}" x2="${ux+10}" y2="${uy+33}" stroke="rgba(255,255,255,0.30)" stroke-width="0.9"/>
+      <line x1="${ux}" y1="${uy}" x2="${ux+20}" y2="${uy+32}" stroke="rgba(255,255,255,0.30)" stroke-width="0.9"/>
+      <path d="M${ux-18} ${uy+28} Q${ux} ${uy+22} ${ux+10} ${uy+24}" fill="rgba(255,255,255,0.18)"/>
+      <!-- Wooden stick: angled, separate from umbrella body -->
+      <line x1="${stickTopX}" y1="${stickTopY}" x2="${stickBotX}" y2="${stickBotY}" stroke="#8B5E3C" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="${stickTopX}" y1="${stickTopY}" x2="${stickBotX-1}" y2="${stickBotY}" stroke="rgba(200,150,80,0.5)" stroke-width="0.9" stroke-linecap="round"/>
+      <!-- Stick tip hook -->
+      <path d="M${stickBotX} ${stickBotY} Q${stickBotX+5} ${stickBotY+6} ${stickBotX+2} ${stickBotY+10}" fill="none" stroke="#8B5E3C" stroke-width="1.8" stroke-linecap="round"/>`);
+  }
+
+  if(set.has('straw')){
+    const sx=flat?90+g.ihw-8:90+g.ihw-4;
+    const strawBot=botY-2;
+    const strawTop=topY-20;
+    const isMule=vessel==='mule';
+    const strawColor=isMule?'#a8b8c0':'#4caf50';
+    const strawStroke=isMule?'#708090':'#2e7d32';
+    const strawHL=isMule?'rgba(255,255,255,0.55)':'rgba(255,255,255,0.22)';
+    parts.push(`<rect x="${sx-2.5}" y="${strawTop}" width="5" height="${strawBot-strawTop}" rx="2.5" fill="${strawColor}" stroke="${strawStroke}" stroke-width="0.8"/>
+                <rect x="${sx-1.5}" y="${strawTop+1}" width="2" height="${strawBot-strawTop-2}" rx="1" fill="${strawHL}"/>`);
+  }
+
+  if(set.has('salted-rim')||set.has('tajin-rim')){
+    const isT=set.has('tajin-rim');
+    const baseColor=isT?'#d84020':'rgba(255,255,255,0.82)';
+    const crystals=[];
+    const hw=g.ohw;
+    // distribute irregular rect crystals around rim
+    const count=Math.round(hw*0.55);
+    for(let i=0;i<count;i++){
+      const t=i/count;
+      const cx2=(90-hw)+t*hw*2;
+      const w=2+Math.random()*3, h=2+Math.random()*3;
+      const rot=Math.random()*40-20;
+      const dy=(Math.random()-0.5)*2;
+      crystals.push(`<rect x="${(cx2-w/2).toFixed(1)}" y="${(topY+dy-h/2).toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="0.4" fill="${baseColor}" transform="rotate(${rot.toFixed(0)},${cx2.toFixed(1)},${topY.toFixed(1)})"/>`);
+      if(isT&&Math.random()>0.4){
+        crystals.push(`<rect x="${(cx2-w*0.6).toFixed(1)}" y="${(topY+dy+2).toFixed(1)}" width="${(w*0.8).toFixed(1)}" height="${(h*0.7).toFixed(1)}" rx="0.3" fill="rgba(240,100,20,0.6)" transform="rotate(${(-rot).toFixed(0)},${cx2.toFixed(1)},${(topY+2).toFixed(1)})"/>`);
+      }
+    }
+    parts.push(crystals.join(''));
+  }
+
+  if(set.has('whipped-cream')){
+    // Whipped cream floats ON TOP of liquid (and above any float layer).
+    // It mounds above the meniscus — base at fillY, peaks well above.
+    // For vessels with a float, the cream sits on the float surface (still fillY).
+    const hw2=g.ihw;
+    const floatH = (S && S.float) ? 16 : 0; // match float layer height
+    const wy=fillY - floatH; // base of cream sits on top of float layer, not at meniscus
+    parts.push(`
+      <!-- Base seal at meniscus -->
+      <path d="M${90-hw2} ${wy} L${90+hw2} ${wy}" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+      <!-- Scalloped mounds rising above meniscus -->
+      <path d="M${90-hw2} ${wy}
+               Q${90-hw2*0.78} ${wy-12} ${90-hw2*0.5} ${wy-6}
+               Q${90-hw2*0.28} ${wy-22} ${90-hw2*0.05} ${wy-16}
+               Q${90+hw2*0.15} ${wy-26} ${90+hw2*0.35} ${wy-18}
+               Q${90+hw2*0.55} ${wy-20} ${90+hw2*0.72} ${wy-10}
+               Q${90+hw2*0.88} ${wy-15} ${90+hw2} ${wy}
+               Z"
+        fill="rgba(255,255,255,0.96)" stroke="rgba(210,210,210,0.5)" stroke-width="0.7"/>
+      <!-- Inner highlight -->
+      <path d="M${90-hw2*0.6} ${wy-4}
+               Q${90-hw2*0.3} ${wy-20} ${90} ${wy-14}
+               Q${90+hw2*0.2} ${wy-22} ${90+hw2*0.5} ${wy-14}"
+        fill="rgba(255,255,255,0.5)" stroke="none"/>`);
+  }
+
+  if(set.has('mint-sprig')){
+    const mx=flat?90+g.ihw-8:90+g.ihw-6;
+    const my=topY-2;
+    parts.push(`
+      <line x1="${mx}" y1="${my+18}" x2="${mx-4}" y2="${my-2}" stroke="#1b5e20" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M${mx} ${my+18} C${mx-14} ${my+16} ${mx-16} ${my+6} ${mx-8} ${my+6} C${mx-4} ${my+6} ${mx-2} ${my+10} ${mx} ${my+18} Z" fill="#2e7d32" stroke="#1b5e20" stroke-width="0.7"/>
+      <path d="M${mx-8} ${my+10} C${mx-14} ${my+8} ${mx-12} ${my+4} ${mx-8} ${my+6}" fill="none" stroke="#4caf50" stroke-width="0.6" opacity="0.6"/>
+      <path d="M${mx-2} ${my+10} C${mx+4} ${my+8} ${mx+6} ${my+2} ${mx+2} ${my+2} C${mx-2} ${my+2} ${mx-2} ${my+6} ${mx-2} ${my+10} Z" fill="#2e7d32" stroke="#1b5e20" stroke-width="0.7"/>
+      <path d="M${mx+3} ${my+5} C${mx+6} ${my+3} ${mx+5} ${my} ${mx+2} ${my+2}" fill="none" stroke="#4caf50" stroke-width="0.6" opacity="0.6"/>
+      <path d="M${mx-4} ${my+2} C${mx-6} ${my-4} ${mx-2} ${my-6} ${mx} ${my-2} C${mx+2} ${my-6} ${mx+4} ${my-4} ${mx+2} ${my+2} Z" fill="#388e3c" stroke="#1b5e20" stroke-width="0.7"/>`);
+  }
+  return parts.join('');
+}
+
+/* ── RENDER ── */
+function render(){
+  const{vessel,color,float:fl,ice,citrus,garnish,extras}=S;
+  document.getElementById('vessel-layer').innerHTML=drawVessel(vessel);
+  document.getElementById('liquid-layer').innerHTML=drawLiquid(vessel,color);
+  document.getElementById('float-layer').innerHTML=drawFloat(vessel,color,fl);
+  document.getElementById('ice-layer').innerHTML=drawIce(ice,vessel);
+  document.getElementById('vessel-mask-layer').innerHTML=drawVesselMask(vessel);
+  document.getElementById('vessel-rim-cover-layer').innerHTML=drawVesselRimCover(vessel);
+  const ga=[...garnish];
+  document.getElementById('garnish-layer').innerHTML=ga.map((g,i)=>drawGarnish(g,vessel,i)).join('')+drawCitrus(citrus,vessel);
+  document.getElementById('extras-layer').innerHTML=drawExtras(extras,vessel);
+  document.getElementById('json-out').textContent=JSON.stringify({vessel:vessel==='cocktail'?'martini':vessel,color:color||null,float:fl||null,ice:ice||null,citrus:citrus||null,garnish:ga,extras:[...extras]},null,2);
+}
+
+/* ── UI ── */
+function mkBtn(item,iconMap,activeCheck){
+  const b=document.createElement('button');
+  b.className='opt-btn'+(activeCheck(item.id)?' active':'');
+  b.dataset.id=item.id;
+  b.innerHTML=`<span class="opt-icon">${iconMap[item.id]||''}</span><span class="opt-label">${item.label}</span>`;
+  return b;
+}
+function buildSingle(rowId,items,iconMap,key,isGrid){
+  const row=document.getElementById(rowId);
+  items.forEach(item=>{
+    if(item.id==='spacer-row'){
+      const sp=document.createElement('div');
+      sp.style.cssText='width:100%;height:0;flex-basis:100%';
+      row.appendChild(sp);
+      return;
+    }
+    const b=mkBtn(item,iconMap,id=>S[key]===id);
+    b.addEventListener('click',()=>{
+      S[key]=key==='vessel'?item.id:(S[key]===item.id?null:item.id);
+      row.querySelectorAll('.opt-btn').forEach(bb=>bb.classList.toggle('active',bb.dataset.id===S[key]));
+      render();
+    });
+    row.appendChild(b);
+  });
+}
+function buildMulti(rowId,items,iconMap,key){
+  const row=document.getElementById(rowId);
+  items.forEach(item=>{
+    const b=mkBtn(item,iconMap,id=>S[key].has(id));
+    b.addEventListener('click',()=>{
+      S[key].has(item.id)?S[key].delete(item.id):S[key].add(item.id);
+      b.classList.toggle('active',S[key].has(item.id));
+      render();
+    });
+    row.appendChild(b);
+  });
+}
+document.getElementById('color-picker').addEventListener('input',e=>{
+  S.color=e.target.value;
+  document.getElementById('color-hex').textContent=e.target.value;
+  document.getElementById('color-clear-btn').classList.remove('active');
+  render();
+});
+document.getElementById('color-clear-btn').addEventListener('click',()=>{
+  S.color=null;
+  document.getElementById('color-hex').textContent='—';
+  document.getElementById('color-clear-btn').classList.add('active');
+  render();
+});
+document.getElementById('float-select').addEventListener('change',e=>{
+  S.float=e.target.value||null;
+  render();
+});
+buildSingle('vessel-row',VESSELS,VI,'vessel',true);
+buildSingle('ice-row',ICE,II,'ice');
+buildSingle('citrus-row',CITRUS,CI,'citrus');
+buildMulti('garnish-row',GARNISHES,GA,'garnish');
+buildMulti('extras-row',EXTRAS,EX,'extras');
+document.querySelector('#vessel-row .opt-btn').classList.add('active');
+render();
+</script>
+</div></body>
+</html>

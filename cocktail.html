@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Proof in Practice">
+  <meta name="theme-color" content="#c17f3a">
+  <title>Proof in Practice</title>
+  <link rel="manifest" href="cocktail_manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════
+       DESIGN TOKENS
+    ═══════════════════════════════════════ */
+    :root {
+      --parchment:     #f5efe0;
+      --parchment-dark:#ede4cc;
+      --linen:         #faf6ee;
+      --terracotta:    #b85c38;
+      --terracotta-dk: #8f3f22;
+      --amber:         #c17f3a;
+      --amber-dk:      #8a5520;
+      --ink:           #2c1f0e;
+      --ink-mid:       #5a3e28;
+      --ink-light:     #7a5c3a;
+      --rule:          #c9b48a;
+      --rule-light:    #ddd0b0;
+      --cream-white:   #fdf9f2;
+      --shadow:        rgba(44,31,14,0.12);
+      --shadow-deep:   rgba(44,31,14,0.22);
+
+      --serif-display: 'Playfair Display', Georgia, serif;
+      --serif-body:    'Lora', Georgia, serif;
+
+      --radius:        4px;
+      --radius-card:   6px;
+      --transition:    0.22s ease;
+
+      --safe-top:    env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    /* ═══════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { height: 100%; background: var(--ink); }
+
+    body {
+      font-family: var(--serif-body);
+      background: var(--parchment);
+      color: var(--ink);
+      min-height: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Paper texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.6;
+    }
+
+    /* ═══════════════════════════════════════
+       APP SHELL
+    ═══════════════════════════════════════ */
+    #app {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      height: 100dvh;
+      max-width: 500px;
+      margin: 0 auto;
+      position: relative;
+      background: var(--linen);
+      box-shadow: 0 0 60px rgba(0,0,0,0.4);
+    }
+
+    /* ═══════════════════════════════════════
+       HEADER
+    ═══════════════════════════════════════ */
+    #header {
+      background: var(--ink);
+      color: var(--parchment);
+      padding: calc(var(--safe-top) + 4px) 12px 4px 4px;
+      position: relative;
+      flex-shrink: 0;
+      border-bottom: 3px solid var(--amber);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    #back-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--amber);
+      cursor: pointer;
+      font-size: 22px;
+      line-height: 1;
+      padding: 2px 6px 2px 0;
+      font-family: var(--serif-display);
+      flex-shrink: 0;
+    }
+    #back-btn.visible { display: block; }
+
+    .header-title-wrap { flex: 1; min-width: 0; }
+
+    /* Logo lockup: Manhattan glass + "PROOF in PRACTICE" */
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      line-height: 1;
+    }
+
+    .logo-glass {
+      font-size: 2.6rem;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-right: 6px;
+      filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .logo-proof {
+      font-family: var(--serif-display);
+      font-size: 1.65rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--parchment);
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .logo-in-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 1px 0;
+    }
+    .logo-in-rule {
+      flex: 1;
+      height: 1px;
+      background: var(--amber);
+      opacity: 0.7;
+    }
+    .logo-in {
+      font-family: var(--serif-body);
+      font-size: 0.7rem;
+      font-style: italic;
+      color: var(--amber);
+      letter-spacing: 0.06em;
+      flex-shrink: 0;
+    }
+
+    .logo-practice {
+      font-family: var(--serif-display);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--amber);
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    /* Header nav tabs (Recipes / Top Shelf) */
+    .header-nav {
+      display: flex;
+      gap: 0;
+      border-left: 1px solid rgba(255,255,255,0.1);
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    .header-nav-btn {
+      background: none;
+      border: none;
+      border-left: 1px solid rgba(255,255,255,0.08);
+      color: var(--rule);
+      cursor: pointer;
+      padding: 6px 14px;
+      font-family: var(--serif-body);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      -webkit-tap-highlight-color: transparent;
+      line-height: 1;
+    }
+    .header-nav-btn:first-child { border-left: none; }
+    .header-nav-btn .hnav-icon { font-size: 1rem; }
+    .header-nav-btn:hover { color: var(--parchment); }
+    .header-nav-btn.active {
+      background: var(--parchment);
+      color: var(--ink);
+    }
+
+    /* Hide old ornament */
+    .header-orn { display: none; }
+
+    #app-title { display: none; }
+    #app-subtitle { display: none; }
+    #back-btn { color: var(--amber); }
+
+    /* ═══════════════════════════════════════
+       SEARCH BAR
+    ═══════════════════════════════════════ */
+    #search-bar {
+      background: var(--parchment-dark);
+      border-bottom: 1px solid var(--rule);
+      padding: 10px 16px;
+      flex-shrink: 0;
+    }
+
+    #search-wrap {
+      display: flex;
+      align-items: center;
+      background: var(--cream-white);
+      border: 1.5px solid var(--rule);
+      border-radius: 20px;
+      overflow: hidden;
+      gap: 0;
+    }
+
+    #search-icon {
+      padding: 8px 10px 8px 14px;
+      color: var(--ink-light);
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    #search-input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-family: var(--serif-body);
+      font-size: 0.88rem;
+      color: var(--ink);
+      padding: 8px 4px;
+      outline: none;
+    }
+    #search-input::placeholder { color: var(--ink-light); opacity: 0.7; }
+
+    #search-clear {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--ink-light);
+      padding: 8px 14px 8px 4px;
+      font-size: 16px;
+      line-height: 1;
+    }
+    #search-clear.visible { display: block; }
+
+    /* Filter tab bar */
+    #filter-bar {
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none;
+      flex-shrink: 0;
+      background: var(--ink);
+      border-bottom: 2px solid var(--amber);
+    }
+    #filter-bar::-webkit-scrollbar { display: none; }
+
+    .filter-chip {
+      flex-shrink: 0;
+      padding: 0 16px;
+      height: 42px;
+      border: none;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      background: transparent;
+      font-family: var(--serif-body);
+      font-size: 0.78rem;
+      color: var(--rule);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: var(--transition);
+      letter-spacing: 0.04em;
+    }
+    .filter-chip:hover { color: var(--parchment); }
+    .filter-chip.active {
+      background: var(--parchment);
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    /* ═══════════════════════════════════════
+       MAIN CONTENT AREA
+    ═══════════════════════════════════════ */
+    #content {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+
+    /* ═══════════════════════════════════════
+       VIEWS
+    ═══════════════════════════════════════ */
+    .view { display: none; min-height: 100%; }
+    .view.active { display: block; }
+
+    /* ─── RECIPE LIST ─── */
+    #recipe-list-view { padding: 8px 0 calc(var(--safe-bottom) + 12px); }
+
+
+
+    .recipe-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .recipe-card {
+      background: var(--cream-white);
+      border-bottom: 1px solid var(--rule-light);
+      padding: 0;
+      cursor: pointer;
+      transition: background var(--transition);
+      position: relative;
+      display: flex;
+      align-items: stretch;
+      min-height: 68px;
+      overflow: hidden;
+    }
+    .recipe-card:first-child { border-top: 1px solid var(--rule-light); }
+    .recipe-card:hover { background: var(--parchment); }
+    .recipe-card:active { background: var(--parchment-dark); }
+
+    /* Left accent bar — shows on hover/active */
+    .recipe-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--amber);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+    .recipe-card:hover::before { opacity: 1; }
+
+    /* Text block */
+    .card-body {
+      flex: 1;
+      padding: 12px 12px 12px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 0;
+    }
+
+    .card-name {
+      font-family: var(--serif-display);
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.25;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-meta {
+      font-size: 0.71rem;
+      color: var(--ink-light);
+      font-style: italic;
+      margin-top: 3px;
+      line-height: 1.2;
+    }
+
+    .card-credit {
+      font-size: 0.62rem;
+      color: var(--terracotta);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 3px;
+    }
+
+    /* Right thumbnail placeholder — SVG drink composer or emoji fallback */
+    .card-thumb {
+      flex-shrink: 0;
+      width: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      opacity: 0.88;
+      background: rgba(44,31,14,0.04);
+      overflow: visible;
+    }
+
+    /* Chevron */
+    .card-chevron {
+      flex-shrink: 0;
+      width: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--rule);
+      font-size: 0.7rem;
+      padding-right: 8px;
+    }
+
+
+
+    /* ─── RECIPE DETAIL ─── */
+    #recipe-detail-view {
+      padding: 0 0 calc(var(--safe-bottom) + 20px);
+    }
+
+    .detail-header {
+      background: var(--ink);
+      color: var(--parchment);
+      padding: 24px 20px 20px;
+      position: relative;
+      border-bottom: 2px solid var(--amber);
+    }
+
+    .detail-glass-icon {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      opacity: 0.92;
+    }
+
+    .detail-name {
+      font-family: var(--serif-display);
+      font-size: 1.7rem;
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--parchment);
+      margin-bottom: 6px;
+    }
+
+    .detail-credit {
+      font-size: 0.72rem;
+      color: var(--amber);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .detail-body {
+      padding: 20px 20px 0;
+    }
+
+    .detail-section-title {
+      font-family: var(--serif-display);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .detail-section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--rule-light);
+    }
+
+    .ingredients-list {
+      list-style: none;
+      margin-bottom: 24px;
+    }
+
+    .ingredient-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--rule-light);
+      font-size: 0.88rem;
+      line-height: 1.3;
+    }
+    .ingredient-row:last-child { border-bottom: none; }
+
+    .ing-amount {
+      font-family: var(--serif-display);
+      font-weight: 600;
+      color: var(--terracotta);
+      min-width: 52px;
+      text-align: right;
+      flex-shrink: 0;
+      font-size: 0.83rem;
+    }
+
+    .ing-unit {
+      font-style: italic;
+      color: var(--ink-light);
+      font-size: 0.78rem;
+      flex-shrink: 0;
+      min-width: 28px;
+    }
+
+    .ing-item {
+      color: var(--ink);
+    }
+
+    .method-text {
+      font-family: var(--serif-body);
+      font-size: 0.92rem;
+      line-height: 1.75;
+      color: var(--ink-mid);
+      font-style: italic;
+      background: var(--parchment);
+      border-left: 3px solid var(--amber);
+      padding: 14px 16px;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin-bottom: 20px;
+    }
+
+    .detail-glass-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--parchment-dark);
+      border: 1px solid var(--rule);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 0.75rem;
+      color: var(--ink-mid);
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+
+    /* ─── BAR INVENTORY ─── */
+    #inventory-view { padding: 16px 16px calc(var(--safe-bottom) + 16px); }
+
+    .inventory-intro {
+      font-family: var(--serif-body);
+      font-size: 0.82rem;
+      color: var(--ink-light);
+      font-style: italic;
+      text-align: center;
+      padding: 0 0 16px;
+      border-bottom: 1px solid var(--rule-light);
+      margin-bottom: 16px;
+    }
+
+    .inv-category {
+      margin-bottom: 18px;
+    }
+
+    .inv-cat-header {
+      font-family: var(--serif-display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .inv-cat-header::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    .inv-cat-count {
+      font-family: var(--serif-body);
+      font-size: 0.68rem;
+      color: var(--ink-light);
+      font-style: normal;
+      font-weight: 400;
+      margin-left: 6px;
+      flex-shrink: 0;
+    }
+
+    .bottle-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .bottle-tag {
+      background: var(--cream-white);
+      border: 1px solid var(--rule-light);
+      border-radius: 3px;
+      padding: 4px 10px;
+      font-family: var(--serif-body);
+      font-size: 0.77rem;
+      color: var(--ink-mid);
+      line-height: 1.3;
+    }
+
+    /* ─── NO RESULTS ─── */
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--ink-light);
+    }
+    .empty-state .orn { font-size: 2rem; margin-bottom: 12px; display: block; opacity: 0.4; }
+    .empty-state p { font-style: italic; font-size: 0.9rem; line-height: 1.6; }
+
+    /* ═══════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════ */
+    #bottom-nav {
+      background: var(--ink);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 7px 16px calc(var(--safe-bottom) + 7px);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .recipe-count {
+      font-family: var(--serif-body);
+      font-size: 0.7rem;
+      color: var(--rule);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-style: italic;
+    }
+
+    /* ═══════════════════════════════════════
+       LOADING STATE
+    ═══════════════════════════════════════ */
+    #loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      gap: 16px;
+      color: var(--ink-light);
+    }
+    .loading-orn {
+      font-size: 2.5rem;
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; transform: scale(0.95); }
+      50%       { opacity: 1;   transform: scale(1); }
+    }
+    .loading-text {
+      font-family: var(--serif-display);
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+    }
+
+    /* ═══════════════════════════════════════
+       SCROLL ANIMATIONS
+    ═══════════════════════════════════════ */
+    .recipe-card {
+      animation: fadeUp 0.3s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Stagger via nth-child */
+    .recipe-card:nth-child(2)  { animation-delay: 0.03s; }
+    .recipe-card:nth-child(3)  { animation-delay: 0.06s; }
+    .recipe-card:nth-child(4)  { animation-delay: 0.09s; }
+    .recipe-card:nth-child(5)  { animation-delay: 0.12s; }
+    .recipe-card:nth-child(6)  { animation-delay: 0.15s; }
+
+    /* ═══════════════════════════════════════
+       UTILITY
+    ═══════════════════════════════════════ */
+    .orn-rule {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 4px 0 16px;
+      color: var(--amber);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+    }
+    .orn-rule::before, .orn-rule::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--rule-light);
+    }
+
+    /* Scrollbar styling */
+    #content::-webkit-scrollbar { width: 4px; }
+    #content::-webkit-scrollbar-track { background: transparent; }
+    #content::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 2px; }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ── HEADER ── -->
+  <header id="header">
+    <div class="header-inner">
+      <button id="back-btn" aria-label="Back">←</button>
+      <div id="app-title"></div>
+      <div id="app-subtitle"></div>
+      <div class="logo-wrap" id="logo-wrap">
+        <span class="logo-glass">🍸</span>
+        <div class="logo-text">
+          <span class="logo-proof">Proof</span>
+          <div class="logo-in-row">
+            <span class="logo-in-rule"></span>
+            <span class="logo-in">in</span>
+            <span class="logo-in-rule"></span>
+          </div>
+          <span class="logo-practice">Practice</span>
+        </div>
+      </div>
+      <nav class="header-nav">
+        <button class="header-nav-btn active" data-view="recipes" aria-label="Recipes">
+          <span class="hnav-icon">📖</span>Recipes
+        </button>
+        <button class="header-nav-btn" data-view="inventory" aria-label="Top Shelf">
+          <span class="hnav-icon">🍾</span>Top Shelf
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ── SEARCH (list view only) ── -->
+  <div id="search-bar">
+    <div id="search-wrap">
+      <span id="search-icon">🔍</span>
+      <input id="search-input" type="search" placeholder="Search recipes or spirits…" autocomplete="off" autocorrect="off" spellcheck="false">
+      <button id="search-clear" aria-label="Clear search">✕</button>
+    </div>
+  </div>
+
+  <!-- ── FILTER CHIPS ── -->
+  <div id="filter-bar">
+    <button class="filter-chip active" data-filter="all">All</button>
+  </div>
+
+  <!-- ── CONTENT ── -->
+  <div id="content">
+
+    <!-- Loading -->
+    <div id="loading">
+      <span class="loading-orn">🍸</span>
+      <span class="loading-text">Consulting the cellar…</span>
+    </div>
+
+    <!-- Recipe List View -->
+    <div id="recipe-list-view" class="view" role="main">
+      <div class="recipe-grid" id="recipe-grid"></div>
+    </div>
+
+    <!-- Recipe Detail View -->
+    <div id="recipe-detail-view" class="view" role="main" aria-live="polite">
+    </div>
+
+    <!-- Bar Inventory View -->
+    <div id="inventory-view" class="view" role="main">
+      <p class="inventory-intro">The house collection — as of the last inventory.</p>
+      <div id="inventory-content"></div>
+    </div>
+
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer id="bottom-nav">
+    <div id="recipe-count" class="recipe-count"></div>
+  </footer>
+
+</div>
+
+<script>
+/* ══════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════ */
+let allRecipes = [];
+let allInventory = [];
+let activeFilter = 'all';
+let searchQuery = '';
+let currentView = 'recipes';   // 'recipes' | 'inventory' | 'detail'
+let detailRecipe = null;
+
+/* ══════════════════════════════════════════════
+   GLASS ICONS
+══════════════════════════════════════════════ */
+const GLASS_ICONS = {
+  rocks:    '🥃',
+  martini:  '🍸',
+  coupe:    '🍷',
+  highball: '🥤',
+  collins:  '🥤',
+  'mule mug': '🫗',
+  mug:      '☕',
+  flute:    '🥂',
+  wine:     '🍷',
+  snifter:  '🍷',
+};
+const glassIcon = g => GLASS_ICONS[g] || '🍹';
+
+/* ══════════════════════════════════════════════
+   DOM REFS
+══════════════════════════════════════════════ */
+const $ = id => document.getElementById(id);
+const appTitle     = $('app-title');
+const appSubtitle  = $('app-subtitle');
+const backBtn      = $('back-btn');
+const searchBar    = $('search-bar');
+const filterBar    = $('filter-bar');
+const searchInput  = $('search-input');
+const searchClear  = $('search-clear');
+const recipeCount  = $('recipe-count');
+const recipeGrid   = $('recipe-grid');
+const loadingEl    = $('loading');
+const listView     = $('recipe-list-view');
+const detailView   = $('recipe-detail-view');
+const inventoryView= $('inventory-view');
+const inventoryCont= $('inventory-content');
+const bottomNav    = $('bottom-nav');
+  const headerNav    = document.querySelector('.header-nav');
+
+/* ══════════════════════════════════════════════
+   DATA LOADING
+══════════════════════════════════════════════ */
+/* ── FALLBACK SEED (shown when cocktails_seed.json cannot be loaded) ── */
+const FALLBACK_SEED = {
+  recipes: [
+    {
+      name: "Old Fashioned",
+      credit: "Studio Neat",
+      ingredients: [
+        {"amount": "2",   "unit": "oz",   "item": "Bourbon"},
+        {"amount": "1/4", "unit": "oz",   "item": "Simple Syrup (1:1)"},
+        {"amount": "1",   "unit": "dash", "item": "Angostura Bitters"},
+        {"amount": "1",   "unit": "dash", "item": "Orange Bitters"},
+        {"amount": "1",   "unit": null,   "item": "Luxardo Maraschino Cherry"}
+      ],
+      method: "Stir the bourbon, simple syrup, and bitters in a mixing glass with ice. Strain into a rocks glass with one large ice cube. Garnish with cherry and orange coin.",
+      glass: "rocks"
+    },
+    {
+      name: "Margarita",
+      credit: null,
+      ingredients: [
+        {"amount": "1 1/2", "unit": "oz",   "item": "Reposado Tequila"},
+        {"amount": "3/4",   "unit": "oz",   "item": "Cointreau"},
+        {"amount": "3/4",   "unit": "oz",   "item": "Fresh Lime Juice"},
+        {"amount": "1/2",   "unit": "oz",   "item": "Simple Syrup (1:1)"},
+        {"amount": null,    "unit": null,   "item": "Salt"}
+      ],
+      method: "Shake the tequila, Cointreau, lime juice, and simple syrup together in a shaker with ice. Rim a rocks glass with salt, and fill with ice. Strain into the glass. Garnish with a lime wedge.",
+      glass: "rocks"
+    }
+  ],
+  bar_inventory: [
+    {
+      category: "Bourbon & Rye",
+      bottles: ["Larceny", "Willett Pot Still", "Maker's Mark", "Four Roses Small Batch"]
+    },
+    {
+      category: "Tequila & Mezcal",
+      bottles: ["Hornitos Reposado Tequila", "Espolón Tequila Blanco"]
+    }
+  ]
+};
+
+async function loadData() {
+  try {
+    const res = await fetch('./cocktails_seed.json');
+    if (!res.ok) throw new Error('Fetch failed');
+    const data = await res.json();
+    allRecipes   = data.recipes   || [];
+    allInventory = data.bar_inventory || [];
+  } catch (e) {
+    console.warn('Could not load cocktails_seed.json — using fallback seed', e);
+    allRecipes   = FALLBACK_SEED.recipes;
+    allInventory = FALLBACK_SEED.bar_inventory;
+  }
+  init();
+}
+
+/* ══════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════ */
+function init() {
+  loadingEl.style.display = 'none';
+  buildFilterChips();
+  buildInventory();
+  renderRecipeList();
+  showView('recipes');
+}
+
+/* ══════════════════════════════════════════════
+   FILTER CHIPS — derive glass types from data
+══════════════════════════════════════════════ */
+function buildFilterChips() {
+  const glasses = [...new Set(allRecipes.map(r => r.glass).filter(Boolean))].sort();
+  // Also build spirit-based chips from ingredient names
+  const spirits = ['bourbon', 'rye', 'gin', 'vodka', 'rum', 'tequila', 'mezcal', 'scotch', 'cognac', 'whiskey'];
+  const presentSpirits = spirits.filter(s =>
+    allRecipes.some(r => r.ingredients.some(i => i.item.toLowerCase().includes(s)))
+  );
+
+  const chips = [
+    { label: 'All', value: 'all' },
+    ...presentSpirits.map(s => ({ label: s.charAt(0).toUpperCase() + s.slice(1), value: s })),
+    { label: 'Sparkling', value: 'sparkling' },
+    { label: 'My Recipes', value: 'mine' },
+  ];
+
+  filterBar.innerHTML = chips.map(c =>
+    `<button class="filter-chip${c.value === activeFilter ? ' active' : ''}" data-filter="${c.value}">${c.label}</button>`
+  ).join('');
+
+  filterBar.querySelectorAll('.filter-chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeFilter = btn.dataset.filter;
+      filterBar.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderRecipeList();
+    });
+  });
+}
+
+/* ══════════════════════════════════════════════
+   FILTER + SEARCH LOGIC
+══════════════════════════════════════════════ */
+function getFilteredRecipes() {
+  let recipes = [...allRecipes];
+
+  // Search
+  if (searchQuery.length > 0) {
+    const q = searchQuery.toLowerCase();
+    recipes = recipes.filter(r => {
+      const nameMatch  = r.name.toLowerCase().includes(q);
+      const ingMatch   = r.ingredients.some(i => i.item.toLowerCase().includes(q));
+      const methMatch  = r.method && r.method.toLowerCase().includes(q);
+      return nameMatch || ingMatch || methMatch;
+    });
+  }
+
+  // Filter chip
+  if (activeFilter && activeFilter !== 'all') {
+    if (activeFilter === 'mine') {
+      recipes = recipes.filter(r => r.credit && r.credit.toLowerCase().includes('troy'));
+    } else if (activeFilter === 'sparkling') {
+      const sparkWords = ['champagne', 'prosecco', 'sparkling'];
+      recipes = recipes.filter(r =>
+        r.ingredients.some(i => sparkWords.some(w => i.item.toLowerCase().includes(w)))
+      );
+    } else {
+      recipes = recipes.filter(r =>
+        r.ingredients.some(i => i.item.toLowerCase().includes(activeFilter))
+      );
+    }
+  }
+
+  // Sort A-Z
+  return recipes.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+/* ══════════════════════════════════════════════
+   RENDER RECIPE LIST
+══════════════════════════════════════════════ */
+function renderRecipeList() {
+  const recipes = getFilteredRecipes();
+  recipeCount.textContent = `${recipes.length} recipe${recipes.length !== 1 ? 's' : ''}`;
+
+  if (recipes.length === 0) {
+    recipeGrid.innerHTML = `
+      <div style="grid-column:1/-1">
+        <div class="empty-state">
+          <span class="orn">✦</span>
+          <p>No recipes match your search.<br>Try a different spirit or name.</p>
+        </div>
+      </div>`;
+    return;
+  }
+
+  const html = recipes.map(r => `
+    <div class="recipe-card" data-name="${escHtml(r.name)}" role="button" tabindex="0" aria-label="${escHtml(r.name)}">
+      <div class="card-thumb">${r.presentation ? DR.thumb(r.presentation) : glassIcon(r.glass)}</div>
+      <div class="card-body">
+        <div class="card-name">${escHtml(r.name)}</div>
+        <div class="card-meta">${r.glass || ''}${r.credit && r.credit.toLowerCase().includes('troy') ? ' &nbsp;·&nbsp; <span style="color:var(--terracotta);font-style:normal">✦ House</span>' : ''}</div>
+      </div>
+      <div class="card-chevron">›</div>
+    </div>
+  `).join('');
+
+  recipeGrid.innerHTML = html;
+
+  // Events
+  recipeGrid.querySelectorAll('.recipe-card').forEach(card => {
+    const open = () => {
+      const recipe = allRecipes.find(r => r.name === card.dataset.name);
+      if (recipe) showDetail(recipe);
+    };
+    card.addEventListener('click', open);
+    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') open(); });
+  });
+}
+
+/* ══════════════════════════════════════════════
+   RECIPE DETAIL
+══════════════════════════════════════════════ */
+function showDetail(recipe) {
+  detailRecipe = recipe;
+
+  const fmtAmount = ing => {
+    if (!ing.amount && !ing.unit) return '';
+    const a = ing.amount || '';
+    const u = ing.unit   || '';
+    return `${a} ${u}`.trim();
+  };
+
+  const ings = recipe.ingredients.map(ing => `
+    <li class="ingredient-row">
+      <span class="ing-amount">${ing.amount || ''}</span>
+      <span class="ing-unit">${ing.unit || ''}</span>
+      <span class="ing-item">${escHtml(ing.item)}</span>
+    </li>
+  `).join('');
+
+  const credit = recipe.credit
+    ? `<div class="detail-credit">
+         ${recipe.credit.toLowerCase().includes('troy') ? '✦ House recipe' : escHtml(recipe.credit)}
+       </div>`
+    : '';
+
+  detailView.innerHTML = `
+    <div class="detail-header">
+      <div class="detail-glass-icon">${recipe.presentation ? DR.hero(recipe.presentation) : `<span style="font-size:2.8rem;display:block;text-align:center;padding:8px 0">${glassIcon(recipe.glass)}</span>`}</div>
+      <h1 class="detail-name">${escHtml(recipe.name)}</h1>
+      ${credit}
+    </div>
+    <div class="detail-body">
+      <div class="detail-section-title">Ingredients</div>
+      <ul class="ingredients-list">${ings}</ul>
+      <div class="detail-section-title">Method</div>
+      <p class="method-text">${escHtml(recipe.method || '')}</p>
+      <div class="detail-glass-tag">
+        ${glassIcon(recipe.glass)} Serve in a ${recipe.glass || 'glass'}
+      </div>
+    </div>
+  `;
+
+  showView('detail');
+}
+
+/* ══════════════════════════════════════════════
+   INVENTORY
+══════════════════════════════════════════════ */
+function buildInventory() {
+  if (!allInventory.length) {
+    inventoryCont.innerHTML = `<div class="empty-state"><span class="orn">🍾</span><p>No inventory data loaded.</p></div>`;
+    return;
+  }
+
+  inventoryCont.innerHTML = allInventory.map(cat => {
+    const bottles = (cat.bottles || []).map(b =>
+      `<span class="bottle-tag">${escHtml(b)}</span>`
+    ).join('');
+    const count = cat.bottles ? cat.bottles.length : 0;
+
+    return `
+      <div class="inv-category">
+        <div class="inv-cat-header">
+          ${escHtml(cat.category)}
+          <span class="inv-cat-count">${count} bottle${count !== 1 ? 's' : ''}</span>
+        </div>
+        <div class="bottle-list">
+          ${bottles || '<span style="font-style:italic;color:var(--ink-light);font-size:0.8rem">—</span>'}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════
+   VIEW MANAGEMENT
+══════════════════════════════════════════════ */
+function showView(view) {
+  currentView = view;
+
+  listView.classList.remove('active');
+  detailView.classList.remove('active');
+  inventoryView.classList.remove('active');
+
+  const isListView = view === 'recipes';
+  const isInventory = view === 'inventory';
+  const isDetail = view === 'detail';
+
+  searchBar.style.display   = isListView ? '' : 'none';
+  filterBar.style.display   = isListView ? '' : 'none';
+  backBtn.classList.toggle('visible', isDetail);
+  const logoWrap = $('logo-wrap');
+  if (logoWrap) logoWrap.style.display = isDetail ? 'none' : '';
+
+  // Header title (hidden elements, kept for any legacy refs)
+  if (isDetail && detailRecipe) {
+    appTitle.textContent    = detailRecipe.name;
+    appSubtitle.textContent = '';
+  }
+
+  // Show active view
+  if (isListView)   listView.classList.add('active');
+  if (isDetail)     detailView.classList.add('active');
+  if (isInventory)  inventoryView.classList.add('active');
+
+  // Nav state
+  document.querySelectorAll('.header-nav-btn').forEach(btn => {
+    btn.classList.toggle('active',
+      (btn.dataset.view === 'recipes'   && (isListView || isDetail)) ||
+      (btn.dataset.view === 'inventory' && isInventory)
+    );
+  });
+
+  // Scroll to top
+  $('content').scrollTop = 0;
+}
+
+/* ══════════════════════════════════════════════
+   SEARCH EVENTS
+══════════════════════════════════════════════ */
+searchInput.addEventListener('input', () => {
+  searchQuery = searchInput.value.trim();
+  searchClear.classList.toggle('visible', searchQuery.length > 0);
+  renderRecipeList();
+});
+
+searchClear.addEventListener('click', () => {
+  searchInput.value = '';
+  searchQuery = '';
+  searchClear.classList.remove('visible');
+  searchInput.focus();
+  renderRecipeList();
+});
+
+/* ══════════════════════════════════════════════
+   BACK BUTTON
+══════════════════════════════════════════════ */
+backBtn.addEventListener('click', () => {
+  showView('recipes');
+  renderRecipeList();
+});
+
+/* ══════════════════════════════════════════════
+   BOTTOM NAV EVENTS
+══════════════════════════════════════════════ */
+document.querySelectorAll('.header-nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.dataset.view;
+    if (target === 'recipes') {
+      showView('recipes');
+    } else if (target === 'inventory') {
+      showView('inventory');
+    }
+  });
+});
+
+/* ══════════════════════════════════════════════
+   HARDWARE BACK (browser)
+══════════════════════════════════════════════ */
+window.addEventListener('popstate', () => {
+  if (currentView === 'detail') showView('recipes');
+});
+
+/* ══════════════════════════════════════════════
+   UTIL
+══════════════════════════════════════════════ */
+function escHtml(str) {
+  if (!str) return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ══════════════════════════════════════════════
+   SERVICE WORKER REGISTRATION
+══════════════════════════════════════════════ */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./cocktail_sw.js')
+      .catch(err => console.warn('SW registration failed:', err));
+  });
+}
+
+/* ══════════════════════════════════════════════
+   BOOT
+══════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════
+   DRINK RENDERER — driven by presentation objects
+   Ported from compositor.html. Renders inline SVG
+   from a recipe's presentation metadata.
+══════════════════════════════════════════════ */
+const DR = (() => {
+  // Normalize seed vessel names → compositor GEO keys
+  const VESSEL_MAP = {
+    martini: 'cocktail',
+    'mule mug': 'mule',
+    mug: 'irish',
+    wine: 'snifter',
+    // pass-through for all others
+  };
+  const norm = v => VESSEL_MAP[v] || v || 'rocks';
+
+  const FLAT = new Set(['rocks','coupe','cocktail','nick-nora','snifter']);
+
+  const GEO = {
+    rocks:      {top:64,  bot:162, lf:0.35, ihw:46, ohw:54, clipId:'cp-rocks'},
+    collins:    {top:20,  bot:172, lf:0.40, ihw:14, ohw:18, clipId:'cp-collins'},
+    highball:   {top:32,  bot:166, lf:0.40, ihw:24, ohw:30, clipId:'cp-highball'},
+    coupe:      {top:52,  bot:108, lf:0.10, ihw:60, ohw:68, clipId:'cp-coupe'},
+    cocktail:   {top:26,  bot:110, lf:0.08, ihw:52, ohw:62, clipId:'cp-cocktail'},
+    'nick-nora':{top:50,  bot:124, lf:0.14, ihw:34, ohw:40, clipId:'cp-nicknora'},
+    flute:      {top:16,  bot:111, lf:0.42, ihw:18, ohw:22, clipId:'cp-flute'},
+    snifter:    {top:48,  bot:150, lf:0.28, ihw:40, ohw:50, clipId:'cp-snifter'},
+    port:       {top:52,  bot:128, lf:0.16, ihw:30, ohw:36, clipId:'cp-port'},
+    irish:      {top:22,  bot:164, lf:0.42, ihw:19, ohw:23, clipId:'cp-irish'},
+    tropical:   {top:40,  bot:154, lf:0.38, ihw:28, ohw:34, clipId:'cp-tropical'},
+    julep:      {top:34,  bot:166, lf:0.38, ihw:40, ohw:46, clipId:'cp-julep'},
+    mule:       {top:32,  bot:164, lf:0.38, ihw:44, ohw:52, clipId:'cp-mule'},
+  };
+
+  const OPAQUE = new Set(['mule']);
+
+  // ── DEFS (gradients + clip paths) ──────────────────────────────
+  const DEFS = `<defs>
+    <linearGradient id="dr-gl-body" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="rgba(150,195,230,0.16)"/>
+      <stop offset="25%"  stop-color="rgba(200,230,255,0.38)"/>
+      <stop offset="52%"  stop-color="rgba(220,240,255,0.08)"/>
+      <stop offset="76%"  stop-color="rgba(200,230,255,0.32)"/>
+      <stop offset="100%" stop-color="rgba(150,195,230,0.13)"/>
+    </linearGradient>
+    <linearGradient id="dr-gl-hl" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"  stop-color="rgba(255,255,255,0)"/>
+      <stop offset="20%" stop-color="rgba(255,255,255,0.60)"/>
+      <stop offset="40%" stop-color="rgba(255,255,255,0.07)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </linearGradient>
+    <linearGradient id="dr-gl-rim" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="rgba(255,255,255,0.75)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0.12)"/>
+    </linearGradient>
+    <linearGradient id="dr-gl-stem" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"  stop-color="rgba(160,205,240,0.45)"/>
+      <stop offset="30%" stop-color="rgba(220,240,255,0.80)"/>
+      <stop offset="55%" stop-color="rgba(200,230,255,0.30)"/>
+      <stop offset="80%" stop-color="rgba(215,238,255,0.75)"/>
+      <stop offset="100%" stop-color="rgba(160,205,240,0.40)"/>
+    </linearGradient>
+    <linearGradient id="dr-gl-base" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="rgba(200,228,255,0.48)"/>
+      <stop offset="100%" stop-color="rgba(155,198,230,0.16)"/>
+    </linearGradient>
+    <linearGradient id="dr-copper" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#7a3a10"/>
+      <stop offset="22%"  stop-color="#c86820"/>
+      <stop offset="48%"  stop-color="#e08830"/>
+      <stop offset="72%"  stop-color="#b85e18"/>
+      <stop offset="100%" stop-color="#6a3010"/>
+    </linearGradient>
+    <clipPath id="dr-cp-rocks">    <path d="M44,68 L44,162 L136,162 L136,68 Z"/></clipPath>
+    <clipPath id="dr-cp-collins">  <path d="M76,22 L76,172 L104,172 L104,22 Z"/></clipPath>
+    <clipPath id="dr-cp-highball"> <path d="M66,34 L66,166 L114,166 L114,34 Z"/></clipPath>
+    <clipPath id="dr-cp-coupe">    <path d="M26,54 Q26,100 90,108 Q154,100 154,54 Z"/></clipPath>
+    <clipPath id="dr-cp-cocktail"> <path d="M30,28 L87,108 Q90,114 93,108 L150,28 Z"/></clipPath>
+    <clipPath id="dr-cp-nicknora"> <path d="M56,52 Q52,120 90,126 Q128,120 124,52 Z"/></clipPath>
+    <clipPath id="dr-cp-flute">    <path d="M74,18 L72,111 L108,111 L106,18 Z"/></clipPath>
+    <clipPath id="dr-cp-snifter">  <path d="M50,50 Q47,122 68,148 Q90,158 112,148 Q133,122 130,50 Z"/></clipPath>
+    <clipPath id="dr-cp-port">     <path d="M60,56 Q58,122 90,128 Q122,122 120,56 Z"/></clipPath>
+    <clipPath id="dr-cp-irish">    <path d="M71,24 L71,164 L109,164 L109,24 Z"/></clipPath>
+    <clipPath id="dr-cp-tropical"> <path d="M65,42 Q60,106 65,152 Q90,163 115,152 Q120,106 115,42 Q90,34 65,42 Z"/></clipPath>
+    <clipPath id="dr-cp-julep">    <path d="M49,36 L53,166 L127,166 L131,36 Z"/></clipPath>
+    <clipPath id="dr-cp-mule">     <path d="M46,26 Q38,96 42,166 L138,166 Q142,96 134,26 Z"/></clipPath>
+    <clipPath id="dr-cp-ext-mule"> <rect x="-200" y="20" width="600" height="300"/></clipPath>
+  </defs>`;
+
+  // ── VESSEL ──────────────────────────────────────────────────────
+  function vessel(id){
+    const G='url(#dr-gl-body)',H='url(#dr-gl-hl)',R='url(#dr-gl-rim)',ST='url(#dr-gl-stem)',BA='url(#dr-gl-base)',E='rgba(200,228,255,0.55)';
+    const v={
+      rocks:`<path d="M38,64 L38,166 Q38,172 44,172 L136,172 Q142,172 142,166 L142,64 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/><rect x="38" y="64" width="104" height="4" fill="${R}"/><rect x="42" y="70" width="14" height="96" rx="2" fill="${H}" opacity="0.65"/>`,
+      collins:`<path d="M72,20 L72,174 Q72,180 78,180 L102,180 Q108,180 108,174 L108,20 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/><rect x="72" y="20" width="36" height="4" fill="${R}"/><rect x="75" y="26" width="8" height="150" rx="2" fill="${H}" opacity="0.6"/>`,
+      highball:`<path d="M60,32 L60,168 Q60,175 66,175 L114,175 Q120,175 120,168 L120,32 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/><rect x="60" y="32" width="60" height="4" fill="${R}"/><rect x="64" y="38" width="10" height="130" rx="2" fill="${H}" opacity="0.6"/>`,
+      coupe:`<path d="M22,52 Q22,100 90,108 Q158,100 158,52 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/><line x1="22" y1="52" x2="158" y2="52" stroke="${E}" stroke-width="2.2"/><rect x="22" y="52" width="136" height="4" fill="${R}"/><path d="M22,52 Q52,104 90,108" fill="${H}" opacity="0.40"/><rect x="87.5" y="108" width="5" height="67" fill="${ST}" stroke="${E}" stroke-width="0.8"/><ellipse cx="90" cy="181" rx="26" ry="6" fill="${BA}"/><ellipse cx="90" cy="178" rx="18" ry="4" fill="${G}" stroke="${E}" stroke-width="1"/>`,
+      cocktail:`<path d="M26,26 L87,108 L87,112 Q90,114 93,112 L93,108 L154,26 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/><line x1="26" y1="26" x2="154" y2="26" stroke="${E}" stroke-width="2.2"/><rect x="26" y="26" width="128" height="4" fill="${R}"/><path d="M26,26 L87,108 L91,108 L34,26 Z" fill="${H}" opacity="0.55"/><path d="M87,112 Q88,140 88,176 L92,176 Q92,140 93,112 Z" fill="${ST}" stroke="${E}" stroke-width="0.7"/><ellipse cx="90" cy="183" rx="26" ry="6" fill="${BA}"/><ellipse cx="90" cy="180" rx="20" ry="4" fill="${G}" stroke="${E}" stroke-width="1"/>`,
+      'nick-nora':`<path d="M52,50 Q48,118 90,124 Q132,118 128,50 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/><path d="M52,50 Q90,44 128,50" stroke="${R}" stroke-width="3"/><path d="M52,50 Q62,116 90,124" fill="${H}" opacity="0.38"/><rect x="87.5" y="124" width="5" height="52" fill="${ST}" stroke="${E}" stroke-width="0.8"/><ellipse cx="90" cy="181" rx="26" ry="5.5" fill="${BA}"/><ellipse cx="90" cy="178" rx="18" ry="4" fill="${G}" stroke="${E}" stroke-width="1"/>`,
+      flute:`<path d="M70,16 L68,111 L112,111 L110,16 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/><line x1="70" y1="16" x2="110" y2="16" stroke="${E}" stroke-width="2.2"/><rect x="70" y="16" width="40" height="4" fill="${R}"/><rect x="73" y="20" width="10" height="88" rx="2" fill="${H}" opacity="0.58"/><rect x="88" y="111" width="4" height="68" fill="${ST}" stroke="${E}" stroke-width="0.7"/><ellipse cx="90" cy="184" rx="22" ry="5" fill="${BA}"/><ellipse cx="90" cy="181" rx="12" ry="3" fill="${G}" stroke="${E}" stroke-width="1"/>`,
+      snifter:`<path d="M40,48 Q36,124 66,150 Q90,162 114,150 Q144,124 140,48 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/><line x1="40" y1="48" x2="140" y2="48" stroke="${E}" stroke-width="2.2"/><rect x="40" y="48" width="100" height="4" fill="${R}"/><path d="M40,48 Q56,130 66,150" fill="${H}" opacity="0.36"/><path d="M66,150 Q80,162 90,162 Q100,162 114,150" fill="none" stroke="${ST}" stroke-width="5"/><rect x="87" y="162" width="6" height="14" fill="${ST}" stroke="${E}" stroke-width="0.8"/><ellipse cx="90" cy="180" rx="28" ry="6" fill="${BA}"/><ellipse cx="90" cy="176" rx="16" ry="3.5" fill="${G}" stroke="${E}" stroke-width="1"/>`,
+      irish:`<path d="M66,22 L66,168 Q66,174 72,174 L108,174 Q114,174 114,168 L114,22 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/><path d="M110,52 Q126,62 124,94 Q122,126 110,132" fill="none" stroke="${E}" stroke-width="6.5" stroke-linecap="round"/><path d="M110,56 Q122,65 120,94 Q118,123 110,128" fill="none" stroke="${H}" stroke-width="3.5" stroke-linecap="round" opacity="0.42"/><rect x="66" y="22" width="48" height="4" fill="${R}"/><rect x="70" y="28" width="9" height="140" rx="2" fill="${H}" opacity="0.56"/><ellipse cx="90" cy="178" rx="22" ry="5" fill="${G}" stroke="${E}" stroke-width="1.2"/><ellipse cx="90" cy="174" rx="10" ry="7" fill="${G}" stroke="${E}" stroke-width="1.2"/><ellipse cx="90" cy="183" rx="28" ry="5" fill="${BA}"/>`,
+      tropical:`<path d="M56,40 Q50,108 56,156 Q90,170 124,156 Q130,108 124,40 Q90,30 56,40 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/><path d="M56,40 Q90,30 124,40" stroke="${R}" stroke-width="3"/><path d="M56,40 Q58,110 62,156" fill="${H}" opacity="0.46"/><ellipse cx="90" cy="168" rx="36" ry="7" fill="${BA}"/>`,
+      julep:`<path d="M44,34 L48,170 L132,170 L136,34 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/><line x1="44" y1="34" x2="136" y2="34" stroke="${E}" stroke-width="2.8"/><rect x="45" y="34" width="90" height="4" fill="${R}"/><path d="M44,34 L50,76 L52,170" fill="${H}" opacity="0.48"/><ellipse cx="90" cy="172" rx="46" ry="7" fill="${BA}"/>`,
+      mule:`<path d="M38,24 Q30,96 36,170 L144,170 Q150,96 142,24 Z" fill="#7a3a10" stroke="#6a3010" stroke-width="1.5"/><path d="M38,24 Q30,96 36,170 L144,170 Q150,96 142,24 Z" fill="url(#dr-copper)" stroke="#6a3010" stroke-width="1.5"/><path d="M38,24 Q90,18 142,24 Q142,30 138,32 Q90,26 42,32 Q38,30 38,24 Z" fill="#d07020" stroke="#8a4010" stroke-width="1"/><ellipse cx="58" cy="60"  rx="5" ry="3.5" fill="rgba(0,0,0,0.10)" transform="rotate(20,58,60)"/><ellipse cx="80" cy="50"  rx="4" ry="3"   fill="rgba(0,0,0,0.08)" transform="rotate(-10,80,50)"/><ellipse cx="110" cy="55" rx="5" ry="3"   fill="rgba(0,0,0,0.09)" transform="rotate(30,110,55)"/><ellipse cx="68" cy="90"  rx="5" ry="4"   fill="rgba(0,0,0,0.08)" transform="rotate(-15,68,90)"/><ellipse cx="100" cy="85" rx="4" ry="3.5" fill="rgba(0,0,0,0.10)" transform="rotate(10,100,85)"/><path d="M38,24 Q32,96 36,170" fill="none" stroke="rgba(220,140,60,0.55)" stroke-width="6" stroke-linecap="round"/><path d="M142,60 Q164,60 166,96 Q164,132 142,132" fill="none" stroke="#b85e18" stroke-width="7" stroke-linecap="round"/><path d="M142,64 Q160,64 162,96 Q160,128 142,128" fill="none" stroke="#e08030" stroke-width="3.5" stroke-linecap="round" opacity="0.6"/>`,
+    };
+    return v[id] || v.rocks;
+  }
+
+  // ── LIQUID ───────────────────────────────────────────────────────
+  function liquid(vid, color){
+    if(!color) return '';
+    const g=GEO[vid]||GEO.rocks;
+    const fillY=g.top+(g.bot-g.top)*g.lf, hw=g.ihw, op='0.88';
+    const cp=`url(#dr-cp-${g.clipId.replace('cp-','')})`;
+    const men=`<line x1="${90-hw}" y1="${fillY}" x2="${90+hw}" y2="${fillY}" stroke="rgba(255,255,255,0.28)" stroke-width="1.2"/>`;
+    const fills={
+      rocks:`<rect x="${90-hw}" y="${fillY}" width="${hw*2}" height="${g.bot-fillY}" fill="${color}" opacity="${op}" clip-path="${cp}"/>`,
+      collins:`<rect x="${90-hw}" y="${fillY}" width="${hw*2}" height="${g.bot-fillY}" fill="${color}" opacity="${op}" clip-path="${cp}"/>`,
+      highball:`<rect x="${90-hw}" y="${fillY}" width="${hw*2}" height="${g.bot-fillY}" fill="${color}" opacity="${op}" clip-path="${cp}"/>`,
+      coupe:`<path d="M${90-hw},${fillY} Q90,${fillY+4} ${90+hw},${fillY} Q142,115 90,120 Q38,115 ${90-hw},${fillY} Z" fill="${color}" opacity="${op}" clip-path="${cp}"/>`,
+      cocktail:`<path d="M${90-(hw*(1-(fillY-26)/84))},${fillY} L${90+(hw*(1-(fillY-26)/84))},${fillY} L87,108 Q90,114 93,108 L${90+(hw*(1-(fillY-26)/84))},${fillY} Z" fill="${color}" opacity="0.86" clip-path="${cp}"/>`,
+      'nick-nora':`<path d="M${90-hw},${fillY} Q90,${fillY+2} ${90+hw},${fillY} Q126,68 90,73 Q54,68 ${90-hw},${fillY} Z" fill="${color}" opacity="${op}" clip-path="${cp}"/>`,
+      flute:`<rect x="${90-hw}" y="${fillY}" width="${hw*2}" height="${g.bot-fillY}" fill="${color}" opacity="${op}" clip-path="${cp}"/>`,
+      snifter:`<path d="M${90-hw},${fillY} L${90+hw},${fillY} Q140,124 114,150 Q90,162 66,150 Q40,124 ${90-hw},${fillY} Z" fill="${color}" opacity="0.86" clip-path="${cp}"/>`,
+      irish:`<rect x="${90-hw}" y="${fillY}" width="${hw*2}" height="${g.bot-fillY}" fill="${color}" opacity="${op}" clip-path="${cp}"/>`,
+      tropical:`<path d="M${90-hw+((fillY-40)*0.15)},${fillY} Q90,${fillY-4} ${90+hw-((fillY-40)*0.15)},${fillY} Q124,108 124,156 Q90,170 56,156 Q50,108 ${90-hw+((fillY-40)*0.15)},${fillY} Z" fill="${color}" opacity="0.86" clip-path="${cp}"/>`,
+      julep:`<path d="M${90-hw+((fillY-34)*0.05)},${fillY} L${90+hw-((fillY-34)*0.05)},${fillY} L132,170 L48,170 Z" fill="${color}" opacity="0.86" clip-path="${cp}"/>`,
+      mule:`<rect x="${90-hw}" y="${fillY}" width="${hw*2}" height="${g.bot-fillY}" fill="${color}" opacity="${op}" clip-path="${cp}"/>`,
+    };
+    return (fills[vid]||fills.rocks)+men;
+  }
+
+  // ── FLOAT ────────────────────────────────────────────────────────
+  function float_(vid, color, type){
+    if(!color||!type) return '';
+    const g=GEO[vid]||GEO.rocks;
+    const fillY=g.top+(g.bot-g.top)*g.lf, hw=g.ihw;
+    const fc=type==='wine'?'rgba(120,0,40,0.82)':'rgba(60,15,0,0.85)';
+    const cp=`url(#dr-cp-${g.clipId.replace('cp-','')})`;
+    return `<rect x="${90-hw+1}" y="${fillY-16}" width="${hw*2-2}" height="16" fill="${fc}" rx="1" clip-path="${cp}"/>
+            <line x1="${90-hw+1}" y1="${fillY-16}" x2="${90+hw-1}" y2="${fillY-16}" stroke="rgba(180,80,20,0.55)" stroke-width="1.5"/>
+            <line x1="${90-hw}" y1="${fillY}" x2="${90+hw}" y2="${fillY}" stroke="rgba(255,255,255,0.20)" stroke-width="0.8"/>`;
+  }
+
+  // ── ICE ──────────────────────────────────────────────────────────
+  function ice_(type, vid){
+    if(!type) return '';
+    const g=GEO[vid]||GEO.rocks;
+    const fillY=g.top+(g.bot-g.top)*g.lf, botY=g.bot-4, cx=90, hw=g.ihw;
+    const ic='rgba(208,234,255,0.50)', is='rgba(172,214,255,0.72)';
+    const iStr=`fill="${ic}" stroke="${is}" stroke-width="1.1"`;
+    if(type==='huge'){
+      const iceH=botY-fillY, sz=Math.min(hw*1.55,iceH*0.82), iy=fillY+(iceH-sz)*0.5+sz*0.5;
+      return `<rect x="${cx-sz*0.5}" y="${iy-sz*0.5}" width="${sz}" height="${sz}" rx="4" ${iStr} transform="rotate(8,${cx},${iy})"/><line x1="${cx-sz*0.36}" y1="${iy-sz*0.36}" x2="${cx-sz*0.3}" y2="${iy+sz*0.18}" stroke="rgba(255,255,255,0.26)" stroke-width="1.6" stroke-linecap="round"/>`;
+    }
+    if(type==='cubes'){
+      const iceH=botY-fillY, sz=Math.min(hw*0.68,iceH*0.46), parts=[], rows=iceH>sz*2.4?2:1;
+      for(let r=0;r<rows;r++){const iy=fillY+sz*0.5+r*(sz+5)+3,cols2=hw>sz*0.9?2:1;for(let cc=0;cc<cols2;cc++){const ix=cx+(cc-(cols2-1)*0.5)*(sz+4);parts.push(`<rect x="${(ix-sz*0.5).toFixed(1)}" y="${(iy-sz*0.5).toFixed(1)}" width="${sz.toFixed(1)}" height="${sz.toFixed(1)}" rx="2.5" ${iStr} transform="rotate(${r*3+cc*5-3},${ix.toFixed(1)},${iy.toFixed(1)})"/>`);}}
+      return parts.join('');
+    }
+    if(type==='crushed'){
+      const shards=[], count=Math.round(hw*0.7);
+      for(let i=0;i<count;i++){const sx=cx-hw*0.85+Math.random()*hw*1.7,sy=fillY+4+Math.random()*(botY-fillY-12),points=[],n=5+Math.floor(Math.random()*2);for(let j=0;j<n;j++){const a=(j/n)*Math.PI*2+(Math.random()-0.5)*0.4,r=4+Math.random()*6;points.push(`${(sx+Math.cos(a)*r).toFixed(1)},${(sy+Math.sin(a)*r).toFixed(1)}`);}shards.push(`<polygon points="${points.join(' ')}" fill="rgba(218,240,255,0.48)" stroke="rgba(180,218,255,0.72)" stroke-width="0.9"/>`);}
+      return shards.join('');
+    }
+    return '';
+  }
+
+  // ── VESSEL MASK (mule only) ───────────────────────────────────────
+  function vesselMask(id){
+    if(!OPAQUE.has(id)) return '';
+    return `<path d="M38,24 Q30,96 36,170 L144,170 Q150,96 142,24 Z" fill="#7a3a10"/><path d="M38,24 Q30,96 36,170 L144,170 Q150,96 142,24 Z" fill="url(#dr-copper)"/><path d="M36,168 L144,168 L144,174 L36,174 Z" fill="#6a3010"/><ellipse cx="58" cy="60" rx="5" ry="3.5" fill="rgba(0,0,0,0.12)" transform="rotate(20,58,60)"/><ellipse cx="80" cy="50" rx="4" ry="3" fill="rgba(0,0,0,0.10)" transform="rotate(-10,80,50)"/><ellipse cx="110" cy="55" rx="5" ry="3" fill="rgba(0,0,0,0.11)" transform="rotate(30,110,55)"/><ellipse cx="68" cy="90" rx="5" ry="4" fill="rgba(0,0,0,0.10)" transform="rotate(-15,68,90)"/><ellipse cx="100" cy="85" rx="4" ry="3.5" fill="rgba(0,0,0,0.12)" transform="rotate(10,100,85)"/><path d="M38,24 Q32,96 36,170" fill="none" stroke="rgba(220,140,60,0.55)" stroke-width="6" stroke-linecap="round"/><path d="M142,24 Q150,96 144,170" fill="none" stroke="rgba(80,20,0,0.4)" stroke-width="5" stroke-linecap="round"/><path d="M38,24 Q90,18 142,24 Q142,30 138,32 Q90,26 42,32 Q38,30 38,24 Z" fill="#d07020" stroke="#8a4010" stroke-width="1"/><path d="M142,60 Q164,60 166,96 Q164,132 142,132" fill="none" stroke="#6a2e0a" stroke-width="9" stroke-linecap="round"/><path d="M142,60 Q164,60 166,96 Q164,132 142,132" fill="none" stroke="#b85e18" stroke-width="6" stroke-linecap="round"/><path d="M142,64 Q160,64 162,96 Q160,128 142,128" fill="none" stroke="#e08030" stroke-width="3" stroke-linecap="round" opacity="0.6"/>`;
+  }
+
+  // ── RIM COVER (mule only) ─────────────────────────────────────────
+  function rimCover(id){
+    if(!OPAQUE.has(id)) return '';
+    return `<path d="M38,24 Q90,18 142,24 Q142,32 138,34 Q90,28 42,34 Q38,32 38,24 Z" fill="#7a3a10"/><path d="M38,24 Q90,18 142,24 Q142,32 138,34 Q90,28 42,34 Q38,32 38,24 Z" fill="url(#dr-copper)"/><path d="M38,24 Q90,18 142,24 Q142,30 138,32 Q90,26 42,32 Q38,30 38,24 Z" fill="#d07020" stroke="#8a4010" stroke-width="1"/>`;
+  }
+
+  // ── GARNISH ───────────────────────────────────────────────────────
+  function garnish(id, vid, slot){
+    const g=GEO[vid]||GEO.rocks;
+    const flat=FLAT.has(vid);
+    const rimY=g.top+3;
+    const offsets=[0,-22,22,-36,36];
+    const x=90+(offsets[slot]||0);
+
+    if(id==='cherry'){
+      const fillY=g.top+(g.bot-g.top)*g.lf, botY=g.bot-12;
+      const cy2=fillY+(botY-fillY)*0.6, cx2=x===90?90:x*0.3+90*0.7;
+      return `<circle cx="${cx2}" cy="${cy2}" r="9" fill="#3a0808" stroke="#220404" stroke-width="1"/><circle cx="${cx2-2}" cy="${cy2-3}" r="3.5" fill="#5a1010" opacity="0.5"/><path d="M${cx2} ${cy2-9} Q${cx2+8} ${cy2-26} ${cx2+14} ${cy2-32}" fill="none" stroke="#2e4a18" stroke-width="1.6" stroke-linecap="round"/>`;
+    }
+    if(id==='strawberry'){
+      const sy=flat?rimY-4:rimY-10;
+      return `<path d="M${x-14} ${sy+10} Q${x-14} ${sy+24} ${x} ${sy+26} Q${x+14} ${sy+24} ${x+14} ${sy+10} Q${x+10} ${sy+4} ${x} ${sy+4} Q${x-10} ${sy+4} ${x-14} ${sy+10} Z" fill="#d94040" stroke="#a02020" stroke-width="1"/><ellipse cx="${x}" cy="${sy+18}" rx="6" ry="7" fill="rgba(255,255,255,0.68)"/><path d="M${x-10} ${sy+8} Q${x-8} ${sy+2} ${x-4} ${sy+3} Q${x-2} ${sy} ${x} ${sy+1} Q${x+2} ${sy} ${x+4} ${sy+3} Q${x+8} ${sy+2} ${x+10} ${sy+8}" fill="#3a7a20" stroke="#2a5a10" stroke-width="0.8"/>`;
+    }
+    if(id==='olive'){
+      if(flat) return `<line x1="${x-30}" y1="${rimY}" x2="${x+30}" y2="${rimY-5}" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/><ellipse cx="${x-18}" cy="${rimY-2}" rx="8" ry="6.5" fill="#6b9e52" stroke="#4a7030" stroke-width="1" transform="rotate(-10,${x-18},${rimY-2})"/><ellipse cx="${x}" cy="${rimY-3}" rx="8" ry="6.5" fill="#7aae60" stroke="#4a7030" stroke-width="1" transform="rotate(-10,${x},${rimY-3})"/><ellipse cx="${x+18}" cy="${rimY-4.5}" rx="8" ry="6.5" fill="#6b9e52" stroke="#4a7030" stroke-width="1" transform="rotate(-10,${x+18},${rimY-4.5})"/>`;
+      return `<line x1="${x+6}" y1="${rimY+22}" x2="${x+30}" y2="${rimY-10}" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/><ellipse cx="${x+12}" cy="${rimY+12}" rx="7.5" ry="6" fill="#6b9e52" stroke="#4a7030" stroke-width="1" transform="rotate(-35,${x+12},${rimY+12})"/><ellipse cx="${x+18}" cy="${rimY+2}" rx="7.5" ry="6" fill="#7aae60" stroke="#4a7030" stroke-width="1" transform="rotate(-35,${x+18},${rimY+2})"/><ellipse cx="${x+24}" cy="${rimY-8}" rx="7.5" ry="6" fill="#6b9e52" stroke="#4a7030" stroke-width="1" transform="rotate(-35,${x+24},${rimY-8})"/>`;
+    }
+    if(id==='celery'){
+      const stalkBot=g.bot-4, stalkTop=g.top, stalkH=stalkBot-stalkTop;
+      const sx=flat?x:x+10, tilt=flat?-8:15;
+      return `<g transform="rotate(${tilt},${sx},${stalkBot})"><rect x="${sx-4}" y="${stalkTop}" width="8" height="${stalkH}" rx="1" fill="#7ab840" stroke="#4a8020" stroke-width="1"/><line x1="${sx-1.5}" y1="${stalkTop}" x2="${sx-1.5}" y2="${stalkBot}" stroke="#4a8020" stroke-width="0.6" opacity="0.45"/><line x1="${sx+1.5}" y1="${stalkTop}" x2="${sx+1.5}" y2="${stalkBot}" stroke="#4a8020" stroke-width="0.6" opacity="0.45"/><path d="M${sx-4} ${stalkTop} C${sx-14} ${stalkTop-6} ${sx-16} ${stalkTop-18} ${sx-6} ${stalkTop-22} C${sx-2} ${stalkTop-24} ${sx} ${stalkTop-20} ${sx-4} ${stalkTop}" fill="#5a9e2a" stroke="#3a7010" stroke-width="0.8"/><path d="M${sx} ${stalkTop-4} C${sx-6} ${stalkTop-14} ${sx-4} ${stalkTop-28} ${sx+2} ${stalkTop-30} C${sx+6} ${stalkTop-32} ${sx+8} ${stalkTop-26} ${sx+4} ${stalkTop-12} C${sx+2} ${stalkTop-6} ${sx} ${stalkTop-4} ${sx} ${stalkTop-4}" fill="#4a8e1a" stroke="#3a7010" stroke-width="0.8"/><path d="M${sx+4} ${stalkTop} C${sx+14} ${stalkTop-4} ${sx+18} ${stalkTop-16} ${sx+10} ${stalkTop-20} C${sx+6} ${stalkTop-22} ${sx+4} ${stalkTop-18} ${sx+4} ${stalkTop}" fill="#5a9e2a" stroke="#3a7010" stroke-width="0.8"/></g>`;
+    }
+    if(id==='pineapple-wedge'){
+      const r=Math.max(28,Math.min(42,g.ohw*0.9)), rindT=r*0.16, innerR=r-rindT, slitD=rindT;
+      const narrowOffset=g.ohw<30?Math.max(0,r-g.ohw*0.5):0;
+      const ax=90+g.ohw+narrowOffset+4;
+      const visualRimTop=({mule:20})[vid]!==undefined?({mule:20})[vid]:g.top;
+      const ay=visualRimTop+slitD;
+      const segAngles=[-70,-42,-14,14,42,70];
+      const segs=segAngles.map(a=>{const rad=a*Math.PI/180,ex=(innerR*Math.sin(rad)).toFixed(1),ey=(innerR*Math.cos(rad)).toFixed(1);return `<line x1="0" y1="0" x2="${ex}" y2="${ey}" stroke="#c8a010" stroke-width="0.9" opacity="0.4"/>`;}).join('');
+      const stripes=[0.35,0.55,0.72].map(f=>{const sr=(innerR*f).toFixed(1);return `<path d="M${-sr},0 A${sr},${sr} 0 0,0 ${sr},0" fill="none" stroke="#c8a010" stroke-width="0.8" opacity="0.45"/>`;}).join('');
+      return `<g transform="translate(${ax},${ay}) rotate(180)"><path d="M${-r},0 A${r},${r} 0 0,0 ${r},0 Z" fill="#f5c830" stroke="#8a5a08" stroke-width="1.2"/>${stripes}${segs}<line x1="0" y1="0" x2="0" y2="${innerR}" stroke="rgba(255,230,100,0.85)" stroke-width="1.2"/><path d="M${-r},0 A${r},${r} 0 0,0 ${r},0 L${innerR},0 A${innerR},${innerR} 0 0,1 ${-innerR},0 Z" fill="#8a5a08" stroke="#6a3a04" stroke-width="0.8"/><line x1="0" y1="0" x2="0" y2="${slitD}" stroke="#8a5a08" stroke-width="2.2" opacity="0.9"/></g>`;
+    }
+    if(id==='cucumber-slice'){
+      const r=11, innerOffset=(offsets[slot]||0)*0.3;
+      const cx3=90+innerOffset, cy3=g.bot-r-2;
+      return `<circle cx="${cx3}" cy="${cy3}" r="${r}" fill="#81c784" stroke="#4caf50" stroke-width="1.2" opacity="0.82"/><circle cx="${cx3}" cy="${cy3}" r="${r*0.65}" fill="#a5d6a7" opacity="0.82"/><circle cx="${cx3}" cy="${cy3}" r="${r*0.32}" fill="#c8e6c9" opacity="0.82"/>`;
+    }
+    return '';
+  }
+
+  // ── CITRUS ────────────────────────────────────────────────────────
+  function citrus_(id, vid){
+    if(!id) return '';
+    const g=GEO[vid]||GEO.rocks;
+    const s=Math.max(0.9,Math.min(1.3,g.ihw/36));
+    const flat=FLAT.has(vid);
+    const rx=flat?90+g.ohw-6:90+g.ohw+2;
+    const ry=flat?g.top+4:g.top+14;
+    const fruit=id.split('-')[0];
+    const type=id.includes('twist')?'twist':id.includes('wedge')?'wedge':'peel';
+    const cols={lemon:{f:'#f5df60',s:'#c8a810',d:'#d4b820',l:'#f9ef88'},lime:{f:'#8aca6a',s:'#4a8030',d:'#5a9040',l:'#aadd88'},orange:{f:'#f0a050',s:'#a05010',d:'#c06020',l:'#f8c080'}};
+    const col=cols[fruit]||cols.lemon;
+    if(type==='twist'){
+      const x=rx-8*s,y2=ry+2*s;
+      return `<path d="M${x} ${y2} C${x-16*s} ${y2-14*s} ${x+8*s} ${y2-26*s} ${x+16*s} ${y2-10*s} C${x+24*s} ${y2+4*s} ${x+8*s} ${y2+20*s} ${x-2*s} ${y2+12*s}" fill="none" stroke="${col.f}" stroke-width="${4.5*s}" stroke-linecap="round"/><path d="M${x+1*s} ${y2} C${x-11*s} ${y2-10*s} ${x+8*s} ${y2-22*s} ${x+13*s} ${y2-6*s}" fill="none" stroke="${col.l}" stroke-width="${2*s}" stroke-linecap="round" opacity="0.5"/>`;
+    }
+    if(type==='wedge'){
+      const r=Math.max(14,Math.min(24,g.ohw*0.58)),rindT=r*0.18,pithT=r*0.12,innerR=r-rindT-pithT,slitD=rindT+pithT;
+      const narrowOffset=g.ohw<30?Math.max(0,r-g.ohw*0.5):0;
+      const ax=90+g.ohw+narrowOffset;
+      const visualRimTop=({mule:20})[vid]!==undefined?({mule:20})[vid]:g.top;
+      const ay=visualRimTop+slitD;
+      const segAngles=[-70,-42,-14,14,42,70];
+      const segs=segAngles.map(a=>{const rad=a*Math.PI/180,ex=(innerR*Math.sin(rad)).toFixed(1),ey=(innerR*Math.cos(rad)).toFixed(1);return `<line x1="0" y1="0" x2="${ex}" y2="${ey}" stroke="${col.s}" stroke-width="0.8" opacity="0.35"/>`;}).join('');
+      return `<g transform="translate(${ax},${ay}) rotate(180)"><path d="M${-r},0 A${r},${r} 0 0,0 ${r},0 Z" fill="${col.f}" stroke="${col.s}" stroke-width="1"/>${segs}<line x1="0" y1="0" x2="0" y2="${innerR}" stroke="rgba(255,255,255,0.75)" stroke-width="1.2"/><path d="M${-(r-rindT)},0 A${r-rindT},${r-rindT} 0 0,0 ${r-rindT},0 L${innerR},0 A${innerR},${innerR} 0 0,1 ${-innerR},0 Z" fill="rgba(255,255,255,0.62)"/><path d="M${-r},0 A${r},${r} 0 0,0 ${r},0 L${r-rindT},0 A${r-rindT},${r-rindT} 0 0,1 ${-(r-rindT)},0 Z" fill="${col.d}" stroke="${col.s}" stroke-width="0.8"/><line x1="0" y1="0" x2="0" y2="${slitD}" stroke="${col.s}" stroke-width="2" opacity="0.9"/></g>`;
+    }
+    if(type==='peel'){
+      const px=rx-8*s,py2=ry+6*s;
+      return `<path d="M${px-13*s} ${py2+10*s} C${px-20*s} ${py2-8*s} ${px+8*s} ${py2-14*s} ${px+16*s} ${py2+4*s} C${px+20*s} ${py2+14*s} ${px+7*s} ${py2+20*s} ${px-2*s} ${py2+16*s}" fill="${col.f}" stroke="${col.s}" stroke-width="1.1" opacity="0.95"/><path d="M${px-11*s} ${py2+8*s} C${px-17*s} ${py2-6*s} ${px+7*s} ${py2-10*s} ${px+13*s} ${py2+5*s}" fill="none" stroke="${col.l}" stroke-width="${1.1*s}" opacity="0.45"/>`;
+    }
+    return '';
+  }
+
+  // ── EXTRAS ───────────────────────────────────────────────────────
+  function extras_(set, vid){
+    const g=GEO[vid]||GEO.rocks, topY=g.top, flat=FLAT.has(vid);
+    const fillY=g.top+(g.bot-g.top)*g.lf, botY=g.bot-4;
+    const parts=[];
+    if(set.has('umbrella')){
+      const ux=100,uy=topY-32,stickTopX=ux,stickTopY=uy+32,stickBotX=ux+28,stickBotY=topY+60;
+      parts.push(`<path d="M${ux} ${uy} Q${ux-22} ${uy+20} ${ux-20} ${uy+32} Q${ux} ${uy+26} ${ux+20} ${uy+32} Q${ux+22} ${uy+20} ${ux} ${uy} Z" fill="#4fc3f7" stroke="#0288d1" stroke-width="1"/><line x1="${ux}" y1="${uy}" x2="${ux-20}" y2="${uy+32}" stroke="rgba(255,255,255,0.30)" stroke-width="0.9"/><line x1="${ux}" y1="${uy}" x2="${ux}" y2="${uy+33}" stroke="rgba(255,255,255,0.30)" stroke-width="0.9"/><line x1="${ux}" y1="${uy}" x2="${ux+20}" y2="${uy+32}" stroke="rgba(255,255,255,0.30)" stroke-width="0.9"/><line x1="${stickTopX}" y1="${stickTopY}" x2="${stickBotX}" y2="${stickBotY}" stroke="#8B5E3C" stroke-width="2.2" stroke-linecap="round"/>`);
+    }
+    if(set.has('straw')){
+      const sx=flat?90+g.ihw-8:90+g.ihw-4;
+      const isMule=vid==='mule';
+      const sc=isMule?'#a8b8c0':'#4caf50', ss=isMule?'#708090':'#2e7d32', sh=isMule?'rgba(255,255,255,0.55)':'rgba(255,255,255,0.22)';
+      parts.push(`<rect x="${sx-2.5}" y="${topY-20}" width="5" height="${botY-2-topY+20}" rx="2.5" fill="${sc}" stroke="${ss}" stroke-width="0.8"/><rect x="${sx-1.5}" y="${topY-19}" width="2" height="${botY-4-topY+20}" rx="1" fill="${sh}"/>`);
+    }
+    if(set.has('salted-rim')||set.has('tajin-rim')){
+      const isT=set.has('tajin-rim'), bc=isT?'#d84020':'rgba(255,255,255,0.82)';
+      const crystals=[], hw=g.ohw, count=Math.round(hw*0.55);
+      for(let i=0;i<count;i++){const t=i/count,cx2=(90-hw)+t*hw*2,w=2+Math.random()*3,h=2+Math.random()*3,rot=Math.random()*40-20,dy=(Math.random()-0.5)*2;crystals.push(`<rect x="${(cx2-w/2).toFixed(1)}" y="${(topY+dy-h/2).toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="0.4" fill="${bc}" transform="rotate(${rot.toFixed(0)},${cx2.toFixed(1)},${topY.toFixed(1)})"/>`);}
+      parts.push(crystals.join(''));
+    }
+    if(set.has('whipped-cream')){
+      const hw2=g.ihw, floatH=0, wy=fillY-floatH;
+      parts.push(`<path d="M${90-hw2} ${wy} Q${90-hw2*0.78} ${wy-12} ${90-hw2*0.5} ${wy-6} Q${90-hw2*0.28} ${wy-22} ${90-hw2*0.05} ${wy-16} Q${90+hw2*0.15} ${wy-26} ${90+hw2*0.35} ${wy-18} Q${90+hw2*0.55} ${wy-20} ${90+hw2*0.72} ${wy-10} Q${90+hw2*0.88} ${wy-15} ${90+hw2} ${wy} Z" fill="rgba(255,255,255,0.96)" stroke="rgba(210,210,210,0.5)" stroke-width="0.7"/>`);
+    }
+    if(set.has('mint-sprig')){
+      const mx=flat?90+g.ihw-8:90+g.ihw-6, my=topY-2;
+      parts.push(`<line x1="${mx}" y1="${my+18}" x2="${mx-4}" y2="${my-2}" stroke="#1b5e20" stroke-width="1.4" stroke-linecap="round"/><path d="M${mx} ${my+18} C${mx-14} ${my+16} ${mx-16} ${my+6} ${mx-8} ${my+6} C${mx-4} ${my+6} ${mx-2} ${my+10} ${mx} ${my+18} Z" fill="#2e7d32" stroke="#1b5e20" stroke-width="0.7"/><path d="M${mx-2} ${my+10} C${mx+4} ${my+8} ${mx+6} ${my+2} ${mx+2} ${my+2} C${mx-2} ${my+2} ${mx-2} ${my+6} ${mx-2} ${my+10} Z" fill="#2e7d32" stroke="#1b5e20" stroke-width="0.7"/>`);
+    }
+    return parts.join('');
+  }
+
+  // ── COMPOSE SVG ──────────────────────────────────────────────────
+  function compose(p, w, h){
+    const vid = norm(p.vessel || 'rocks');
+    const color = p.color || null;
+    const garnishes = Array.isArray(p.garnish) ? p.garnish : [];
+    const extrasArr = Array.isArray(p.extras) ? p.extras : [];
+    const extSet = new Set(extrasArr);
+
+    const layers = [
+      vessel(vid),
+      liquid(vid, color),
+      float_(vid, color, p.float || null),
+      ice_(p.ice || null, vid),
+      vesselMask(vid),
+      garnishes.map((g,i) => garnish(g, vid, i)).join(''),
+      citrus_(p.citrus || null, vid),
+      extras_(extSet, vid),
+      rimCover(vid),
+    ].join('');
+
+    // Scale: compositor draws at 180×230. Scale to requested size.
+    const sx = w / 180, sy = h / 230;
+    const scale = Math.min(sx, sy);
+    const tx = (w - 180*scale)/2, ty = (h - 230*scale)/2;
+
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="overflow:visible">${DEFS}<g transform="translate(${tx},${ty}) scale(${scale})">${layers}</g></svg>`;
+  }
+
+  // ── PUBLIC API ───────────────────────────────────────────────────
+  return {
+    // Card list thumbnail: 54×72
+    thumb(p){ return compose(p, 54, 72); },
+    // Detail hero: 160×205
+    hero(p){ return compose(p, 160, 205); },
+    // Arbitrary size
+    render(p, w, h){ return compose(p, w, h); },
+  };
+})();
+
+loadData();
+</script>
+</body>
+</html>

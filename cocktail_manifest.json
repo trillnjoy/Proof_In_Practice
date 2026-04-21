@@ -1,0 +1,27 @@
+{
+  "name": "The Cellar — Cocktail Library",
+  "short_name": "The Cellar",
+  "description": "A personal cocktail recipe library",
+  "start_url": "./cocktail.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#2c1f0e",
+  "theme_color": "#c17f3a",
+  "icons": [
+    {
+      "src": "./cocktail-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./cocktail-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["food", "lifestyle"],
+  "lang": "en-US"
+}
