@@ -409,14 +409,14 @@
     /* Right thumbnail placeholder — SVG drink composer or emoji fallback */
     .card-thumb {
       flex-shrink: 0;
-      width: 60px;
+      width: 68px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.8rem;
-      opacity: 0.88;
-      background: rgba(44,31,14,0.04);
-      overflow: visible;
+      background: var(--ink);
+      overflow: hidden;
+      border-left: 1px solid rgba(193,127,58,0.18);
     }
 
     /* Chevron */
@@ -885,7 +885,7 @@
       </div>
       <div class="settings-field">
         <label class="settings-label" for="gh-repo">Repository</label>
-        <input class="settings-input" type="text" id="gh-repo" placeholder="Claude_Artifacts" autocomplete="off">
+        <input class="settings-input" type="text" id="gh-repo" placeholder="Proof_In_Practice" autocomplete="off">
       </div>
       <div class="settings-field">
         <label class="settings-label" for="gh-path">Seed file path</label>
@@ -1229,7 +1229,7 @@ function showDetail(recipe) {
       <div class="detail-section-title">Method</div>
       <p class="method-text">${escHtml(recipe.method || '')}</p>
       <div class="detail-glass-tag">
-        ${glassIcon(recipe.glass)} Serve in a ${recipe.glass || 'glass'}
+        ${glassIcon(recipe.glass)} Serve in a ${(()=>{const S=new Set(['rocks','collins','highball','nick-nora','irish','tropical','julep','mule mug']);const g=recipe.glass||'glass';return S.has(g)?g+' glass':g;})()}
       </div>
     </div>
   `;
@@ -1821,7 +1821,7 @@ function openSettings() {
   const s = ghSettings();
   $('gh-token').value  = s.token  || '';
   $('gh-owner').value  = s.owner  || 'trillnjoy';
-  $('gh-repo').value   = s.repo   || 'Claude_Artifacts';
+  $('gh-repo').value   = s.repo   || 'Proof_In_Practice';
   $('gh-path').value   = s.path   || 'cocktails_seed.json';
   $('gh-branch').value = s.branch || 'main';
   settingsStatus.textContent = '';
