@@ -644,16 +644,14 @@
       margin-bottom: 16px;
     }
 
-    .inv-category {
-      margin-bottom: 18px;
-    }
+    .inv-category { margin-bottom: 28px; }
 
     .inv-cat-header {
       font-family: var(--serif-display);
       font-size: 1rem;
       font-weight: 700;
       color: var(--ink);
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -664,7 +662,6 @@
       height: 1px;
       background: var(--rule);
     }
-
     .inv-cat-count {
       font-family: var(--serif-body);
       font-size: 0.68rem;
@@ -675,21 +672,239 @@
       flex-shrink: 0;
     }
 
-    .bottle-list {
-      display: flex;
-      flex-wrap: wrap;
+    /* ─── BOTTLE GRID ─── */
+    .bottle-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
       gap: 6px;
     }
+    @media (orientation: landscape) {
+      .bottle-grid { grid-template-columns: repeat(7, 1fr); }
+    }
 
-    .bottle-tag {
-      background: var(--cream-white);
-      border: 1px solid var(--rule-light);
-      border-radius: 3px;
-      padding: 4px 10px;
+    /* Image cell (odd rows) */
+    .bottle-img-cell {
+      position: relative;
+      aspect-ratio: 1 / 2;
+      background: var(--ink);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+      border: 1px solid rgba(193,127,58,0.18);
+    }
+    .bottle-img-cell img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .bottle-silhouette {
+      width: 48%;
+      height: 80%;
+      background: #1a1008;
+      clip-path: polygon(35% 0%, 65% 0%, 70% 8%, 72% 15%, 68% 20%, 68% 78%, 75% 85%, 75% 100%, 25% 100%, 25% 85%, 32% 78%, 32% 20%, 28% 15%, 30% 8%);
+    }
+    .bottle-img-cell.has-rating::after {
+      content: attr(data-rating);
+      position: absolute;
+      bottom: 4px;
+      left: 0; right: 0;
+      text-align: center;
+      font-size: 0.55rem;
+      color: var(--amber);
+      letter-spacing: 0.05em;
+    }
+
+    /* Add cell */
+    .bottle-add-cell {
+      position: relative;
+      aspect-ratio: 1 / 2;
+      background: rgba(193,127,58,0.06);
+      border: 1px dashed rgba(193,127,58,0.35);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--amber);
+      font-size: 1.4rem;
+      transition: background 0.15s;
+    }
+    .bottle-add-cell:active { background: rgba(193,127,58,0.14); }
+
+    /* Text cell (even rows) */
+    .bottle-name-cell {
+      position: relative;
+      min-height: 38px;
+      display: flex;
+      align-items: flex-start;
+      padding: 3px 18px 3px 3px;
+    }
+    .bottle-name-text {
       font-family: var(--serif-body);
-      font-size: 0.77rem;
+      font-size: 0.68rem;
       color: var(--ink-mid);
-      line-height: 1.3;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      word-break: break-word;
+    }
+    .bottle-name-cell.empty .bottle-name-text { color: transparent; }
+
+    /* Delete overlay */
+    .bottle-delete-btn {
+      position: absolute;
+      top: 2px; right: 2px;
+      width: 16px; height: 16px;
+      background: rgba(180,50,30,0.82);
+      border: none;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 0.55rem;
+      line-height: 16px;
+      text-align: center;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ─── BOTTLE MODAL ─── */
+    #bottle-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.62);
+      z-index: 300;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    #bottle-modal-overlay.open {
+      display: flex;
+    }
+    #bottle-modal {
+      background: var(--parchment);
+      width: 100%;
+      max-width: 520px;
+      max-height: 82vh;
+      border-radius: 14px 14px 0 0;
+      overflow-y: auto;
+      padding: 20px 20px calc(var(--safe-bottom) + 20px);
+    }
+    .bm-title {
+      font-family: var(--serif-display);
+      font-size: 1.05rem;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .bm-subtitle {
+      font-family: var(--serif-body);
+      font-size: 0.72rem;
+      color: var(--ink-light);
+      font-style: italic;
+      margin-bottom: 16px;
+    }
+    .bm-section-label {
+      font-family: var(--sans);
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 6px;
+      margin-top: 14px;
+    }
+    .bm-rating {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .bm-rating-btn {
+      background: none;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 5px 10px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: var(--ink-light);
+      transition: all 0.15s;
+    }
+    .bm-rating-btn.active {
+      background: var(--amber);
+      border-color: var(--amber);
+      color: #fff;
+    }
+    .bm-textarea {
+      width: 100%;
+      min-height: 80px;
+      background: var(--cream-white);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 8px 10px;
+      font-family: var(--serif-body);
+      font-size: 0.82rem;
+      color: var(--ink);
+      resize: vertical;
+      box-sizing: border-box;
+    }
+    .bm-input {
+      width: 100%;
+      background: var(--cream-white);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 8px 10px;
+      font-family: var(--serif-body);
+      font-size: 0.82rem;
+      color: var(--ink);
+      box-sizing: border-box;
+    }
+    .bm-img-preview {
+      width: 100%;
+      max-height: 140px;
+      object-fit: contain;
+      border-radius: 4px;
+      margin-top: 8px;
+      display: none;
+    }
+    .bm-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .bm-cancel-btn {
+      flex: 1;
+      padding: 10px;
+      background: none;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      font-family: var(--serif-body);
+      font-size: 0.85rem;
+      color: var(--ink-mid);
+      cursor: pointer;
+    }
+    .bm-save-btn {
+      flex: 2;
+      padding: 10px;
+      background: var(--amber);
+      border: none;
+      border-radius: 4px;
+      font-family: var(--serif-display);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+    }
+    .bm-status {
+      font-family: var(--serif-body);
+      font-size: 0.75rem;
+      color: var(--terracotta);
+      text-align: center;
+      margin-top: 8px;
+      min-height: 1.2em;
     }
 
     /* ─── NO RESULTS ─── */
@@ -1246,17 +1461,135 @@ function showDetail(recipe) {
 /* ══════════════════════════════════════════════
    INVENTORY
 ══════════════════════════════════════════════ */
+// ── BOTTLE MODAL STATE ───────────────────────────────────────────────────────
+const BM = {
+  catIdx: null, bottleIdx: null, isNew: false,
+  rating: null,
+  open(catIdx, bottleIdx, isNew) {
+    this.catIdx = catIdx; this.bottleIdx = bottleIdx; this.isNew = isNew;
+    const cat = allInventory[catIdx];
+    const bottle = isNew ? {name:'',notes:null,rating:null,imageUrl:null} : (cat.bottles[bottleIdx] || {});
+    this.rating = bottle.rating || null;
+
+    $('bm-title').textContent = isNew ? 'Add Bottle' : (bottle.name || 'Bottle');
+    $('bm-subtitle').textContent = cat.category;
+    $('bm-notes').value = bottle.notes || '';
+    $('bm-imageurl').value = bottle.imageUrl || '';
+    this.updateRatingBtns();
+    this.updateImgPreview(bottle.imageUrl);
+    $('bm-status').textContent = '';
+
+    // If new, prompt for name
+    if (isNew) {
+      const name = prompt('Bottle name:');
+      if (!name || !name.trim()) return;
+      this._pendingName = name.trim();
+      $('bm-title').textContent = this._pendingName;
+    } else {
+      this._pendingName = null;
+    }
+
+    $('bottle-modal-overlay').classList.add('open');
+  },
+  close() {
+    $('bottle-modal-overlay').classList.remove('open');
+    this.catIdx = null; this.bottleIdx = null; this.isNew = false;
+    this._pendingName = null;
+  },
+  updateRatingBtns() {
+    document.querySelectorAll('.bm-rating-btn').forEach(b => {
+      b.classList.toggle('active', parseInt(b.dataset.v) === this.rating);
+    });
+  },
+  updateImgPreview(url) {
+    const img = $('bm-img-preview');
+    if (url && url.trim()) {
+      img.src = url.trim();
+      img.style.display = 'block';
+    } else {
+      img.style.display = 'none';
+      img.src = '';
+    }
+  },
+  async save() {
+    const cat = allInventory[this.catIdx];
+    const notes = $('bm-notes').value.trim() || null;
+    const imageUrl = $('bm-imageurl').value.trim() || null;
+    const rating = this.rating;
+
+    if (this.isNew) {
+      cat.bottles.push({name: this._pendingName, notes, rating, imageUrl});
+    } else {
+      const b = cat.bottles[this.bottleIdx];
+      b.notes = notes; b.rating = rating; b.imageUrl = imageUrl;
+    }
+
+    $('bm-status').textContent = 'Saving…';
+    const ok = await saveToGitHub();
+    if (ok) {
+      $('bm-status').textContent = 'Saved.';
+      setTimeout(() => { BM.close(); buildInventory(); }, 600);
+    } else {
+      $('bm-status').textContent = 'Save failed — check GitHub settings.';
+    }
+  }
+};
+
+// Wire modal events (called once after DOM ready)
+function initBottleModal() {
+  document.querySelectorAll('.bm-rating-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      const v = parseInt(b.dataset.v);
+      BM.rating = (BM.rating === v) ? null : v;
+      BM.updateRatingBtns();
+    });
+  });
+  $('bm-imageurl').addEventListener('input', e => BM.updateImgPreview(e.target.value));
+  $('bm-cancel-btn').addEventListener('click', () => BM.close());
+  $('bm-save-btn').addEventListener('click', () => BM.save());
+  $('bottle-modal-overlay').addEventListener('click', e => {
+    if (e.target === $('bottle-modal-overlay')) BM.close();
+  });
+}
+
 function buildInventory() {
   if (!allInventory.length) {
     inventoryCont.innerHTML = `<div class="empty-state"><span class="orn">🍾</span><p>No inventory data loaded.</p></div>`;
     return;
   }
 
-  inventoryCont.innerHTML = allInventory.map(cat => {
-    const bottles = (cat.bottles || []).map(b =>
-      `<span class="bottle-tag">${escHtml(b)}</span>`
-    ).join('');
-    const count = cat.bottles ? cat.bottles.length : 0;
+  inventoryCont.innerHTML = allInventory.map((cat, ci) => {
+    const bottles = cat.bottles || [];
+    const count = bottles.length;
+
+    // Build paired cells: image row + name row, 4-across (7 landscape via CSS)
+    // We need one extra slot for the (+) add cell
+    const slots = [...bottles, '__add__'];
+    const imgCells = slots.map((b, bi) => {
+      if (b === '__add__') {
+        return `<div class="bottle-add-cell" data-ci="${ci}" data-action="add" title="Add bottle">+</div>`;
+      }
+      const hasImg = b.imageUrl && b.imageUrl.trim();
+      const ratingStr = b.rating ? '$'.repeat(b.rating) : '';
+      return `<div class="bottle-img-cell${ratingStr ? ' has-rating' : ''}"
+        data-ci="${ci}" data-bi="${bi}" data-action="modal"
+        ${ratingStr ? `data-rating="${ratingStr}"` : ''}
+        title="${escHtml(b.name)}">
+        ${hasImg
+          ? `<img src="${escHtml(b.imageUrl)}" alt="${escHtml(b.name)}" loading="lazy">`
+          : `<div class="bottle-silhouette"></div>`}
+      </div>`;
+    }).join('');
+
+    const nameCells = slots.map((b, bi) => {
+      if (b === '__add__') {
+        return `<div class="bottle-name-cell empty"><span class="bottle-name-text"></span></div>`;
+      }
+      return `<div class="bottle-name-cell">
+        <span class="bottle-name-text">${escHtml(b.name)}</span>
+        <button class="bottle-delete-btn" data-ci="${ci}" data-bi="${bi}" data-action="delete" title="Remove">×</button>
+      </div>`;
+    }).join('');
 
     return `
       <div class="inv-category">
@@ -1264,12 +1597,35 @@ function buildInventory() {
           ${escHtml(cat.category)}
           <span class="inv-cat-count">${count} bottle${count !== 1 ? 's' : ''}</span>
         </div>
-        <div class="bottle-list">
-          ${bottles || '<span style="font-style:italic;color:var(--ink-light);font-size:0.8rem">—</span>'}
-        </div>
+        <div class="bottle-grid">${imgCells}</div>
+        <div class="bottle-grid" style="margin-top:6px">${nameCells}</div>
       </div>
     `;
   }).join('');
+
+  // Event delegation on inventory container
+  inventoryCont.onclick = e => {
+    const el = e.target.closest('[data-action]');
+    if (!el) return;
+    const action = el.dataset.action;
+    const ci = parseInt(el.dataset.ci);
+    const bi = parseInt(el.dataset.bi);
+
+    if (action === 'modal') {
+      BM.open(ci, bi, false);
+    } else if (action === 'add') {
+      BM.open(ci, null, true);
+    } else if (action === 'delete') {
+      const bname = allInventory[ci].bottles[bi]?.name || 'this bottle';
+      if (confirm(`Remove "${bname}" from ${allInventory[ci].category}?`)) {
+        allInventory[ci].bottles.splice(bi, 1);
+        saveToGitHub().then(ok => {
+          if (!ok) alert('Removed locally but GitHub save failed — check settings.');
+        });
+        buildInventory();
+      }
+    }
+  };
 }
 
 /* ══════════════════════════════════════════════
@@ -2008,8 +2364,52 @@ function openEditor(recipe) {
 $('editor-cancel-btn').addEventListener('click', closeEditor);
 
 /* ══════════════════════════════════════════════
-   GITHUB WRITE-BACK
+   GITHUB WRITE-BACK — SHARED
 ══════════════════════════════════════════════ */
+
+// Shared GitHub write: fetches seed, calls patchFn(seed) to mutate it, PUTs back.
+// Returns true on success, false on failure.
+async function saveToGitHub(patchFn, commitMsg) {
+  const s = ghSettings();
+  if (!s.token || !s.owner || !s.repo || !s.path) return false;
+
+  const apiBase = `https://api.github.com/repos/${s.owner}/${s.repo}/contents/${s.path}`;
+  const headers = {
+    'Authorization': `Bearer ${s.token}`,
+    'Accept': 'application/vnd.github.v3+json',
+    'Content-Type': 'application/json',
+  };
+
+  try {
+    const getRes = await fetch(`${apiBase}?ref=${s.branch||'main'}`, { headers });
+    if (!getRes.ok) throw new Error(`GitHub GET ${getRes.status}: ${await getRes.text()}`);
+    const fileData = await getRes.json();
+    const sha = fileData.sha;
+
+    const decoded = atob(fileData.content.replace(/\n/g,''));
+    const seed = JSON.parse(decoded);
+
+    patchFn(seed);
+
+    const newContent = btoa(unescape(encodeURIComponent(JSON.stringify(seed, null, 2))));
+    const putRes = await fetch(apiBase, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({
+        message: commitMsg || 'Update seed',
+        content: newContent,
+        sha,
+        branch: s.branch || 'main',
+      }),
+    });
+    if (!putRes.ok) throw new Error(`GitHub PUT ${putRes.status}: ${await putRes.text()}`);
+    return true;
+  } catch(err) {
+    console.error('saveToGitHub:', err);
+    return false;
+  }
+}
+
 async function savePresentation() {
   const saveBtn = $('editor-save-btn');
   const s = ghSettings();
@@ -2020,70 +2420,33 @@ async function savePresentation() {
   }
 
   saveBtn.disabled = true;
-  editorStatus.textContent = 'Fetching seed…';
+  editorStatus.textContent = 'Saving…';
 
-  const apiBase = `https://api.github.com/repos/${s.owner}/${s.repo}/contents/${s.path}`;
-  const headers = {
-    'Authorization': `Bearer ${s.token}`,
-    'Accept': 'application/vnd.github.v3+json',
-    'Content-Type': 'application/json',
+  const newPresentation = {
+    vessel:  ES.vessel,
+    color:   ES.color   || null,
+    float:   ES.float   || null,
+    ice:     ES.ice     || null,
+    citrus:  ES.citrus  || null,
+    garnish: [...ES.garnish],
+    extras:  [...ES.extras],
   };
 
-  try {
-    // 1. Fetch current file to get SHA and content
-    const getRes = await fetch(`${apiBase}?ref=${s.branch||'main'}`, { headers });
-    if (!getRes.ok) throw new Error(`GitHub GET ${getRes.status}: ${await getRes.text()}`);
-    const fileData = await getRes.json();
-    const sha = fileData.sha;
-
-    // 2. Decode, parse, patch
-    const decoded = atob(fileData.content.replace(/\n/g,''));
-    const seed = JSON.parse(decoded);
+  const ok = await saveToGitHub(seed => {
     const recipeIndex = seed.recipes.findIndex(r => r.name === editorRecipe.name);
     if (recipeIndex === -1) throw new Error(`Recipe "${editorRecipe.name}" not found in seed.`);
-
-    const newPresentation = {
-      vessel:  ES.vessel,
-      color:   ES.color   || null,
-      float:   ES.float   || null,
-      ice:     ES.ice     || null,
-      citrus:  ES.citrus  || null,
-      garnish: [...ES.garnish],
-      extras:  [...ES.extras],
-    };
     seed.recipes[recipeIndex].presentation = newPresentation;
+  }, `Update visual: ${editorRecipe.name}`);
 
-    // 3. Encode and PUT
-    editorStatus.textContent = 'Saving to GitHub…';
-    const newContent = btoa(unescape(encodeURIComponent(JSON.stringify(seed, null, 2))));
-    const putRes = await fetch(apiBase, {
-      method: 'PUT',
-      headers,
-      body: JSON.stringify({
-        message: `Update visual: ${editorRecipe.name}`,
-        content: newContent,
-        sha,
-        branch: s.branch || 'main',
-      }),
-    });
-    if (!putRes.ok) throw new Error(`GitHub PUT ${putRes.status}: ${await putRes.text()}`);
-
-    // 4. Update in-memory state
+  if (ok) {
     editorRecipe.presentation = newPresentation;
     const idx = allRecipes.findIndex(r => r.name === editorRecipe.name);
     if (idx !== -1) allRecipes[idx].presentation = newPresentation;
-
     editorStatus.textContent = 'Saved ✓';
     saveBtn.disabled = false;
-
-    // Re-render the detail view to reflect new presentation
-    setTimeout(() => {
-      closeEditor();
-      showDetail(editorRecipe);
-    }, 700);
-
-  } catch(err) {
-    editorStatus.textContent = `Error: ${err.message}`;
+    setTimeout(() => { closeEditor(); showDetail(editorRecipe); }, 700);
+  } else {
+    editorStatus.textContent = 'Error saving to GitHub — check settings.';
     saveBtn.disabled = false;
   }
 }
@@ -2092,6 +2455,36 @@ $('editor-save-btn').addEventListener('click', savePresentation);
 
 
 loadData();
+initBottleModal();
 </script>
+  <!-- ── BOTTLE MODAL ── -->
+  <div id="bottle-modal-overlay">
+    <div id="bottle-modal">
+      <div class="bm-title" id="bm-title">Bottle</div>
+      <div class="bm-subtitle" id="bm-subtitle"></div>
+
+      <div class="bm-section-label">Rating</div>
+      <div class="bm-rating" id="bm-rating">
+        <button class="bm-rating-btn" data-v="1">$</button>
+        <button class="bm-rating-btn" data-v="2">$$</button>
+        <button class="bm-rating-btn" data-v="3">$$$</button>
+        <button class="bm-rating-btn" data-v="4">$$$$</button>
+      </div>
+
+      <div class="bm-section-label">Tasting Notes</div>
+      <textarea class="bm-textarea" id="bm-notes" placeholder="Aroma, palate, finish…"></textarea>
+
+      <div class="bm-section-label">Bottle Image URL</div>
+      <input class="bm-input" type="url" id="bm-imageurl" placeholder="https://…">
+      <img class="bm-img-preview" id="bm-img-preview" alt="Bottle preview">
+
+      <div class="bm-actions">
+        <button class="bm-cancel-btn" id="bm-cancel-btn">Cancel</button>
+        <button class="bm-save-btn" id="bm-save-btn">Save</button>
+      </div>
+      <div class="bm-status" id="bm-status"></div>
+    </div>
+  </div>
+
 </body>
 </html>
