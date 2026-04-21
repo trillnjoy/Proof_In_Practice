@@ -557,6 +557,75 @@
       margin-bottom: 20px;
     }
 
+    /* ─── EDIT VISUAL BUTTON ─── */
+    .edit-visual-btn {
+      position: absolute;
+      top: 14px; right: 14px;
+      background: rgba(193,127,58,0.15);
+      border: 1px solid rgba(193,127,58,0.4);
+      border-radius: 4px;
+      color: var(--amber);
+      font-family: var(--serif-body);
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .edit-visual-btn:hover { background: rgba(193,127,58,0.28); border-color: var(--amber); }
+
+    /* ─── SETTINGS DRAWER ─── */
+    #settings-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:200; }
+    #settings-overlay.open { display:block; }
+    #settings-drawer {
+      position:absolute; bottom:0; left:0; right:0;
+      background:var(--ink); border-top:2px solid var(--amber);
+      border-radius:12px 12px 0 0;
+      padding:20px 20px calc(var(--safe-bottom) + 20px);
+      max-width:500px; margin:0 auto;
+    }
+    .settings-title { font-family:var(--serif-display); font-size:0.78rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--amber); margin-bottom:16px; }
+    .settings-field { margin-bottom:12px; }
+    .settings-label { display:block; font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--rule); margin-bottom:5px; }
+    .settings-input { width:100%; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.18); border-radius:4px; color:var(--parchment); font-family:monospace; font-size:0.78rem; padding:8px 10px; }
+    .settings-input:focus { outline:none; border-color:var(--amber); }
+    .settings-hint { font-size:0.6rem; color:var(--ink-light); font-style:italic; margin-top:4px; }
+    .settings-btn-row { display:flex; gap:8px; margin-top:16px; }
+    .settings-save-btn { flex:1; background:var(--amber); border:none; border-radius:4px; color:var(--ink); font-family:var(--serif-body); font-size:0.72rem; font-weight:600; letter-spacing:0.08em; padding:10px; cursor:pointer; }
+    .settings-cancel-btn { background:transparent; border:1px solid rgba(255,255,255,0.2); border-radius:4px; color:var(--rule); font-family:var(--serif-body); font-size:0.72rem; padding:10px 16px; cursor:pointer; }
+    #settings-status { font-size:0.65rem; color:var(--amber); font-style:italic; min-height:1em; margin-top:8px; text-align:center; }
+
+    /* ─── IN-APP VISUAL EDITOR ─── */
+    #visual-editor { display:none; background:#1a1008; border-top:2px solid var(--amber); }
+    #visual-editor.open { display:block; }
+    .editor-header { display:flex; align-items:center; justify-content:space-between; padding:10px 14px 8px; border-bottom:1px solid rgba(255,255,255,0.1); }
+    .editor-title { font-family:var(--serif-display); font-size:0.65rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--amber); }
+    .editor-btn-row { display:flex; gap:6px; }
+    .editor-save-btn { background:var(--amber); border:none; border-radius:3px; color:var(--ink); font-family:var(--serif-body); font-size:0.6rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; padding:5px 12px; cursor:pointer; }
+    .editor-save-btn:disabled { opacity:0.45; cursor:not-allowed; }
+    .editor-cancel-btn { background:transparent; border:1px solid rgba(255,255,255,0.2); border-radius:3px; color:#c8b898; font-family:var(--serif-body); font-size:0.6rem; padding:5px 10px; cursor:pointer; }
+    .editor-body { display:flex; gap:0; height:265px; overflow:hidden; }
+    .editor-preview { flex-shrink:0; width:118px; display:flex; align-items:center; justify-content:center; background:#1a1008; border-right:1px solid rgba(255,255,255,0.08); overflow:visible; }
+    .editor-controls { flex:1; overflow-y:auto; padding:8px 10px 12px; scrollbar-width:none; }
+    .editor-controls::-webkit-scrollbar { display:none; }
+    .ec-section { margin-bottom:9px; }
+    .ec-label { font-size:0.5rem; letter-spacing:0.18em; text-transform:uppercase; color:#c17f3a; margin-bottom:4px; }
+    .ec-row { display:flex; flex-wrap:wrap; gap:3px; }
+    .ec-btn { display:flex; flex-direction:column; align-items:center; gap:2px; background:#2a1a08; border:1.5px solid rgba(255,255,255,0.15); border-radius:4px; padding:4px 3px 3px; cursor:pointer; width:42px; -webkit-tap-highlight-color:transparent; }
+    .ec-btn:hover { border-color:#c17f3a; }
+    .ec-btn.active { background:#f5efe0 !important; border-color:#f5efe0 !important; }
+    .ec-btn.active .ec-btn-label { color:#2c1f0e !important; }
+    .ec-btn svg { width:22px; height:22px; }
+    .ec-btn-label { font-size:0.4rem; letter-spacing:0.04em; text-transform:uppercase; text-align:center; color:#c8b898; line-height:1.2; white-space:pre-line; }
+    .ec-color-row { display:flex; align-items:center; gap:5px; }
+    .ec-color-clear { background:#2a1a08; border:1.5px solid rgba(255,255,255,0.2); border-radius:4px; color:#c8b898; font-size:0.5rem; letter-spacing:0.08em; text-transform:uppercase; padding:5px 7px; cursor:pointer; white-space:nowrap; }
+    .ec-color-clear.active { background:#f5efe0 !important; color:#2c1f0e !important; border-color:#f5efe0 !important; }
+    input.ec-color-pick { width:36px; height:26px; border:1.5px solid rgba(255,255,255,0.18); border-radius:4px; background:none; cursor:pointer; padding:2px; flex-shrink:0; }
+    .ec-color-hex { font-size:0.56rem; color:#a08060; font-family:monospace; }
+    .ec-float-select { background:#2a1a08; border:1.5px solid rgba(255,255,255,0.2); border-radius:4px; color:#c8b898; font-size:0.56rem; padding:4px 5px; width:100%; }
+    #editor-status { font-size:0.6rem; color:#c17f3a; font-style:italic; text-align:center; padding:3px 0 2px; min-height:1.3em; background:#1a1008; border-top:1px solid rgba(255,255,255,0.06); }
+
     /* ─── BAR INVENTORY ─── */
     #inventory-view { padding: 16px 16px calc(var(--safe-bottom) + 16px); }
 
@@ -728,6 +797,7 @@
   <header id="header">
     <div class="header-inner">
       <button id="back-btn" aria-label="Back">←</button>
+      <button id="settings-btn" aria-label="Settings" style="display:none;background:none;border:none;color:var(--amber);font-size:1.1rem;padding:4px 8px;cursor:pointer;flex-shrink:0;">⚙</button>
       <div id="app-title"></div>
       <div id="app-subtitle"></div>
       <div class="logo-wrap" id="logo-wrap">
@@ -797,6 +867,93 @@
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
   </footer>
+
+
+  <!-- ── SETTINGS DRAWER ── -->
+  <div id="settings-overlay">
+    <div id="settings-drawer">
+      <div class="settings-title">GitHub Sync Settings</div>
+      <div class="settings-field">
+        <label class="settings-label" for="gh-token">Personal Access Token</label>
+        <input class="settings-input" type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
+        <div class="settings-hint">Needs repo scope. Stored in this browser only.</div>
+      </div>
+      <div class="settings-field">
+        <label class="settings-label" for="gh-owner">Owner</label>
+        <input class="settings-input" type="text" id="gh-owner" placeholder="trillnjoy" autocomplete="off">
+      </div>
+      <div class="settings-field">
+        <label class="settings-label" for="gh-repo">Repository</label>
+        <input class="settings-input" type="text" id="gh-repo" placeholder="Claude_Artifacts" autocomplete="off">
+      </div>
+      <div class="settings-field">
+        <label class="settings-label" for="gh-path">Seed file path</label>
+        <input class="settings-input" type="text" id="gh-path" placeholder="cocktails_seed.json" autocomplete="off">
+      </div>
+      <div class="settings-field">
+        <label class="settings-label" for="gh-branch">Branch</label>
+        <input class="settings-input" type="text" id="gh-branch" placeholder="main" autocomplete="off">
+      </div>
+      <div id="settings-status"></div>
+      <div class="settings-btn-row">
+        <button class="settings-cancel-btn" id="settings-cancel-btn">Cancel</button>
+        <button class="settings-save-btn" id="settings-save-btn">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── VISUAL EDITOR (renders inside detail view) ── -->
+  <div id="visual-editor">
+    <div class="editor-header">
+      <span class="editor-title" id="editor-recipe-name">Edit Visual</span>
+      <div class="editor-btn-row">
+        <button class="editor-cancel-btn" id="editor-cancel-btn">Cancel</button>
+        <button class="editor-save-btn" id="editor-save-btn">Save</button>
+      </div>
+    </div>
+    <div class="editor-body">
+      <div class="editor-preview">
+        <svg id="editor-preview-svg" xmlns="http://www.w3.org/2000/svg" width="108" height="138" viewBox="0 0 108 138" style="overflow:visible"></svg>
+      </div>
+      <div class="editor-controls">
+        <div class="ec-section">
+          <div class="ec-label">Vessel</div>
+          <div class="ec-row" id="ec-vessel-row"></div>
+        </div>
+        <div class="ec-section">
+          <div class="ec-label">Drink Color</div>
+          <div class="ec-color-row">
+            <button class="ec-color-clear active" id="ec-color-clear">Clear</button>
+            <input class="ec-color-pick" type="color" id="ec-color-pick" value="#8B3A2A">
+            <span class="ec-color-hex" id="ec-color-hex">—</span>
+            <select class="ec-float-select" id="ec-float-select">
+              <option value="">No float</option>
+              <option value="wine">Wine float</option>
+              <option value="rum">Rum float</option>
+            </select>
+          </div>
+        </div>
+        <div class="ec-section">
+          <div class="ec-label">Ice</div>
+          <div class="ec-row" id="ec-ice-row"></div>
+        </div>
+        <div class="ec-section">
+          <div class="ec-label">Citrus</div>
+          <div class="ec-row" id="ec-citrus-row" style="flex-wrap:wrap;"></div>
+        </div>
+        <div class="ec-section">
+          <div class="ec-label">Garnish</div>
+          <div class="ec-row" id="ec-garnish-row"></div>
+        </div>
+        <div class="ec-section">
+          <div class="ec-label">Extras</div>
+          <div class="ec-row" id="ec-extras-row"></div>
+        </div>
+      </div>
+    </div>
+    <div id="editor-status"></div>
+  </div>
+
 
 </div>
 
@@ -1059,10 +1216,11 @@ function showDetail(recipe) {
     : '';
 
   detailView.innerHTML = `
-    <div class="detail-header">
+    <div class="detail-header" style="position:relative">
       <div class="detail-glass-icon">${recipe.presentation ? DR.hero(recipe.presentation) : `<span style="font-size:2.8rem;display:block;text-align:center;padding:8px 0">${glassIcon(recipe.glass)}</span>`}</div>
       <h1 class="detail-name">${escHtml(recipe.name)}</h1>
       ${credit}
+      <button class="edit-visual-btn" id="edit-visual-btn">Edit Visual</button>
     </div>
     <div class="detail-body">
       <div class="detail-section-title">Ingredients</div>
@@ -1076,6 +1234,9 @@ function showDetail(recipe) {
   `;
 
   showView('detail');
+  // Wire edit button (exists in innerHTML so must be queried after render)
+  const evb = document.getElementById('edit-visual-btn');
+  if(evb) evb.addEventListener('click', () => openEditor(recipe));
 }
 
 /* ══════════════════════════════════════════════
@@ -1110,6 +1271,13 @@ function buildInventory() {
 /* ══════════════════════════════════════════════
    VIEW MANAGEMENT
 ══════════════════════════════════════════════ */
+function closeEditor() {
+  const ve = document.getElementById('visual-editor');
+  const es = document.getElementById('editor-status');
+  if (ve) ve.classList.remove('open');
+  if (es) es.textContent = '';
+}
+
 function showView(view) {
   currentView = view;
 
@@ -1126,6 +1294,10 @@ function showView(view) {
   backBtn.classList.toggle('visible', isDetail);
   const logoWrap = $('logo-wrap');
   if (logoWrap) logoWrap.style.display = isDetail ? 'none' : '';
+  const sbtn = $('settings-btn');
+  if (sbtn) sbtn.style.display = isDetail ? 'block' : 'none';
+  // Close editor when leaving detail view
+  if (!isDetail) closeEditor();
 
   // Header title (hidden elements, kept for any legacy refs)
   if (isDetail && detailRecipe) {
@@ -1550,6 +1722,357 @@ const DR = (() => {
     render(p, w, h){ return compose(p, w, h); },
   };
 })();
+
+
+/* ══════════════════════════════════════════════
+   VISUAL EDITOR — STATE & ICONS
+══════════════════════════════════════════════ */
+
+/* Reuse compositor icon sets — same SVG strings */
+const EVI = { /* vessel icons (32px) */
+  rocks:`<svg viewBox="0 0 32 32"><rect x="4" y="7" width="24" height="20" rx="2" fill="none" stroke="#c8a870" stroke-width="1.8"/><line x1="4" y1="11" x2="28" y2="11" stroke="#c8a870" stroke-width="1" opacity="0.45"/></svg>`,
+  collins:`<svg viewBox="0 0 32 32"><rect x="11" y="2" width="10" height="28" rx="2" fill="none" stroke="#c8a870" stroke-width="1.8"/></svg>`,
+  highball:`<svg viewBox="0 0 32 32"><rect x="9" y="3" width="14" height="25" rx="2" fill="none" stroke="#c8a870" stroke-width="1.8"/></svg>`,
+  coupe:`<svg viewBox="0 0 32 32"><path d="M2,9 Q2,22 16,24 Q30,22 30,9 Z" fill="none" stroke="#c8a870" stroke-width="1.8"/><line x1="16" y1="24" x2="16" y2="30" stroke="#c8a870" stroke-width="1.8"/><line x1="10" y1="30" x2="22" y2="30" stroke="#c8a870" stroke-width="1.8"/></svg>`,
+  martini:`<svg viewBox="0 0 32 32"><polygon points="16,24 2,5 30,5" fill="none" stroke="#c8a870" stroke-width="1.8"/><line x1="16" y1="24" x2="16" y2="30" stroke="#c8a870" stroke-width="1.8"/><line x1="10" y1="30" x2="22" y2="30" stroke="#c8a870" stroke-width="1.8"/></svg>`,
+  'nick-nora':`<svg viewBox="0 0 32 32"><path d="M6,7 L26,7 C26,7 28,20 16,24 C4,20 6,7 6,7 Z" fill="none" stroke="#c8a870" stroke-width="1.8"/><line x1="16" y1="24" x2="16" y2="29" stroke="#c8a870" stroke-width="1.8"/><line x1="10" y1="29" x2="22" y2="29" stroke="#c8a870" stroke-width="1.8"/></svg>`,
+  flute:`<svg viewBox="0 0 32 32"><path d="M8,2 L7,18 L25,18 L24,2 Z" fill="none" stroke="#c8a870" stroke-width="1.8"/><line x1="16" y1="18" x2="16" y2="30" stroke="#c8a870" stroke-width="1.8"/><line x1="10" y1="30" x2="22" y2="30" stroke="#c8a870" stroke-width="1.8"/></svg>`,
+  snifter:`<svg viewBox="0 0 32 32"><path d="M4,8 Q2,21 9,26 Q16,30 23,26 Q30,21 28,8 Z" fill="none" stroke="#c8a870" stroke-width="1.8"/><line x1="16" y1="26" x2="16" y2="31" stroke="#c8a870" stroke-width="2.2"/><ellipse cx="16" cy="32" rx="4" ry="1.2" fill="#c8a870" opacity="0.38"/></svg>`,
+  irish:`<svg viewBox="0 0 32 32"><rect x="9" y="4" width="14" height="24" rx="3" fill="none" stroke="#c8a870" stroke-width="1.8"/><path d="M23,10 Q29,13 29,18 Q29,23 23,25" fill="none" stroke="#c8a870" stroke-width="1.6"/></svg>`,
+  tropical:`<svg viewBox="0 0 32 32"><path d="M8,8 Q6,18 8,27 Q16,31 24,27 Q26,18 24,8 Q16,5 8,8 Z" fill="none" stroke="#c8a870" stroke-width="1.8"/></svg>`,
+  julep:`<svg viewBox="0 0 32 32"><path d="M6,6 L7,27 L25,27 L26,6 Z" fill="none" stroke="#c8a870" stroke-width="1.8"/><line x1="6" y1="6" x2="26" y2="6" stroke="#c8a870" stroke-width="2.2"/></svg>`,
+  mule:`<svg viewBox="0 0 32 32"><path d="M6,5 Q3,18 5,27 L27,27 Q29,18 26,5 Z" fill="#c86820" stroke="#7a3a10" stroke-width="1.5"/><path d="M6,5 Q16,3 26,5 Q26,8 24,9 Q16,7 8,9 Q6,8 6,5 Z" fill="#d07020"/><path d="M27,10 Q33,13 33,16 Q33,20 27,23" fill="none" stroke="#8a4010" stroke-width="1.8"/></svg>`,
+};
+const EII = {
+  huge:`<svg viewBox="0 0 32 32"><rect x="7" y="7" width="18" height="18" rx="3" fill="none" stroke="#c8a870" stroke-width="1.8"/></svg>`,
+  cubes:`<svg viewBox="0 0 32 32"><rect x="3" y="14" width="12" height="12" rx="2" fill="none" stroke="#c8a870" stroke-width="1.6"/><rect x="17" y="10" width="12" height="12" rx="2" fill="none" stroke="#c8a870" stroke-width="1.6"/></svg>`,
+  crushed:`<svg viewBox="0 0 32 32"><polygon points="9,26 4,16 11,10 15,18" fill="none" stroke="#c8a870" stroke-width="1.5"/><polygon points="22,24 17,13 25,8 29,17" fill="none" stroke="#c8a870" stroke-width="1.5"/></svg>`,
+};
+const ECI = {
+  'lemon-twist':`<svg viewBox="0 0 32 32"><path d="M6,27 C5,18 12,16 16,12 C20,8 22,5 26,5" fill="none" stroke="#e8c830" stroke-width="3" stroke-linecap="round"/></svg>`,
+  'lime-twist':`<svg viewBox="0 0 32 32"><path d="M6,27 C5,18 12,16 16,12 C20,8 22,5 26,5" fill="none" stroke="#6ab04c" stroke-width="3" stroke-linecap="round"/></svg>`,
+  'orange-twist':`<svg viewBox="0 0 32 32"><path d="M6,27 C5,18 12,16 16,12 C20,8 22,5 26,5" fill="none" stroke="#e07828" stroke-width="3" stroke-linecap="round"/></svg>`,
+  'lemon-wedge':`<svg viewBox="0 0 32 26"><path d="M2,2 A14,14 0 0,0 30,2 Z" fill="#f5df60" stroke="#c8a810" stroke-width="1.2"/><path d="M2,2 A14,14 0 0,1 30,2 L28,2 A12,12 0 0,1 4,2 Z" fill="#c8a810"/></svg>`,
+  'lime-wedge':`<svg viewBox="0 0 32 26"><path d="M2,2 A14,14 0 0,0 30,2 Z" fill="#8aca6a" stroke="#4a8030" stroke-width="1.2"/><path d="M2,2 A14,14 0 0,1 30,2 L28,2 A12,12 0 0,1 4,2 Z" fill="#4a8030"/></svg>`,
+  'orange-wedge':`<svg viewBox="0 0 32 26"><path d="M2,2 A14,14 0 0,0 30,2 Z" fill="#f0a050" stroke="#c06020" stroke-width="1.2"/><path d="M2,2 A14,14 0 0,1 30,2 L28,2 A12,12 0 0,1 4,2 Z" fill="#c06020"/></svg>`,
+  'lemon-peel':`<svg viewBox="0 0 32 32"><path d="M5,26 Q6,8 14,5 Q22,5 27,6 Q26,12 18,14 Q10,16 5,26 Z" fill="#e8c830" stroke="#c8a810" stroke-width="1"/></svg>`,
+  'lime-peel':`<svg viewBox="0 0 32 32"><path d="M5,26 Q6,8 14,5 Q22,5 27,6 Q26,12 18,14 Q10,16 5,26 Z" fill="#6ab04c" stroke="#4a8030" stroke-width="1"/></svg>`,
+  'orange-peel':`<svg viewBox="0 0 32 32"><path d="M5,26 Q6,8 14,5 Q22,5 27,6 Q26,12 18,14 Q10,16 5,26 Z" fill="#e07828" stroke="#a05010" stroke-width="1"/></svg>`,
+};
+const EGA = {
+  cherry:`<svg viewBox="0 0 32 32"><circle cx="16" cy="22" r="8" fill="#4a0a0a" stroke="#2a0505" stroke-width="1.2"/><path d="M16,14 Q14,6 10,4" fill="none" stroke="#3a5020" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+  strawberry:`<svg viewBox="0 0 32 32"><path d="M5,12 Q5,26 16,28 Q27,26 27,12 Q22,8 16,8 Q10,8 5,12 Z" fill="#d94040" stroke="#a02020" stroke-width="1"/><path d="M10,10 Q8,4 12,5 Q13,2 16,4 Q19,2 20,5 Q24,4 22,10" fill="#3a7a20" stroke="#2a5a10" stroke-width="0.8"/></svg>`,
+  olive:`<svg viewBox="0 0 32 32"><line x1="4" y1="28" x2="28" y2="4" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/><ellipse cx="10" cy="22" rx="5" ry="6.5" fill="#6b9e52" stroke="#4a7030" stroke-width="1" transform="rotate(-45,10,22)"/><ellipse cx="22" cy="10" rx="5" ry="6.5" fill="#6b9e52" stroke="#4a7030" stroke-width="1" transform="rotate(-45,22,10)"/></svg>`,
+  celery:`<svg viewBox="0 0 32 32"><rect x="12" y="6" width="8" height="20" rx="1" fill="#7ab840" stroke="#4a8020" stroke-width="1"/><path d="M10,8 Q7,4 10,2 Q12,4 12,6" fill="#5a9e2a"/><path d="M20,8 Q23,4 26,5 Q26,8 22,9" fill="#5a9e2a"/></svg>`,
+  'pineapple-wedge':`<svg viewBox="0 0 32 32"><path d="M2,8 A14,14 0 0 1 30,8 Z" fill="#f5c830" stroke="#8a5a08" stroke-width="1.2"/><path d="M2,8 A14,14 0 0 1 30,8 L28,8 A12,12 0 0 0 4,8 Z" fill="#8a5a08"/></svg>`,
+  'cucumber-slice':`<svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="13" fill="#81c784" stroke="#4caf50" stroke-width="1.4"/><circle cx="16" cy="16" r="8" fill="#a5d6a7"/><circle cx="16" cy="16" r="4" fill="#c8e6c9"/></svg>`,
+};
+const EEX = {
+  umbrella:`<svg viewBox="0 0 32 32"><path d="M16,2 Q4,12 4,20 Q10,18 16,20 Q22,18 28,20 Q28,12 16,2 Z" fill="#4fc3f7" stroke="#0288d1" stroke-width="1"/><line x1="16" y1="20" x2="16" y2="31" stroke="#0288d1" stroke-width="1.4" stroke-linecap="round"/></svg>`,
+  'salted-rim':`<svg viewBox="0 0 32 32"><rect x="3" y="12" width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.85)" transform="rotate(15,5,14)"/><rect x="10" y="8" width="5" height="5" rx="0.5" fill="rgba(255,255,255,0.75)" transform="rotate(-8,12,10)"/><rect x="18" y="9" width="4" height="3" rx="0.5" fill="rgba(255,255,255,0.9)" transform="rotate(20,20,10)"/><rect x="25" y="12" width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.8)" transform="rotate(-12,27,14)"/><ellipse cx="16" cy="14" rx="14" ry="3.5" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/></svg>`,
+  'tajin-rim':`<svg viewBox="0 0 32 32"><rect x="3" y="12" width="4" height="3" rx="0.5" fill="#d04020" transform="rotate(10,5,13)"/><rect x="10" y="8" width="3" height="3" rx="0.5" fill="#e05028" transform="rotate(-5,11,9)"/><rect x="17" y="9" width="4" height="3" rx="0.5" fill="#c83018" transform="rotate(18,19,10)"/><rect x="24" y="12" width="3" height="4" rx="0.5" fill="#d84020" transform="rotate(-10,25,14)"/><ellipse cx="16" cy="14" rx="14" ry="3.5" fill="none" stroke="rgba(200,60,20,0.4)" stroke-width="1"/></svg>`,
+  straw:`<svg viewBox="0 0 32 32"><rect x="14" y="1" width="5" height="30" rx="2.5" fill="#4caf50" stroke="#2e7d32" stroke-width="0.8"/></svg>`,
+  'whipped-cream':`<svg viewBox="0 0 32 32"><path d="M3,22 Q3,18 7,18 Q7,13 11,14 Q11,9 16,9 Q21,9 21,14 Q25,13 25,18 Q29,18 29,22 Z" fill="white" stroke="#ddd" stroke-width="0.8"/></svg>`,
+  'mint-sprig':`<svg viewBox="0 0 32 32"><line x1="16" y1="30" x2="16" y2="10" stroke="#2e7d32" stroke-width="1.4"/><path d="M16,20 C12,20 8,17 9,13 C10,9 14,10 16,12 Z" fill="#2e7d32"/><path d="M16,15 C20,14 24,11 23,7 C22,4 18,5 16,8 Z" fill="#2e7d32"/></svg>`,
+};
+
+const ED_VESSELS = [
+  {id:'rocks',label:'Rocks'},{id:'collins',label:'Collins'},{id:'highball',label:'Highball'},
+  {id:'coupe',label:'Coupe'},{id:'martini',label:'Martini'},{id:'nick-nora',label:'Nick & Nora'},
+  {id:'flute',label:'Flute'},{id:'snifter',label:'Snifter'},
+  {id:'irish',label:'Irish'},{id:'tropical',label:'Tropical'},{id:'julep',label:'Julep'},{id:'mule',label:'Mule'},
+];
+const ED_ICE = [{id:'huge',label:'Huge'},{id:'cubes',label:'Cubes'},{id:'crushed',label:'Crushed'}];
+const ED_CITRUS = [
+  {id:'lemon-twist',label:'Lemon Twist'},{id:'lemon-wedge',label:'Lemon Wedge'},{id:'lemon-peel',label:'Lemon Peel'},
+  {id:'lime-twist',label:'Lime Twist'},{id:'lime-wedge',label:'Lime Wedge'},{id:'lime-peel',label:'Lime Peel'},
+  {id:'orange-twist',label:'Orange Twist'},{id:'orange-wedge',label:'Orange Wedge'},{id:'orange-peel',label:'Orange Peel'},
+];
+const ED_GARNISHES = [
+  {id:'cherry',label:'Cherry'},{id:'strawberry',label:'Berry'},{id:'olive',label:'Olive'},
+  {id:'celery',label:'Celery'},{id:'pineapple-wedge',label:'Pineapple'},{id:'cucumber-slice',label:'Cucumber'},
+];
+const ED_EXTRAS = [
+  {id:'umbrella',label:'Umbrella'},{id:'salted-rim',label:'Salted Rim'},{id:'tajin-rim',label:'Tajin Rim'},
+  {id:'straw',label:'Straw'},{id:'whipped-cream',label:'Cream'},{id:'mint-sprig',label:'Mint'},
+];
+
+// Editor working state
+let ES = { vessel:'rocks', color:null, float:null, ice:null, citrus:null, garnish:new Set(), extras:new Set() };
+let editorRecipe = null;
+
+/* ══════════════════════════════════════════════
+   SETTINGS — PERSISTENCE
+══════════════════════════════════════════════ */
+const GH_KEY = 'cellar_gh_settings';
+function ghSettings() {
+  try { return JSON.parse(localStorage.getItem(GH_KEY)||'{}'); } catch { return {}; }
+}
+function saveGhSettings(s) { localStorage.setItem(GH_KEY, JSON.stringify(s)); }
+
+const settingsOverlay = $('settings-overlay');
+const settingsBtn     = $('settings-btn');
+const settingsCancelBtn = $('settings-cancel-btn');
+const settingsSaveBtn   = $('settings-save-btn');
+const settingsStatus    = $('settings-status');
+
+function openSettings() {
+  const s = ghSettings();
+  $('gh-token').value  = s.token  || '';
+  $('gh-owner').value  = s.owner  || 'trillnjoy';
+  $('gh-repo').value   = s.repo   || 'Claude_Artifacts';
+  $('gh-path').value   = s.path   || 'cocktails_seed.json';
+  $('gh-branch').value = s.branch || 'main';
+  settingsStatus.textContent = '';
+  settingsOverlay.classList.add('open');
+}
+function closeSettings() { settingsOverlay.classList.remove('open'); }
+
+settingsBtn.addEventListener('click', openSettings);
+settingsCancelBtn.addEventListener('click', closeSettings);
+settingsOverlay.addEventListener('click', e => { if(e.target===settingsOverlay) closeSettings(); });
+settingsSaveBtn.addEventListener('click', () => {
+  const s = {
+    token:  $('gh-token').value.trim(),
+    owner:  $('gh-owner').value.trim(),
+    repo:   $('gh-repo').value.trim(),
+    path:   $('gh-path').value.trim(),
+    branch: $('gh-branch').value.trim() || 'main',
+  };
+  if(!s.token||!s.owner||!s.repo||!s.path){ settingsStatus.textContent='All fields required.'; return; }
+  saveGhSettings(s);
+  settingsStatus.textContent='Saved ✓';
+  setTimeout(closeSettings, 800);
+});
+
+/* ══════════════════════════════════════════════
+   EDITOR — RENDER PREVIEW
+══════════════════════════════════════════════ */
+function edRender() {
+  // Map martini → cocktail for DR engine
+  const pForDR = {...ES, vessel: ES.vessel==='martini'?'cocktail':ES.vessel, garnish:[...ES.garnish], extras:[...ES.extras]};
+  const svg = DR.render(pForDR, 108, 138);
+  // Extract inner content and inject into editor SVG
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(svg, 'image/svg+xml');
+  const srcSvg = doc.querySelector('svg');
+  const edSvg = $('editor-preview-svg');
+  // Copy viewBox and content
+  edSvg.setAttribute('viewBox', srcSvg.getAttribute('viewBox') || '0 0 108 138');
+  edSvg.innerHTML = srcSvg.innerHTML;
+}
+
+/* ══════════════════════════════════════════════
+   EDITOR — BUILD CONTROLS
+══════════════════════════════════════════════ */
+function ecBtn(item, iconMap, isActive, onClick) {
+  const b = document.createElement('button');
+  b.className = 'ec-btn' + (isActive ? ' active' : '');
+  b.dataset.id = item.id;
+  b.innerHTML = `<span>${iconMap[item.id]||''}</span><span class="ec-btn-label">${item.label}</span>`;
+  b.addEventListener('click', onClick);
+  return b;
+}
+
+function buildEditorControls() {
+  // Vessels (single select, cannot deselect)
+  const vRow = $('ec-vessel-row');
+  vRow.innerHTML = '';
+  ED_VESSELS.forEach(item => {
+    const b = ecBtn(item, EVI, ES.vessel===item.id, () => {
+      ES.vessel = item.id;
+      vRow.querySelectorAll('.ec-btn').forEach(x => x.classList.toggle('active', x.dataset.id===item.id));
+      edRender();
+    });
+    vRow.appendChild(b);
+  });
+
+  // Ice (single toggle)
+  const iRow = $('ec-ice-row');
+  iRow.innerHTML = '';
+  ED_ICE.forEach(item => {
+    const b = ecBtn(item, EII, ES.ice===item.id, () => {
+      ES.ice = ES.ice===item.id ? null : item.id;
+      iRow.querySelectorAll('.ec-btn').forEach(x => x.classList.toggle('active', x.dataset.id===ES.ice));
+      edRender();
+    });
+    iRow.appendChild(b);
+  });
+
+  // Citrus (single toggle)
+  const cRow = $('ec-citrus-row');
+  cRow.innerHTML = '';
+  ED_CITRUS.forEach(item => {
+    const b = ecBtn(item, ECI, ES.citrus===item.id, () => {
+      ES.citrus = ES.citrus===item.id ? null : item.id;
+      cRow.querySelectorAll('.ec-btn').forEach(x => x.classList.toggle('active', x.dataset.id===ES.citrus));
+      edRender();
+    });
+    cRow.appendChild(b);
+  });
+
+  // Garnishes (multi)
+  const gRow = $('ec-garnish-row');
+  gRow.innerHTML = '';
+  ED_GARNISHES.forEach(item => {
+    const b = ecBtn(item, EGA, ES.garnish.has(item.id), () => {
+      ES.garnish.has(item.id) ? ES.garnish.delete(item.id) : ES.garnish.add(item.id);
+      b.classList.toggle('active', ES.garnish.has(item.id));
+      edRender();
+    });
+    gRow.appendChild(b);
+  });
+
+  // Extras (multi)
+  const eRow = $('ec-extras-row');
+  eRow.innerHTML = '';
+  ED_EXTRAS.forEach(item => {
+    const b = ecBtn(item, EEX, ES.extras.has(item.id), () => {
+      ES.extras.has(item.id) ? ES.extras.delete(item.id) : ES.extras.add(item.id);
+      b.classList.toggle('active', ES.extras.has(item.id));
+      edRender();
+    });
+    eRow.appendChild(b);
+  });
+
+  // Color
+  const colorPick = $('ec-color-pick');
+  const colorClear = $('ec-color-clear');
+  const colorHex = $('ec-color-hex');
+  const floatSel = $('ec-float-select');
+
+  colorPick.value = ES.color || '#8B3A2A';
+  colorHex.textContent = ES.color || '—';
+  colorClear.classList.toggle('active', !ES.color);
+  floatSel.value = ES.float || '';
+
+  colorPick.oninput = e => {
+    ES.color = e.target.value;
+    colorHex.textContent = e.target.value;
+    colorClear.classList.remove('active');
+    edRender();
+  };
+  colorClear.onclick = () => {
+    ES.color = null;
+    colorHex.textContent = '—';
+    colorClear.classList.add('active');
+    edRender();
+  };
+  floatSel.onchange = e => { ES.float = e.target.value || null; edRender(); };
+}
+
+/* ══════════════════════════════════════════════
+   EDITOR — OPEN / CLOSE
+══════════════════════════════════════════════ */
+const visualEditor = $('visual-editor');
+const editorStatus = $('editor-status');
+
+function openEditor(recipe) {
+  editorRecipe = recipe;
+  const p = recipe.presentation || {};
+  ES = {
+    vessel:  p.vessel  || recipe.glass || 'rocks',
+    color:   p.color   || null,
+    float:   p.float   || null,
+    ice:     p.ice     || null,
+    citrus:  p.citrus  || null,
+    garnish: new Set(Array.isArray(p.garnish) ? p.garnish : []),
+    extras:  new Set(Array.isArray(p.extras)  ? p.extras  : []),
+  };
+  $('editor-recipe-name').textContent = recipe.name;
+  editorStatus.textContent = '';
+  buildEditorControls();
+  edRender();
+  visualEditor.classList.add('open');
+  // Scroll editor into view
+  visualEditor.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+$('editor-cancel-btn').addEventListener('click', closeEditor);
+
+/* ══════════════════════════════════════════════
+   GITHUB WRITE-BACK
+══════════════════════════════════════════════ */
+async function savePresentation() {
+  const saveBtn = $('editor-save-btn');
+  const s = ghSettings();
+  if (!s.token || !s.owner || !s.repo || !s.path) {
+    editorStatus.textContent = 'Configure GitHub settings first (⚙).';
+    openSettings();
+    return;
+  }
+
+  saveBtn.disabled = true;
+  editorStatus.textContent = 'Fetching seed…';
+
+  const apiBase = `https://api.github.com/repos/${s.owner}/${s.repo}/contents/${s.path}`;
+  const headers = {
+    'Authorization': `Bearer ${s.token}`,
+    'Accept': 'application/vnd.github.v3+json',
+    'Content-Type': 'application/json',
+  };
+
+  try {
+    // 1. Fetch current file to get SHA and content
+    const getRes = await fetch(`${apiBase}?ref=${s.branch||'main'}`, { headers });
+    if (!getRes.ok) throw new Error(`GitHub GET ${getRes.status}: ${await getRes.text()}`);
+    const fileData = await getRes.json();
+    const sha = fileData.sha;
+
+    // 2. Decode, parse, patch
+    const decoded = atob(fileData.content.replace(/\n/g,''));
+    const seed = JSON.parse(decoded);
+    const recipeIndex = seed.recipes.findIndex(r => r.name === editorRecipe.name);
+    if (recipeIndex === -1) throw new Error(`Recipe "${editorRecipe.name}" not found in seed.`);
+
+    const newPresentation = {
+      vessel:  ES.vessel,
+      color:   ES.color   || null,
+      float:   ES.float   || null,
+      ice:     ES.ice     || null,
+      citrus:  ES.citrus  || null,
+      garnish: [...ES.garnish],
+      extras:  [...ES.extras],
+    };
+    seed.recipes[recipeIndex].presentation = newPresentation;
+
+    // 3. Encode and PUT
+    editorStatus.textContent = 'Saving to GitHub…';
+    const newContent = btoa(unescape(encodeURIComponent(JSON.stringify(seed, null, 2))));
+    const putRes = await fetch(apiBase, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({
+        message: `Update visual: ${editorRecipe.name}`,
+        content: newContent,
+        sha,
+        branch: s.branch || 'main',
+      }),
+    });
+    if (!putRes.ok) throw new Error(`GitHub PUT ${putRes.status}: ${await putRes.text()}`);
+
+    // 4. Update in-memory state
+    editorRecipe.presentation = newPresentation;
+    const idx = allRecipes.findIndex(r => r.name === editorRecipe.name);
+    if (idx !== -1) allRecipes[idx].presentation = newPresentation;
+
+    editorStatus.textContent = 'Saved ✓';
+    saveBtn.disabled = false;
+
+    // Re-render the detail view to reflect new presentation
+    setTimeout(() => {
+      closeEditor();
+      showDetail(editorRecipe);
+    }, 700);
+
+  } catch(err) {
+    editorStatus.textContent = `Error: ${err.message}`;
+    saveBtn.disabled = false;
+  }
+}
+
+$('editor-save-btn').addEventListener('click', savePresentation);
+
 
 loadData();
 </script>
