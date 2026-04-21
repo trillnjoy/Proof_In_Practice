@@ -1353,6 +1353,7 @@ function init() {
   buildFilterChips();
   renderRecipeList();
   showView('recipes');
+  initBottleModal();
 }
 
 /* ══════════════════════════════════════════════
@@ -2629,7 +2630,7 @@ async function addNewRecipe() {
 $('add-recipe-btn').addEventListener('click', addNewRecipe);
 
 loadData();
-initBottleModal();
+
 </script>
   <!-- ── BOTTLE MODAL ── -->
   <div id="bottle-modal-overlay">
