@@ -171,7 +171,18 @@
         }
       ],
       "method": "Stir the bourbon, simple syrup, and bitters in a mixing glass with ice. Strain into a rocks glass with one large ice cube. Garnish with cherry and orange coin.",
-      "glass": "rocks"
+      "glass": "rocks",
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#8B4513",
+        "float": null,
+        "ice": "huge",
+        "citrus": "orange-twist",
+        "garnish": [
+          "cherry"
+        ],
+        "extras": []
+      }
     },
     {
       "name": "Perfect Manhattan",
@@ -204,7 +215,18 @@
         }
       ],
       "method": "Place Maraschino cherry in martini glass. Stir, never shake, all the ingredients in a mixing glass with ice, then strain into glass.",
-      "glass": "coupe"
+      "glass": "coupe",
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#8B4513",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [
+          "cherry"
+        ],
+        "extras": []
+      }
     },
     {
       "name": "Boulevardier",
@@ -227,7 +249,16 @@
         }
       ],
       "method": "Stir all the ingredients in a mixing glass with ice. Strain into a rocks glass with a single huge ice cube. Garnish with a lemon peel.",
-      "glass": "rocks"
+      "glass": "rocks",
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#c82020",
+        "float": null,
+        "ice": "huge",
+        "citrus": "lemon-peel",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Campfire Cocktail",
@@ -250,7 +281,16 @@
         }
       ],
       "method": "Stir down all the ingredients over ice. Garnish with an orange twist.",
-      "glass": "rocks"
+      "glass": "rocks",
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#9a5020",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "orange-twist",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Lion's Tail",
@@ -283,7 +323,16 @@
         }
       ],
       "method": "Combine bourbon, lime, allspice dram, bitters, and simple syrup in a cocktail shaker and fill with ice. Shake well and strain into chilled cocktail glass.",
-      "glass": "coupe"
+      "glass": "coupe",
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#8B4513",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "The Sherpa",
@@ -311,7 +360,16 @@
         }
       ],
       "method": "Build the drink in a whiskey glass, starting with the bitters and ending with the bourbon; add a large cube of ice and stir a few times. Garnish with a lemon twist.",
-      "glass": "rocks"
+      "glass": "rocks",
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#8B4513",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "lemon-twist",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "New York Sour",
@@ -344,7 +402,16 @@
         }
       ],
       "method": "Pour all ingredients (except the wine) into a shaker with ice. Shake and strain into a lowball glass with ice. Drizzle wine on top.",
-      "glass": "rocks"
+      "glass": "rocks",
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#8B4513",
+        "float": "wine",
+        "ice": "cubes",
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Hot Toddy",
@@ -377,7 +444,16 @@
         }
       ],
       "method": "Stir bourbon, simple syrup, lemon juice and allspice dram in a mixing glass. Transfer to warmed mug and add boiling water. Garnish with lemon peel. You can forgo the allspice dram if you don't have any on hand.",
-      "glass": "mug"
+      "glass": "mug",
+      "presentation": {
+        "vessel": "mug",
+        "color": "#8B4513",
+        "float": null,
+        "ice": null,
+        "citrus": "lemon-peel",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Irish Coffee",
@@ -405,7 +481,18 @@
         }
       ],
       "method": "Heat the glass you are serving the drink in with warm water. Once the glass has warmed, remove the water and add the whiskey and brown sugar simple syrup. Stir in the coffee. Top with whipped cream and serve.",
-      "glass": "mug"
+      "glass": "mug",
+      "presentation": {
+        "vessel": "mug",
+        "color": "#2a0e04",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": [
+          "whipped-cream"
+        ]
+      }
     },
     {
       "name": "Ginger Irishman",
@@ -428,7 +515,16 @@
         }
       ],
       "method": "Place ice in highball glass. Add whiskey, lime juice and stir well. Add ginger beer and garnish with lime wedge.",
-      "glass": "highball"
+      "glass": "highball",
+      "presentation": {
+        "vessel": "highball",
+        "color": "#c8803a",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "lime-wedge",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Michael Collins",
@@ -466,7 +562,18 @@
         }
       ],
       "method": "Add all your ingredients except soda into a shaker with ice and shake. Strain into a chilled Collins glass and fill with ice. Top with soda. Garnish with an orange slice and a cherry.",
-      "glass": "collins"
+      "glass": "collins",
+      "presentation": {
+        "vessel": "collins",
+        "color": "#c8803a",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "orange-wedge",
+        "garnish": [
+          "cherry"
+        ],
+        "extras": []
+      }
     },
     {
       "name": "God Father",
@@ -484,7 +591,16 @@
         }
       ],
       "method": "Pour all ingredients into old fashioned glass filled with ice cubes. Stir gently.",
-      "glass": "rocks"
+      "glass": "rocks",
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#8a4020",
+        "float": null,
+        "ice": "cubes",
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Bobby Burns",
@@ -507,7 +623,16 @@
         }
       ],
       "method": "Stir all ingredients with ice and strain into a chilled glass.",
-      "glass": "coupe"
+      "glass": "coupe",
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#9a3020",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Rusty Nail",
@@ -525,7 +650,16 @@
         }
       ],
       "method": "Pour all ingredients directly into old-fashioned glass filled with ice. Stir gently. Garnish with lemon twist.",
-      "glass": "rocks"
+      "glass": "rocks",
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#8a4020",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "lemon-twist",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "The Penicillin",
@@ -558,7 +692,16 @@
         }
       ],
       "method": "Combine the blended scotch, lemon juice and both syrups in a cocktail shaker. Fill with ice and shake vigorously until the drink is sufficiently chilled. Strain into a chilled rocks glass filled with ice. Float the whisky on top and garnish with candied ginger.",
-      "glass": "rocks"
+      "glass": "rocks",
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#a06030",
+        "float": "rum",
+        "ice": "cubes",
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Martini",
@@ -576,7 +719,18 @@
         }
       ],
       "method": "Note: Classic = 4:1; Dry = 6:1; Very dry = dash Vermouth. Pour all ingredients into mixing glass with ice cubes. Stir well. Strain in chilled martini glass. Squeeze oil from lemon peel onto the drink, or garnish with olive.",
-      "glass": "martini"
+      "glass": "martini",
+      "presentation": {
+        "vessel": "martini",
+        "color": "#d8e8e0",
+        "float": null,
+        "ice": null,
+        "citrus": "lemon-peel",
+        "garnish": [
+          "olive"
+        ],
+        "extras": []
+      }
     },
     {
       "name": "Jill's Filthy Martini",
@@ -609,7 +763,18 @@
         }
       ],
       "method": "Add all ingredients into shaker with ice cubes. Shake well. Double strain into chilled martini glass. Garnish with lemon peel and green olive.",
-      "glass": "martini"
+      "glass": "martini",
+      "presentation": {
+        "vessel": "martini",
+        "color": "#e8e4b0",
+        "float": null,
+        "ice": null,
+        "citrus": "lemon-peel",
+        "garnish": [
+          "olive"
+        ],
+        "extras": []
+      }
     },
     {
       "name": "Petit Trois Gimlet",
@@ -642,7 +807,16 @@
         }
       ],
       "method": "Mix in cocktail shaker with ice. Pour into coupe with lime and fresh sage garnish.",
-      "glass": "coupe"
+      "glass": "coupe",
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#d4e8c0",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Tom Collins",
@@ -670,7 +844,18 @@
         }
       ],
       "method": "Shake the gin, simple syrup, and lemon juice with ice. Strain into a Collins glass filled with ice. Top with club soda. Add a straw if you have one on hand.",
-      "glass": "collins"
+      "glass": "collins",
+      "presentation": {
+        "vessel": "collins",
+        "color": "#e8e4b0",
+        "float": null,
+        "ice": "cubes",
+        "citrus": null,
+        "garnish": [],
+        "extras": [
+          "straw"
+        ]
+      }
     },
     {
       "name": "Santa Barbara Negroni",
@@ -698,7 +883,16 @@
         }
       ],
       "method": "Stir all the ingredients in a mixing glass with ice. Strain into a rocks glass with a single huge ice cube. Garnish with an orange peel.",
-      "glass": "rocks"
+      "glass": "rocks",
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#c82020",
+        "float": null,
+        "ice": "huge",
+        "citrus": "orange-peel",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Aviation",
@@ -726,7 +920,16 @@
         }
       ],
       "method": "Shake and strain into a chilled cocktail glass.",
-      "glass": "coupe"
+      "glass": "coupe",
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#c8d0e0",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "John Collins",
@@ -754,7 +957,18 @@
         }
       ],
       "method": "Pour all ingredients directly into highball glass filled with ice. Stir gently. Garnish with lemon slice and maraschino cherry. Add a dash of Angostura bitters. (Note: Use Old Tom Gin for Tom Collins)",
-      "glass": "highball"
+      "glass": "highball",
+      "presentation": {
+        "vessel": "highball",
+        "color": "#e8e4b0",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "lemon-wedge",
+        "garnish": [
+          "cherry"
+        ],
+        "extras": []
+      }
     },
     {
       "name": "Bee's Knees",
@@ -777,7 +991,16 @@
         }
       ],
       "method": "Combine the ingredients into a cocktail shaker with one large ice cube and shake vigorously until the drink is chilled. Strain into a chilled cocktail coupe.",
-      "glass": "coupe"
+      "glass": "coupe",
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#e8e4b0",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Corpse Reviver",
@@ -810,7 +1033,16 @@
         }
       ],
       "method": "Pour all ingredients into a shaker with ice. Shake and strain into a chilled cocktail glass.",
-      "glass": "coupe"
+      "glass": "coupe",
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#e8e4b0",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Val's Porch Cocktail",
@@ -846,7 +1078,16 @@
       "glass": "coupe",
       "flags": [
         "method had OCR artifacts — corrected to best reading, verify against app"
-      ]
+      ],
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#e8e4b0",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "White Lady",
@@ -869,7 +1110,16 @@
         }
       ],
       "method": "Add all ingredients into cocktail shaker filled with ice. Shake well and strain into large cocktail glass.",
-      "glass": "coupe"
+      "glass": "coupe",
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#e8e4b0",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Bramble",
@@ -897,7 +1147,16 @@
         }
       ],
       "method": "Build over crushed ice, in a rocks glass. Stir, then pour the blackberry liqueur over the top of the drink in a circular fashion. Garnish with a lemon slice, and two blackberries.",
-      "glass": "rocks"
+      "glass": "rocks",
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#5a1050",
+        "float": null,
+        "ice": "crushed",
+        "citrus": "lemon-wedge",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Army & Navy",
@@ -920,7 +1179,16 @@
         }
       ],
       "method": "Shake all ingredients together and double strain into coupe glass. Garnish with a lemon twist.",
-      "glass": "coupe"
+      "glass": "coupe",
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#e8e4b0",
+        "float": null,
+        "ice": null,
+        "citrus": "lemon-twist",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Moscow Mule",
@@ -943,7 +1211,16 @@
         }
       ],
       "method": "Combine the vodka and ginger beer. Add lime juice. Garnish with lime slice.",
-      "glass": "mule mug"
+      "glass": "mule mug",
+      "presentation": {
+        "vessel": "mule mug",
+        "color": "#d4e8c0",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "lime-wedge",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Sea Breeze",
@@ -966,7 +1243,16 @@
         }
       ],
       "method": "Build all ingredients in a rocks glass filled with ice. Garnish with lime wedge.",
-      "glass": "rocks"
+      "glass": "rocks",
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#8B1a3a",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "lime-wedge",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Lemon Drop",
@@ -1004,7 +1290,16 @@
         }
       ],
       "method": "Shake and strain into a chilled cocktail glass rimmed with sugar, garnish with a slice of lemon.",
-      "glass": "martini"
+      "glass": "martini",
+      "presentation": {
+        "vessel": "martini",
+        "color": "#e4e4b0",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Kamikaze",
@@ -1027,7 +1322,16 @@
         }
       ],
       "method": "Shake and strain into a chilled cocktail glass.",
-      "glass": "martini"
+      "glass": "martini",
+      "presentation": {
+        "vessel": "martini",
+        "color": "#d8e8f0",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Fuzzy Navel",
@@ -1050,7 +1354,16 @@
         }
       ],
       "method": "Pour vodka and schnapps into a highball glass filled with ice cubes. Top with orange juice and stir.",
-      "glass": "highball"
+      "glass": "highball",
+      "presentation": {
+        "vessel": "highball",
+        "color": "#e8a060",
+        "float": null,
+        "ice": "cubes",
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Dirty Martini",
@@ -1073,7 +1386,18 @@
         }
       ],
       "method": "Pour all ingredients into mixing glass with ice cubes. Stir well. Strain into chilled martini glass. Garnish with green olive.",
-      "glass": "martini"
+      "glass": "martini",
+      "presentation": {
+        "vessel": "martini",
+        "color": "#d8e8f0",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [
+          "olive"
+        ],
+        "extras": []
+      }
     },
     {
       "name": "Love Potion",
@@ -1096,7 +1420,16 @@
         }
       ],
       "method": "Combine ingredients in a shaker with ice. Shake well and strain into a chilled cocktail glass.",
-      "glass": "martini"
+      "glass": "martini",
+      "presentation": {
+        "vessel": "martini",
+        "color": "#8B1a3a",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Cape Cod",
@@ -1119,7 +1452,16 @@
         }
       ],
       "method": "Rim a highball glass with lime wedge, and fill with ice cubes. Pour in the vodka and cranberry juice and stir briefly. Squeeze the lime wedge into the drink and drop it in.",
-      "glass": "highball"
+      "glass": "highball",
+      "presentation": {
+        "vessel": "highball",
+        "color": "#8B1a3a",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "lime-wedge",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Vesper",
@@ -1147,7 +1489,16 @@
         }
       ],
       "method": "Shake and strain into a chilled cocktail glass. Add the garnish.",
-      "glass": "martini"
+      "glass": "martini",
+      "presentation": {
+        "vessel": "martini",
+        "color": "#d8e8d0",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Fleming's Raspberry Cooler",
@@ -1175,7 +1526,16 @@
         }
       ],
       "method": "Mix all ingredients except Perrier in stemless wine glass. Add ice and stir to chill. Pour Perrier into glass and garnish with lime wedge.",
-      "glass": "wine"
+      "glass": "wine",
+      "presentation": {
+        "vessel": "wine",
+        "color": "#e09080",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "lime-wedge",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Cosmopolitan",
@@ -1203,7 +1563,16 @@
         }
       ],
       "method": "Shake all ingredients in cocktail shaker filled with ice. Strain into a large cocktail glass. Garnish with lime slice.",
-      "glass": "martini"
+      "glass": "martini",
+      "presentation": {
+        "vessel": "martini",
+        "color": "#8B1a3a",
+        "float": null,
+        "ice": null,
+        "citrus": "lime-wedge",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Espresso Martini",
@@ -1231,7 +1600,16 @@
         }
       ],
       "method": "Shake and strain into a chilled cocktail glass.",
-      "glass": "martini"
+      "glass": "martini",
+      "presentation": {
+        "vessel": "martini",
+        "color": "#2a0e04",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Daiquiri",
@@ -1254,7 +1632,16 @@
         }
       ],
       "method": "Rim glass with lime wedge. Shake all ingredients with ice and strain into a cocktail glass. Squeeze lime wedge and drop into drink.",
-      "glass": "coupe"
+      "glass": "coupe",
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#d0ecd4",
+        "float": null,
+        "ice": null,
+        "citrus": "lime-wedge",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Bacardi",
@@ -1277,7 +1664,16 @@
         }
       ],
       "method": "Pour all ingredients into a shaker with ice cubes, shake well, strain into chilled cocktail glass.",
-      "glass": "martini"
+      "glass": "martini",
+      "presentation": {
+        "vessel": "martini",
+        "color": "#d0ecd4",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Between the Sheets",
@@ -1305,7 +1701,16 @@
         }
       ],
       "method": "Pour all ingredients into shaker with ice cubes, shake, strain into chilled cocktail glass.",
-      "glass": "martini"
+      "glass": "martini",
+      "presentation": {
+        "vessel": "martini",
+        "color": "#c8a060",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Hemingway Special",
@@ -1333,7 +1738,16 @@
         }
       ],
       "method": "Pour all ingredients into a shaker with ice. Shake. Strain into double cocktail glass.",
-      "glass": "coupe"
+      "glass": "coupe",
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#d0ecd4",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Cuba Libre",
@@ -1356,7 +1770,16 @@
         }
       ],
       "method": "Build all ingredients in a highball glass filled with ice. Garnish with lime wedge.",
-      "glass": "highball"
+      "glass": "highball",
+      "presentation": {
+        "vessel": "highball",
+        "color": "#4a2000",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "lime-wedge",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Dark 'N' Stormy",
@@ -1374,7 +1797,16 @@
         }
       ],
       "method": "In a highball glass filled with ice add dark rum and top with ginger beer. Garnish with lime wedge.",
-      "glass": "highball"
+      "glass": "highball",
+      "presentation": {
+        "vessel": "highball",
+        "color": "#5a2800",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "lime-wedge",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Mojito",
@@ -1407,7 +1839,19 @@
         }
       ],
       "method": "Muddle mint sprigs with sugar and lime juice. Add splash of soda water and fill glass with cracked ice. Pour rum and top with soda water. Garnish with sprig of mint leaves and lime slice. Serve with straw.",
-      "glass": "highball"
+      "glass": "highball",
+      "presentation": {
+        "vessel": "highball",
+        "color": "#d0ecd4",
+        "float": null,
+        "ice": "crushed",
+        "citrus": "lime-wedge",
+        "garnish": [],
+        "extras": [
+          "straw",
+          "mint-sprig"
+        ]
+      }
     },
     {
       "name": "Yellow Bird",
@@ -1435,7 +1879,16 @@
         }
       ],
       "method": "Shake and strain into a chilled cocktail glass.",
-      "glass": "martini"
+      "glass": "martini",
+      "presentation": {
+        "vessel": "martini",
+        "color": "#d0ecd4",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Anejo Highball",
@@ -1468,7 +1921,16 @@
         }
       ],
       "method": "Shake all ingredients except ginger beer together with ice. Strain into a tall glass filled with ice and top with ginger beer. Garnish with an orange slice.",
-      "glass": "highball"
+      "glass": "highball",
+      "presentation": {
+        "vessel": "highball",
+        "color": "#c87840",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "orange-wedge",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Airmail",
@@ -1496,7 +1958,16 @@
         }
       ],
       "method": "Shake all ingredients except champagne with ice. Strain into a flute and top with champagne. Garnish with a lime twist by rubbing on stem and placing on rim, but do not drop twist into glass.",
-      "glass": "flute"
+      "glass": "flute",
+      "presentation": {
+        "vessel": "flute",
+        "color": "#5a2800",
+        "float": null,
+        "ice": null,
+        "citrus": "lime-twist",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Mary Pickford",
@@ -1524,7 +1995,16 @@
         }
       ],
       "method": "Shake and strain into a chilled large cocktail glass.",
-      "glass": "martini"
+      "glass": "martini",
+      "presentation": {
+        "vessel": "martini",
+        "color": "#d06858",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Sidecar",
@@ -1547,7 +2027,16 @@
         }
       ],
       "method": "Pour all ingredients into cocktail shaker filled with ice. Shake well and strain into cocktail glass.",
-      "glass": "martini"
+      "glass": "martini",
+      "presentation": {
+        "vessel": "martini",
+        "color": "#c8a060",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "French Connection",
@@ -1565,7 +2054,16 @@
         }
       ],
       "method": "Pour all ingredients directly into old fashioned glass filled with ice cubes. Stir gently.",
-      "glass": "rocks"
+      "glass": "rocks",
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#9a5020",
+        "float": null,
+        "ice": "cubes",
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Brandy Crusta",
@@ -1603,7 +2101,16 @@
         }
       ],
       "method": "Prepare a chilled sour glass by rimming it with a lemon wedge and sugar. Discard the wedge. Loop a long spiral of lemon peel around the glass's interior. Combine the other ingredients into a cocktail shaker with ice. Shake well, and strain into the prepared glass.",
-      "glass": "flute"
+      "glass": "flute",
+      "presentation": {
+        "vessel": "flute",
+        "color": "#c8a060",
+        "float": null,
+        "ice": null,
+        "citrus": "lemon-peel",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Alexander",
@@ -1636,7 +2143,18 @@
         }
       ],
       "method": "Combine all ingredients including whipped cream into shaker. Shake well and strain into a chilled cocktail glass. Sprinkle with fresh ground nutmeg.",
-      "glass": "martini"
+      "glass": "martini",
+      "presentation": {
+        "vessel": "martini",
+        "color": "#4a200a",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": [
+          "whipped-cream"
+        ]
+      }
     },
     {
       "name": "Pisco Sour",
@@ -1664,7 +2182,16 @@
         }
       ],
       "method": "Shake and strain into a chilled champagne flute. Dash some Angostura bitters on top.",
-      "glass": "flute"
+      "glass": "flute",
+      "presentation": {
+        "vessel": "flute",
+        "color": "#e8dca0",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Champagne Cocktail",
@@ -1692,7 +2219,18 @@
         }
       ],
       "method": "Add dash of Angostura bitter onto sugar cube and drop it into champagne flute. Add cognac followed by pouring gently chilled champagne. Garnish with orange slice and maraschino cherry.",
-      "glass": "flute"
+      "glass": "flute",
+      "presentation": {
+        "vessel": "flute",
+        "color": "#9a5020",
+        "float": null,
+        "ice": null,
+        "citrus": "orange-wedge",
+        "garnish": [
+          "cherry"
+        ],
+        "extras": []
+      }
     },
     {
       "name": "Bellini (Phoney Bologna)",
@@ -1715,7 +2253,16 @@
         }
       ],
       "method": "Pour peach nectar and peach schnapps into chilled flute and add sparkling wine. Swirl gently.",
-      "glass": "flute"
+      "glass": "flute",
+      "presentation": {
+        "vessel": "flute",
+        "color": "#e8a060",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "French 75",
@@ -1743,7 +2290,16 @@
         }
       ],
       "method": "Shake all the ingredients (except the champagne) with ice. Strain into a flute, then top with champagne and garnish with a lemon twist.",
-      "glass": "flute"
+      "glass": "flute",
+      "presentation": {
+        "vessel": "flute",
+        "color": "#e8e4b0",
+        "float": null,
+        "ice": null,
+        "citrus": "lemon-twist",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Mimosa",
@@ -1766,7 +2322,16 @@
         }
       ],
       "method": "Pour orange juice and Cointreau into flute and gently swirl; top with champagne.",
-      "glass": "flute"
+      "glass": "flute",
+      "presentation": {
+        "vessel": "flute",
+        "color": "#e8e0a0",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Aperol Spritz",
@@ -1794,7 +2359,16 @@
         }
       ],
       "method": "Place Aperol and lemon juice in glass with several ice cubes. Stir. Remove ice cubes. Add Prosecco. Add club soda. Garnish with lemon twist.",
-      "glass": "wine"
+      "glass": "wine",
+      "presentation": {
+        "vessel": "wine",
+        "color": "#e05830",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "lemon-twist",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Spritz Veneziano",
@@ -1817,7 +2391,16 @@
         }
       ],
       "method": "Build into an old-fashioned glass filled with ice. Top with a splash of soda water. Garnish with half an orange slice.",
-      "glass": "rocks"
+      "glass": "rocks",
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#e05830",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "orange-wedge",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Kir Royale",
@@ -1835,7 +2418,16 @@
         }
       ],
       "method": "Rim the glass with lemon twist and then drop into flute. Pour Crème de Cassis into glass, top up with champagne.",
-      "glass": "flute"
+      "glass": "flute",
+      "presentation": {
+        "vessel": "flute",
+        "color": "#5a0a3a",
+        "float": null,
+        "ice": null,
+        "citrus": "lemon-twist",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Cran-Rosemary Sparkler",
@@ -1878,7 +2470,16 @@
         }
       ],
       "method": "Muddle the cranberries, rosemary, and maple syrup in a cocktail shaker. Add gin, cranberry juice, and sweet vermouth. Add ice and shake vigorously, then strain into chilled coupe glass. Top with champagne, garnish with rosemary.",
-      "glass": "coupe"
+      "glass": "coupe",
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#8B1a3a",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Margarita",
@@ -1911,7 +2512,18 @@
         }
       ],
       "method": "Shake the tequila, Cointreau, lime juice, and simple syrup together in a shaker with ice. Rim a rocks glass with salt, and fill with ice. Strain into the glass. Garnish with a lime wedge.",
-      "glass": "rocks"
+      "glass": "rocks",
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#c8c878",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "lime-wedge",
+        "garnish": [],
+        "extras": [
+          "salted-rim"
+        ]
+      }
     },
     {
       "name": "Honey Bee",
@@ -1944,7 +2556,16 @@
         }
       ],
       "method": "Rinse a highball glass with the mezcal. Add the tequila, syrup and lemon juice to a shaker with ice, and shake until chilled. Pour into the prepared glass, and add 2 dashes of the bitters. Garnish with a lemon peel.",
-      "glass": "highball"
+      "glass": "highball",
+      "presentation": {
+        "vessel": "highball",
+        "color": "#d4b040",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "lemon-peel",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "La Otra Palabra",
@@ -1982,7 +2603,16 @@
         }
       ],
       "method": "Pour all ingredients into a shaker with ice. Shake and strain into a chilled cocktail glass. Garnish with a fresh Chile-spread orange wedge.",
-      "glass": "coupe"
+      "glass": "coupe",
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#c8c878",
+        "float": null,
+        "ice": null,
+        "citrus": "orange-wedge",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Blue Margarita",
@@ -2020,7 +2650,18 @@
         }
       ],
       "method": "Rim a chilled margarita glass with the lime wedge and salt. Combine the tequila, curaçao, triple sec, and lime juice in a cocktail shaker with ice. Shake well and strain into glass.",
-      "glass": "coupe"
+      "glass": "coupe",
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#1a7ab0",
+        "float": null,
+        "ice": null,
+        "citrus": "lime-wedge",
+        "garnish": [],
+        "extras": [
+          "salted-rim"
+        ]
+      }
     },
     {
       "name": "Bee Sting",
@@ -2053,7 +2694,16 @@
         }
       ],
       "method": "Stir whiskey and honey to combine. Add all ingredients except for the ginger ale and shake with ice. Strain into tall glass filled with ice and top with ginger ale. Garnish with an apple slice.",
-      "glass": "highball"
+      "glass": "highball",
+      "presentation": {
+        "vessel": "highball",
+        "color": "#9a5020",
+        "float": null,
+        "ice": "cubes",
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Call Ron Cooper",
@@ -2091,7 +2741,16 @@
         }
       ],
       "method": "Add all ingredients to a Collins glass. Fill half way with crushed ice. Swizzle to mix. Fill glass to rim with additional crushed ice. Garnish with abandon.",
-      "glass": "collins"
+      "glass": "collins",
+      "presentation": {
+        "vessel": "collins",
+        "color": "#b8b860",
+        "float": null,
+        "ice": "crushed",
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Archangel",
@@ -2119,7 +2778,16 @@
         }
       ],
       "method": "Add all your ingredients to a mixing glass filled with ice. Stir and strain into a chilled cocktail glass. Garnish with a lemon twist.",
-      "glass": "martini"
+      "glass": "martini",
+      "presentation": {
+        "vessel": "martini",
+        "color": "#e05830",
+        "float": null,
+        "ice": null,
+        "citrus": "lemon-twist",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Jasmine",
@@ -2152,7 +2820,16 @@
         }
       ],
       "method": "Pour all ingredients into a shaker with ice. Shake and strain into a chilled cocktail glass. Garnish with a lemon twist.",
-      "glass": "martini"
+      "glass": "martini",
+      "presentation": {
+        "vessel": "martini",
+        "color": "#c82020",
+        "float": null,
+        "ice": null,
+        "citrus": "lemon-twist",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Ruby Slipper",
@@ -2185,7 +2862,16 @@
         }
       ],
       "method": "Wet shake with ice all ingredients except egg white for 45 sec. Strain and return to shaker. Add egg white to shaker and reverse dry shake for 20 sec. Pour into coupe glass and garnish.",
-      "glass": "coupe"
+      "glass": "coupe",
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#e05830",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Hurricane",
@@ -2233,7 +2919,18 @@
         }
       ],
       "method": "Pour all ingredients into a shaker with ice. Shake and strain into a Hurricane glass with ice. Garnish with a cocktail cherry and an orange wheel.",
-      "glass": "tropical"
+      "glass": "tropical",
+      "presentation": {
+        "vessel": "tropical",
+        "color": "#d05020",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "orange-wedge",
+        "garnish": [
+          "cherry"
+        ],
+        "extras": []
+      }
     },
     {
       "name": "Mai-Tai",
@@ -2266,7 +2963,21 @@
         }
       ],
       "method": "Shake and strain into highball glass. Garnish with pineapple spear, mint leaves, and lime peel. Serve with straw.",
-      "glass": "tropical"
+      "glass": "tropical",
+      "presentation": {
+        "vessel": "tropical",
+        "color": "#c87040",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "lime-twist",
+        "garnish": [
+          "pineapple-wedge"
+        ],
+        "extras": [
+          "straw",
+          "mint-sprig"
+        ]
+      }
     },
     {
       "name": "Planter's Punch",
@@ -2304,7 +3015,19 @@
         }
       ],
       "method": "Pour all ingredients into shaker filled with ice. Shake well. Pour into large glass, filled with ice, \"on top\". Garnish with cocktail cherry and pineapple.",
-      "glass": "tropical"
+      "glass": "tropical",
+      "presentation": {
+        "vessel": "tropical",
+        "color": "#d06030",
+        "float": null,
+        "ice": "cubes",
+        "citrus": null,
+        "garnish": [
+          "cherry",
+          "pineapple-wedge"
+        ],
+        "extras": []
+      }
     },
     {
       "name": "Royal Bermuda Yacht Club",
@@ -2332,7 +3055,16 @@
         }
       ],
       "method": "Add all your ingredients into a cocktail shaker filled with ice and shake vigorously until the drink is sufficiently chilled. Double strain into a chilled cocktail glass.",
-      "glass": "martini"
+      "glass": "martini",
+      "presentation": {
+        "vessel": "martini",
+        "color": "#d8eec8",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Rums Runner",
@@ -2380,7 +3112,18 @@
         }
       ],
       "method": "Shake all ingredients with ice. Strain into a glass over ice. Garnish with fresh fruit. And an umbrella...",
-      "glass": "tropical"
+      "glass": "tropical",
+      "presentation": {
+        "vessel": "tropical",
+        "color": "#5a1050",
+        "float": null,
+        "ice": "cubes",
+        "citrus": null,
+        "garnish": [],
+        "extras": [
+          "umbrella"
+        ]
+      }
     },
     {
       "name": "Electric Lemonade",
@@ -2413,7 +3156,16 @@
         }
       ],
       "method": "Pour all ingredients into a highball glass with ice. Top with lemon-lime soda. Garnish with a lemon slice.",
-      "glass": "highball"
+      "glass": "highball",
+      "presentation": {
+        "vessel": "highball",
+        "color": "#1a7ab0",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "lemon-wedge",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Blue Hawaii",
@@ -2451,7 +3203,19 @@
         }
       ],
       "method": "Pour all ingredients into a shaker with ice. Shake and strain into a highball glass with ice. Garnish with a pineapple wedge and a cocktail cherry.",
-      "glass": "highball"
+      "glass": "highball",
+      "presentation": {
+        "vessel": "highball",
+        "color": "#1a7ab0",
+        "float": null,
+        "ice": "cubes",
+        "citrus": null,
+        "garnish": [
+          "cherry",
+          "pineapple-wedge"
+        ],
+        "extras": []
+      }
     },
     {
       "name": "Long Island Iced Tea",
@@ -2499,7 +3263,18 @@
         }
       ],
       "method": "Add all ingredients into highball glass filled with ice. Stir gently. Garnish with lemon spiral. Serve with straw.",
-      "glass": "highball"
+      "glass": "highball",
+      "presentation": {
+        "vessel": "highball",
+        "color": "#4a2000",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "lemon-twist",
+        "garnish": [],
+        "extras": [
+          "straw"
+        ]
+      }
     },
     {
       "name": "Pimm's Cup",
@@ -2537,7 +3312,22 @@
         }
       ],
       "method": "Add ice to a chilled tall glass. Add the Pimm's and lemonade or lemon lime soda. Stir gently, and garnish with the mint sprig, cucumber slice, strawberry slice and apple slice.",
-      "glass": "highball"
+      "glass": "highball",
+      "presentation": {
+        "vessel": "highball",
+        "color": "#e8e0a0",
+        "float": null,
+        "ice": "cubes",
+        "citrus": null,
+        "garnish": [
+          "strawberry",
+          "cucumber-slice"
+        ],
+        "extras": [
+          "straw",
+          "mint-sprig"
+        ]
+      }
     },
     {
       "name": "Michelada",
@@ -2570,7 +3360,18 @@
         }
       ],
       "method": "Rim a glass with salt then fill with ice. Add your hot sauce and lime and top with beer. Garnish with a lime wedge.",
-      "glass": "mug"
+      "glass": "mug",
+      "presentation": {
+        "vessel": "mug",
+        "color": "#c8a820",
+        "float": null,
+        "ice": null,
+        "citrus": "lime-wedge",
+        "garnish": [],
+        "extras": [
+          "salted-rim"
+        ]
+      }
     },
     {
       "name": "Old Fashioned Death Star",
@@ -2596,7 +3397,16 @@
       "glass": "rocks",
       "flags": [
         "method truncated in source app — get full text from original"
-      ]
+      ],
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#9a5020",
+        "float": null,
+        "ice": "huge",
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "The Lightsaber",
@@ -2619,7 +3429,16 @@
         }
       ],
       "method": "May the Fourth Be With You. Shake and strain into a chilled cocktail glass rimmed with sugar, garnish with a slice of lemon.",
-      "glass": "martini"
+      "glass": "martini",
+      "presentation": {
+        "vessel": "martini",
+        "color": "#1a7ab0",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Sweet Lordy Vader",
@@ -2647,7 +3466,16 @@
         }
       ],
       "method": "May The Fourth Be With You. Combine all ingredients in shaker with ice. Shake and strain into a chilled large cocktail glass.",
-      "glass": "martini"
+      "glass": "martini",
+      "presentation": {
+        "vessel": "martini",
+        "color": "#d06858",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Smashing, Baby (Yoda)",
@@ -2680,7 +3508,18 @@
         }
       ],
       "method": "May The Fourth Be With You. Add all ingredients except cucumber spears to shaker with ice. Shake vigorously and double filter into cocktail glass garnished with 2 black olive eyes flanked by 2 opposing cucumber spears to resemble Yoda's ears.",
-      "glass": "coupe"
+      "glass": "coupe",
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#d4e8c0",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [
+          "olive"
+        ],
+        "extras": []
+      }
     },
     {
       "name": "Tatooine Sunrise",
@@ -2711,7 +3550,16 @@
       "glass": "martini",
       "flags": [
         "grenadine mentioned in method but not in ingredients list — transcribed as written"
-      ]
+      ],
+      "presentation": {
+        "vessel": "martini",
+        "color": "#d04020",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Ménage à Quatre",
@@ -2739,7 +3587,16 @@
         }
       ],
       "method": "Combine all ingredients in cocktail shaker with ice. Shake til chilled. Strain into coupe glass with lemon twist garnish.",
-      "glass": "coupe"
+      "glass": "coupe",
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#e8e4b0",
+        "float": null,
+        "ice": null,
+        "citrus": "lemon-twist",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Hot Buttered Rum",
@@ -2777,7 +3634,16 @@
         }
       ],
       "method": "Muddle butter and spices. Add rum then hot water. Stir and serve with cinnamon stick garnish.",
-      "glass": "mug"
+      "glass": "mug",
+      "presentation": {
+        "vessel": "mug",
+        "color": "#c87840",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Blood & Sand",
@@ -2805,7 +3671,16 @@
         }
       ],
       "method": "Add all ingredients into a shaker with ice and shake until well-chilled. Strain into a chilled coupe. Garnish with an orange peel.",
-      "glass": "coupe"
+      "glass": "coupe",
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#8a1a2a",
+        "float": null,
+        "ice": null,
+        "citrus": "orange-peel",
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Mistletoe Martini",
@@ -2833,7 +3708,16 @@
         }
       ],
       "method": "Shake all ingredients with ice. Strain into a martini glass. Garnished by floating a few cranberries and the rosemary sprig on top.",
-      "glass": "martini"
+      "glass": "martini",
+      "presentation": {
+        "vessel": "martini",
+        "color": "#8B1a3a",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Sleigh Ride Sidecar",
@@ -2861,7 +3745,16 @@
         }
       ],
       "method": "Combine in cocktail shaker filled with ice. Shake sharply to crush raspberries. Strain into coupe glass. Garnish with basil sprig (optional).",
-      "glass": "coupe"
+      "glass": "coupe",
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#c8a060",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     },
     {
       "name": "Lake Como Christmas",
@@ -2899,7 +3792,16 @@
         }
       ],
       "method": "Fill a highball glass with ice. Combine ingredients and stir gently. Garnish with a basil sprig.",
-      "glass": "highball"
+      "glass": "highball",
+      "presentation": {
+        "vessel": "highball",
+        "color": "#8B1a3a",
+        "float": null,
+        "ice": "cubes",
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     }
   ]
 }
