@@ -1086,7 +1086,7 @@ function buildFilterChips() {
   // Also build spirit-based chips from ingredient names
   const spirits = ['bourbon', 'rye', 'gin', 'vodka', 'rum', 'tequila', 'mezcal', 'scotch', 'cognac', 'whiskey'];
   const presentSpirits = spirits.filter(s =>
-    allRecipes.some(r => r.ingredients.some(i => i.item.toLowerCase().includes(s)))
+    allRecipes.some(r => r.ingredients.some(i => new RegExp('\\b' + s + '\\b').test(i.item.toLowerCase())))
   );
 
   const chips = [
@@ -1138,7 +1138,7 @@ function getFilteredRecipes() {
       );
     } else {
       recipes = recipes.filter(r =>
-        r.ingredients.some(i => i.item.toLowerCase().includes(activeFilter))
+        r.ingredients.some(i => new RegExp('\\b' + activeFilter + '\\b').test(i.item.toLowerCase()))
       );
     }
   }
