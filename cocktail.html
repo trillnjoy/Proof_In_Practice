@@ -817,7 +817,7 @@
       font-size: 0.72rem;
       color: var(--ink-light);
       font-style: italic;
-      margin-bottom: 16px;
+      margin-bottom: 0;
     }
     .bm-section-label {
       font-family: var(--sans);
@@ -828,20 +828,57 @@
       margin-bottom: 6px;
       margin-top: 14px;
     }
-    .bm-rating {
+    .bm-header-row {
       display: flex;
-      gap: 8px;
-      margin-bottom: 4px;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .bm-header-left { flex: 1; min-width: 0; }
+    .bm-header-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .bm-cost-label {
+      font-family: var(--sans);
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+    }
+    .bm-cost-display {
+      background: none;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 4px 12px;
+      font-size: 0.85rem;
+      font-family: var(--serif-body);
+      color: var(--amber);
+      cursor: pointer;
+      min-width: 48px;
+      text-align: center;
+    }
+    .bm-cost-options {
+      display: none;
+      gap: 6px;
+    }
+    .bm-cost-options.open {
+      display: flex;
     }
     .bm-rating-btn {
       background: none;
       border: 1px solid var(--rule);
       border-radius: 4px;
-      padding: 5px 10px;
-      font-size: 0.85rem;
+      padding: 4px 8px;
+      font-size: 0.8rem;
       cursor: pointer;
       color: var(--ink-light);
       transition: all 0.15s;
+      font-family: var(--serif-body);
     }
     .bm-rating-btn.active {
       background: var(--amber);
@@ -1522,6 +1559,11 @@ const BM = {
     document.querySelectorAll('.bm-rating-btn').forEach(b => {
       b.classList.toggle('active', parseInt(b.dataset.v) === this.rating);
     });
+    const disp = $('bm-cost-display');
+    if (disp) disp.textContent = this.rating ? '$'.repeat(this.rating) : '—';
+    // Collapse options after selection
+    const opts = $('bm-cost-options');
+    if (opts) opts.style.display = 'none';
   },
   updateImgPreview(url) {
     const img = $('bm-img-preview');
@@ -1538,20 +1580,39 @@ const BM = {
     const notes = $('bm-notes').value.trim() || null;
     const imageUrl = $('bm-imageurl').value.trim() || null;
     const rating = this.rating;
+    const catName = cat.category;
+    const isNew = this.isNew;
+    const pendingName = this._pendingName;
+    const bottleIdx = this.bottleIdx;
 
-    if (this.isNew) {
-      cat.bottles.push({name: this._pendingName, notes, rating, imageUrl});
+    // Apply change to in-memory state first
+    if (isNew) {
+      cat.bottles.push({name: pendingName, notes, rating, imageUrl});
     } else {
-      const b = cat.bottles[this.bottleIdx];
+      const b = cat.bottles[bottleIdx];
       b.notes = notes; b.rating = rating; b.imageUrl = imageUrl;
     }
 
     $('bm-status').textContent = 'Saving…';
-    const ok = await saveToGitHub();
+    const bottleName = isNew ? pendingName : cat.bottles[bottleIdx].name;
+    const ok = await saveToGitHub(seed => {
+      const seedCat = seed.bar_inventory.find(c => c.category === catName);
+      if (!seedCat) throw new Error(`Category "${catName}" not found in seed.`);
+      if (isNew) {
+        seedCat.bottles.push({name: pendingName, notes, rating, imageUrl});
+      } else {
+        const sb = seedCat.bottles[bottleIdx];
+        if (!sb) throw new Error(`Bottle index ${bottleIdx} not found in "${catName}".`);
+        sb.notes = notes; sb.rating = rating; sb.imageUrl = imageUrl;
+      }
+    }, `Update bottle: ${bottleName}`);
+
     if (ok) {
       $('bm-status').textContent = 'Saved.';
       setTimeout(() => { BM.close(); buildInventory(); }, 600);
     } else {
+      // Roll back in-memory change on failure
+      if (isNew) cat.bottles.pop();
       $('bm-status').textContent = 'Save failed — check GitHub settings.';
     }
   }
@@ -1559,6 +1620,13 @@ const BM = {
 
 // Wire modal events (called once after DOM ready)
 function initBottleModal() {
+  // Cost display toggle — tap to expand options
+  $('bm-cost-display').addEventListener('click', () => {
+    const opts = $('bm-cost-options');
+    const isOpen = opts.style.display === 'flex';
+    opts.style.display = isOpen ? 'none' : 'flex';
+  });
+  // Cost option buttons
   document.querySelectorAll('.bm-rating-btn').forEach(b => {
     b.addEventListener('click', () => {
       const v = parseInt(b.dataset.v);
@@ -1569,6 +1637,7 @@ function initBottleModal() {
   $('bm-imageurl').addEventListener('input', e => BM.updateImgPreview(e.target.value));
   $('bm-cancel-btn').addEventListener('click', () => BM.close());
   $('bm-save-btn').addEventListener('click', () => BM.save());
+  // Close only when tapping the dark backdrop, not anything inside the modal sheet
   $('bottle-modal-overlay').addEventListener('click', e => {
     if (e.target === $('bottle-modal-overlay')) BM.close();
   });
@@ -2565,15 +2634,21 @@ initBottleModal();
   <!-- ── BOTTLE MODAL ── -->
   <div id="bottle-modal-overlay">
     <div id="bottle-modal">
-      <div class="bm-title" id="bm-title">Bottle</div>
-      <div class="bm-subtitle" id="bm-subtitle"></div>
-
-      <div class="bm-section-label">Rating</div>
-      <div class="bm-rating" id="bm-rating">
-        <button class="bm-rating-btn" data-v="1">$</button>
-        <button class="bm-rating-btn" data-v="2">$$</button>
-        <button class="bm-rating-btn" data-v="3">$$$</button>
-        <button class="bm-rating-btn" data-v="4">$$$$</button>
+      <div class="bm-header-row">
+        <div class="bm-header-left">
+          <div class="bm-title" id="bm-title">Bottle</div>
+          <div class="bm-subtitle" id="bm-subtitle"></div>
+        </div>
+        <div class="bm-header-right">
+          <span class="bm-cost-label">COST</span>
+          <button class="bm-cost-display" id="bm-cost-display">—</button>
+          <div class="bm-cost-options" id="bm-cost-options" style="display:none">
+            <button class="bm-rating-btn" data-v="1">$</button>
+            <button class="bm-rating-btn" data-v="2">$$</button>
+            <button class="bm-rating-btn" data-v="3">$$$</button>
+            <button class="bm-rating-btn" data-v="4">$$$$</button>
+          </div>
+        </div>
       </div>
 
       <div class="bm-section-label">Tasting Notes</div>
