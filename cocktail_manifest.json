@@ -1,6 +1,6 @@
 {
-  "name": "The Cellar — Cocktail Library",
-  "short_name": "The Cellar",
+  "name": "Proof In Practice: A Cocktail Compendium",
+  "short_name": "Proof In Practice",
   "description": "A personal cocktail recipe library",
   "start_url": "./cocktail.html",
   "scope": "./",
