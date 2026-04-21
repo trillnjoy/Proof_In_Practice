@@ -1,20 +1,4 @@
 {
-  "meta": {
-    "total_recipes_expected": 94,
-    "total_recipes_extracted": 94,
-    "batches_complete": 3,
-    "last_updated": "2026-04-21",
-    "flags": [
-      "Old Fashioned Death Star: method truncated in source at 'dented and circumferen...' ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ full text needed from original app",
-      "Tatooine Sunrise: grenadine mentioned in method but not in ingredients list ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ transcribed as written",
-      "The Sherpa: Allspice Dram quantity has null unit ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ transcribed as written",
-      "Hot Toddy: method says 'stir bourbon' but spirit is Rye ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ transcribed as written",
-      "Val's Porch Cocktail: OCR artifacts corrected",
-      "MÃÂÃÂÃÂÃÂ©nage ÃÂÃÂÃÂÃÂ  Quatre: 'Lrmon Juice' OCR artifact ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ corrected to Lemon Juice",
-      "Inventory oz amounts for Tequila & Mezcal, Fruit Liqueurs, Nut/Herbal Liqueurs reflect bottle sizes as rendered by source app"
-    ],
-    "notes": "PDF batch 3 contains 38 unique recipes (39 counted in prior session included a duplicate Cran-Rosemary Sparkler). Total confirmed unique: 94."
-  },
   "bar_inventory": [
     {
       "category": "Bourbon & Rye",
@@ -74,7 +58,7 @@
     {
       "category": "Rum",
       "bottles": [
-        "Flor de CaÃÂÃÂÃÂÃÂ±a 7 Year",
+        "Flor de Caña 7 Year",
         "Appleton Estate Signature",
         "Diplomatico Reserva Exclusiva",
         "Gosling's Black Seal",
@@ -87,7 +71,7 @@
       "category": "Cognac & Brandy",
       "bottles": [
         "Courvoisier VSOP",
-        "RÃÂÃÂÃÂÃÂ©my Martin VSOP",
+        "Rémy Martin VSOP",
         "Pierre Ferrand 1840"
       ]
     },
@@ -99,7 +83,7 @@
       "category": "Tequila & Mezcal",
       "bottles": [
         "Hornitos Reposado Tequila",
-        "EspolÃÂÃÂÃÂÃÂ³n Tequila Blanco",
+        "Espolón Tequila Blanco",
         "Herradura Reposado"
       ]
     },
@@ -1076,9 +1060,6 @@
       ],
       "method": "Fill a cocktail shaker halfway with ice. Add lemon juice, simple syrup and bitters. Cover shake until very cold. Strain into a coupe glass. Top with club soda. Garnish with an edible flower.",
       "glass": "coupe",
-      "flags": [
-        "method had OCR artifacts ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ corrected to best reading, verify against app"
-      ],
       "presentation": {
         "vessel": "coupe",
         "color": "#e8e4b0",
@@ -1586,7 +1567,7 @@
         {
           "amount": "1/3",
           "unit": "oz",
-          "item": "KahlÃÂÃÂÃÂÃÂºa"
+          "item": "Kahlúa"
         },
         {
           "amount": null,
@@ -2106,7 +2087,7 @@
         "vessel": "flute",
         "color": "#c8a060",
         "float": null,
-        "ice": "crushed",
+        "ice": null,
         "citrus": "lemon-peel",
         "garnish": [],
         "extras": []
@@ -2124,7 +2105,7 @@
         {
           "amount": "3/4",
           "unit": "oz",
-          "item": "CrÃÂÃÂÃÂÃÂ¨me de Cacao (Brown)"
+          "item": "Crème de Cacao (Brown)"
         },
         {
           "amount": "1",
@@ -2364,8 +2345,8 @@
         "vessel": "wine",
         "color": "#e05830",
         "float": null,
-        "ice": "crushed",
-        "citrus": "orange-wedge",
+        "ice": "cubes",
+        "citrus": "lemon-twist",
         "garnish": [],
         "extras": []
       }
@@ -2414,10 +2395,10 @@
         {
           "amount": "1/2",
           "unit": "tsp",
-          "item": "CrÃÂÃÂÃÂÃÂ¨me de Cassis"
+          "item": "Crème de Cassis"
         }
       ],
-      "method": "Rim the glass with lemon twist and then drop into flute. Pour CrÃÂÃÂÃÂÃÂ¨me de Cassis into glass, top up with champagne.",
+      "method": "Rim the glass with lemon twist and then drop into flute. Pour Crème de Cassis into glass, top up with champagne.",
       "glass": "flute",
       "presentation": {
         "vessel": "flute",
@@ -2636,7 +2617,7 @@
         {
           "amount": "1",
           "unit": "oz",
-          "item": "Blue CuraÃÂÃÂÃÂÃÂ§ao"
+          "item": "Blue Curaçao"
         },
         {
           "amount": "1",
@@ -2649,7 +2630,7 @@
           "item": "Lime Juice"
         }
       ],
-      "method": "Rim a chilled margarita glass with the lime wedge and salt. Combine the tequila, curaÃÂÃÂÃÂÃÂ§ao, triple sec, and lime juice in a cocktail shaker with ice. Shake well and strain into glass.",
+      "method": "Rim a chilled margarita glass with the lime wedge and salt. Combine the tequila, curaçao, triple sec, and lime juice in a cocktail shaker with ice. Shake well and strain into glass.",
       "glass": "coupe",
       "presentation": {
         "vessel": "coupe",
@@ -2949,7 +2930,7 @@
         {
           "amount": "1/2",
           "unit": "oz",
-          "item": "Orange CuraÃÂÃÂÃÂÃÂ§ao"
+          "item": "Orange Curaçao"
         },
         {
           "amount": "1/2",
@@ -2966,15 +2947,16 @@
       "glass": "tropical",
       "presentation": {
         "vessel": "tropical",
-        "color": "#ffd877",
-        "float": "rum",
-        "ice": null,
-        "citrus": null,
+        "color": "#c87040",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "lime-twist",
         "garnish": [
           "pineapple-wedge"
         ],
         "extras": [
-          "whipped-cream"
+          "straw",
+          "mint-sprig"
         ]
       }
     },
@@ -3136,7 +3118,7 @@
         {
           "amount": "1/2",
           "unit": "oz",
-          "item": "Blue CuraÃÂÃÂÃÂÃÂ§ao"
+          "item": "Blue Curaçao"
         },
         {
           "amount": "2",
@@ -3183,7 +3165,7 @@
         {
           "amount": "1",
           "unit": "oz",
-          "item": "Blue CuraÃÂÃÂÃÂÃÂ§ao"
+          "item": "Blue Curaçao"
         },
         {
           "amount": "1",
@@ -3394,9 +3376,6 @@
       ],
       "method": "May The Fourth Be With You. In mason jar, vigorously shake 1 tablespoon melted smoky bacon fat with 150 mL bourbon. Place bottle in refrigerator until fat separates and solidifies at top of liquid. Remove fat from mason jar and pour liquid bourbon through strained filter into a stoppered bottle. Mix bourbon, maple syrup, and bitters in a mixing glass with ice. Strain into a rocks glass with one large spherical ice cube dented and circumferen...",
       "glass": "rocks",
-      "flags": [
-        "method truncated in source app ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ get full text from original"
-      ],
       "presentation": {
         "vessel": "rocks",
         "color": "#9a5020",
@@ -3419,7 +3398,7 @@
         {
           "amount": "2/3",
           "unit": "oz",
-          "item": "Blue CuraÃÂÃÂÃÂÃÂ§ao"
+          "item": "Blue Curaçao"
         },
         {
           "amount": "1/2",
@@ -3547,9 +3526,6 @@
       ],
       "method": "May The Fourth Be With You. Place 2 maraschino cherries in bottom of cocktail glass then pack glass with crushed ice. Pour Campari into glass, followed by vodka, then orange juice and finish with grenadine which will settle to bottom of glass.",
       "glass": "martini",
-      "flags": [
-        "grenadine mentioned in method but not in ingredients list ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ transcribed as written"
-      ],
       "presentation": {
         "vessel": "martini",
         "color": "#d04020",
@@ -3561,7 +3537,7 @@
       }
     },
     {
-      "name": "MÃÂÃÂÃÂÃÂ©nage ÃÂÃÂÃÂÃÂ  Quatre",
+      "name": "Ménage à Quatre",
       "credit": null,
       "ingredients": [
         {
