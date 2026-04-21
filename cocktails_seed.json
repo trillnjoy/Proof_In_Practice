@@ -3,76 +3,276 @@
     {
       "category": "Bourbon & Rye",
       "bottles": [
-        "Larceny",
-        "Willett Pot Still",
-        "Weller Special Reserve",
-        "Old Grand-Dad",
-        "Maker's Mark",
-        "Four Roses Small Batch",
-        "Elijah Craig Small Batch",
-        "Mischief Rye Whiskey",
-        "Rieger's Kansas City Rye Whiskey",
-        "Mischief Skagit Gold Rye Whiskey"
+        {
+          "name": "Larceny",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Willett Pot Still",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Weller Special Reserve",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Old Grand-Dad",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Maker's Mark",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Four Roses Small Batch",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Elijah Craig Small Batch",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Mischief Rye Whiskey",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Rieger's Kansas City Rye Whiskey",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Mischief Skagit Gold Rye Whiskey",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        }
       ]
     },
     {
       "category": "Irish Whiskey",
       "bottles": [
-        "Redbreast 12 Year",
-        "Bushmills Originals",
-        "Barr An Uisce 1803 Single Malt",
-        "Jameson Caskmate Stout",
-        "Tullmore D.E.W.",
-        "Connemara"
+        {
+          "name": "Redbreast 12 Year",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Bushmills Originals",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Barr An Uisce 1803 Single Malt",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Jameson Caskmate Stout",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Tullmore D.E.W.",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Connemara",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        }
       ]
     },
     {
       "category": "Scotch",
       "bottles": [
-        "Balvenie Doublewood 12 YR",
-        "Highland Park Magnus",
-        "Shackleton Blended",
-        "Lagavulin 16 YR",
-        "Johnnie Walker Black Label"
+        {
+          "name": "Balvenie Doublewood 12 YR",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Highland Park Magnus",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Shackleton Blended",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Lagavulin 16 YR",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Johnnie Walker Black Label",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        }
       ]
     },
     {
       "category": "Gin",
       "bottles": [
-        "Bombay Sapphire Gin",
-        "Hendrick's Original",
-        "Hendrick's Midsummer Solstice",
-        "Uncle Val's Botanical",
-        "Tanqueray 10"
+        {
+          "name": "Bombay Sapphire Gin",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Hendrick's Original",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Hendrick's Midsummer Solstice",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Uncle Val's Botanical",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Tanqueray 10",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        }
       ]
     },
     {
       "category": "Vodka",
       "bottles": [
-        "Stolichnaya",
-        "SKYY",
-        "Plume & Petal Cucumber Splash",
-        "Grey Goose"
+        {
+          "name": "Stolichnaya",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "SKYY",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Plume & Petal Cucumber Splash",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Grey Goose",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        }
       ]
     },
     {
       "category": "Rum",
       "bottles": [
-        "Flor de CaÃ±a 7 Year",
-        "Appleton Estate Signature",
-        "Diplomatico Reserva Exclusiva",
-        "Gosling's Black Seal",
-        "Plantation Original Dark",
-        "Bacardi Superior",
-        "Cruzan Aged Light Rum"
+        {
+          "name": "Flor de Caña 7 Year",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Appleton Estate Signature",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Diplomatico Reserva Exclusiva",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Gosling's Black Seal",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Plantation Original Dark",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Bacardi Superior",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Cruzan Aged Light Rum",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        }
       ]
     },
     {
       "category": "Cognac & Brandy",
       "bottles": [
-        "Courvoisier VSOP",
-        "RÃ©my Martin VSOP",
-        "Pierre Ferrand 1840"
+        {
+          "name": "Courvoisier VSOP",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Rémy Martin VSOP",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Pierre Ferrand 1840",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        }
       ]
     },
     {
@@ -82,44 +282,159 @@
     {
       "category": "Tequila & Mezcal",
       "bottles": [
-        "Hornitos Reposado Tequila",
-        "EspolÃ³n Tequila Blanco",
-        "Herradura Reposado"
+        {
+          "name": "Hornitos Reposado Tequila",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Espolón Tequila Blanco",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Herradura Reposado",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        }
       ]
     },
     {
       "category": "Aperol & Campari",
       "bottles": [
-        "Aperol",
-        "Fratelli Milano Campari"
+        {
+          "name": "Aperol",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Fratelli Milano Campari",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        }
       ]
     },
     {
       "category": "Fruit Liqueurs",
       "bottles": [
-        "Domaine de Canton Ginger",
-        "Cointreau",
-        "Triple Sec",
-        "Blue Curacao",
-        "Soho Lychee",
-        "St Germain Elderflower",
-        "Cardamaro",
-        "Pama Pomegranate",
-        "Chambord Black Raspberry Liqueur"
+        {
+          "name": "Domaine de Canton Ginger",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Cointreau",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Triple Sec",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Blue Curacao",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Soho Lychee",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "St Germain Elderflower",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Cardamaro",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Pama Pomegranate",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Chambord Black Raspberry Liqueur",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        }
       ]
     },
     {
       "category": "Nut/Herbal Liqueurs",
       "bottles": [
-        "Frangelico Hazelnut",
-        "Amaretto Disaronno",
-        "St Elizabeth Allspice Dram",
-        "Bailey's Original Irish Cream",
-        "Bailey's Almande",
-        "Licor Cuarenta y Tres",
-        "Pacifique Liqueur",
-        "Noilly Prat Dry Vermouth",
-        "Noilly Prat Vermouth Rouge"
+        {
+          "name": "Frangelico Hazelnut",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Amaretto Disaronno",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "St Elizabeth Allspice Dram",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Bailey's Original Irish Cream",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Bailey's Almande",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Licor Cuarenta y Tres",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Pacifique Liqueur",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Noilly Prat Dry Vermouth",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        },
+        {
+          "name": "Noilly Prat Vermouth Rouge",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null
+        }
       ]
     }
   ],
@@ -1567,7 +1882,7 @@
         {
           "amount": "1/3",
           "unit": "oz",
-          "item": "KahlÃºa"
+          "item": "Kahlúa"
         },
         {
           "amount": null,
@@ -2105,7 +2420,7 @@
         {
           "amount": "3/4",
           "unit": "oz",
-          "item": "CrÃ¨me de Cacao (Brown)"
+          "item": "Crème de Cacao (Brown)"
         },
         {
           "amount": "1",
@@ -2345,7 +2660,7 @@
         "vessel": "wine",
         "color": "#e05830",
         "float": null,
-        "ice": "crushed",
+        "ice": "cubes",
         "citrus": "lemon-twist",
         "garnish": [],
         "extras": []
@@ -2395,10 +2710,10 @@
         {
           "amount": "1/2",
           "unit": "tsp",
-          "item": "CrÃ¨me de Cassis"
+          "item": "Crème de Cassis"
         }
       ],
-      "method": "Rim the glass with lemon twist and then drop into flute. Pour CrÃ¨me de Cassis into glass, top up with champagne.",
+      "method": "Rim the glass with lemon twist and then drop into flute. Pour Crème de Cassis into glass, top up with champagne.",
       "glass": "flute",
       "presentation": {
         "vessel": "flute",
@@ -2617,7 +2932,7 @@
         {
           "amount": "1",
           "unit": "oz",
-          "item": "Blue CuraÃ§ao"
+          "item": "Blue Curaçao"
         },
         {
           "amount": "1",
@@ -2630,7 +2945,7 @@
           "item": "Lime Juice"
         }
       ],
-      "method": "Rim a chilled margarita glass with the lime wedge and salt. Combine the tequila, curaÃ§ao, triple sec, and lime juice in a cocktail shaker with ice. Shake well and strain into glass.",
+      "method": "Rim a chilled margarita glass with the lime wedge and salt. Combine the tequila, curaçao, triple sec, and lime juice in a cocktail shaker with ice. Shake well and strain into glass.",
       "glass": "coupe",
       "presentation": {
         "vessel": "coupe",
@@ -2930,7 +3245,7 @@
         {
           "amount": "1/2",
           "unit": "oz",
-          "item": "Orange CuraÃ§ao"
+          "item": "Orange Curaçao"
         },
         {
           "amount": "1/2",
@@ -3118,7 +3433,7 @@
         {
           "amount": "1/2",
           "unit": "oz",
-          "item": "Blue CuraÃ§ao"
+          "item": "Blue Curaçao"
         },
         {
           "amount": "2",
@@ -3165,7 +3480,7 @@
         {
           "amount": "1",
           "unit": "oz",
-          "item": "Blue CuraÃ§ao"
+          "item": "Blue Curaçao"
         },
         {
           "amount": "1",
@@ -3398,7 +3713,7 @@
         {
           "amount": "2/3",
           "unit": "oz",
-          "item": "Blue CuraÃ§ao"
+          "item": "Blue Curaçao"
         },
         {
           "amount": "1/2",
@@ -3537,7 +3852,7 @@
       }
     },
     {
-      "name": "MÃ©nage Ã  Quatre",
+      "name": "Ménage à Quatre",
       "credit": null,
       "ingredients": [
         {
