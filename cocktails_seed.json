@@ -209,7 +209,7 @@
       "category": "Rum",
       "bottles": [
         {
-          "name": "Flor de CaÃ±a 7 Year",
+          "name": "Flor de CaÃÂ±a 7 Year",
           "notes": null,
           "rating": null,
           "imageUrl": null
@@ -262,7 +262,7 @@
           "imageUrl": null
         },
         {
-          "name": "RÃ©my Martin VSOP",
+          "name": "RÃÂ©my Martin VSOP",
           "notes": null,
           "rating": null,
           "imageUrl": null
@@ -289,7 +289,7 @@
           "imageUrl": null
         },
         {
-          "name": "EspolÃ³n Tequila Blanco",
+          "name": "EspolÃÂ³n Tequila Blanco",
           "notes": null,
           "rating": null,
           "imageUrl": null
@@ -1882,7 +1882,7 @@
         {
           "amount": "1/3",
           "unit": "oz",
-          "item": "KahlÃºa"
+          "item": "KahlÃÂºa"
         },
         {
           "amount": null,
@@ -2420,7 +2420,7 @@
         {
           "amount": "3/4",
           "unit": "oz",
-          "item": "CrÃ¨me de Cacao (Brown)"
+          "item": "CrÃÂ¨me de Cacao (Brown)"
         },
         {
           "amount": "1",
@@ -2660,8 +2660,8 @@
         "vessel": "wine",
         "color": "#e05830",
         "float": null,
-        "ice": "cubes",
-        "citrus": "lemon-twist",
+        "ice": "crushed",
+        "citrus": "orange-wedge",
         "garnish": [],
         "extras": []
       }
@@ -2710,10 +2710,10 @@
         {
           "amount": "1/2",
           "unit": "tsp",
-          "item": "CrÃ¨me de Cassis"
+          "item": "CrÃÂ¨me de Cassis"
         }
       ],
-      "method": "Rim the glass with lemon twist and then drop into flute. Pour CrÃ¨me de Cassis into glass, top up with champagne.",
+      "method": "Rim the glass with lemon twist and then drop into flute. Pour CrÃÂ¨me de Cassis into glass, top up with champagne.",
       "glass": "flute",
       "presentation": {
         "vessel": "flute",
@@ -2932,7 +2932,7 @@
         {
           "amount": "1",
           "unit": "oz",
-          "item": "Blue CuraÃ§ao"
+          "item": "Blue CuraÃÂ§ao"
         },
         {
           "amount": "1",
@@ -2945,7 +2945,7 @@
           "item": "Lime Juice"
         }
       ],
-      "method": "Rim a chilled margarita glass with the lime wedge and salt. Combine the tequila, curaÃ§ao, triple sec, and lime juice in a cocktail shaker with ice. Shake well and strain into glass.",
+      "method": "Rim a chilled margarita glass with the lime wedge and salt. Combine the tequila, curaÃÂ§ao, triple sec, and lime juice in a cocktail shaker with ice. Shake well and strain into glass.",
       "glass": "coupe",
       "presentation": {
         "vessel": "coupe",
@@ -3245,7 +3245,7 @@
         {
           "amount": "1/2",
           "unit": "oz",
-          "item": "Orange CuraÃ§ao"
+          "item": "Orange CuraÃÂ§ao"
         },
         {
           "amount": "1/2",
@@ -3433,7 +3433,7 @@
         {
           "amount": "1/2",
           "unit": "oz",
-          "item": "Blue CuraÃ§ao"
+          "item": "Blue CuraÃÂ§ao"
         },
         {
           "amount": "2",
@@ -3480,7 +3480,7 @@
         {
           "amount": "1",
           "unit": "oz",
-          "item": "Blue CuraÃ§ao"
+          "item": "Blue CuraÃÂ§ao"
         },
         {
           "amount": "1",
@@ -3713,7 +3713,7 @@
         {
           "amount": "2/3",
           "unit": "oz",
-          "item": "Blue CuraÃ§ao"
+          "item": "Blue CuraÃÂ§ao"
         },
         {
           "amount": "1/2",
@@ -3852,7 +3852,7 @@
       }
     },
     {
-      "name": "MÃ©nage Ã  Quatre",
+      "name": "MÃÂ©nage ÃÂ  Quatre",
       "credit": null,
       "ingredients": [
         {
