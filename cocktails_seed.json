@@ -4106,6 +4106,22 @@
         "garnish": [],
         "extras": []
       }
+    },
+    {
+      "name": "The Cameron Kick",
+      "credit": null,
+      "ingredients": [],
+      "method": "",
+      "glass": "rocks",
+      "presentation": {
+        "vessel": "rocks",
+        "color": null,
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
     }
   ]
 }
