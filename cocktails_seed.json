@@ -3703,14 +3703,14 @@
           "item": "Orange Bitters"
         }
       ],
-      "method": "May The Fourth Be With You. In mason jar, vigorously shake 1 tablespoon melted smoky bacon fat with 150 mL bourbon. Place bottle in refrigerator until fat separates and solidifies at top of liquid. Remove fat from mason jar and pour liquid bourbon through strained filter into a stoppered bottle. Mix bourbon, maple syrup, and bitters in a mixing glass with ice. Strain into a rocks glass with one large spherical ice cube dented and circumferen...",
+      "method": "May The Fourth Be With You. In mason jar, vigorously shake 1 tablespoon melted smoky bacon fat with 150 mL bourbon. Place bottle in refrigerator until fat separates and solidifies at top of liquid. Remove fat from mason jar and pour liquid bourbon through strained filter into a stoppered bottle. Mix bourbon, maple syrup, and bitters in a mixing glass with ice. Strain into a rocks glass with one large spherical ice cube dented and circumferences to look like the Death Star.",
       "glass": "rocks",
       "presentation": {
         "vessel": "rocks",
         "color": "#9a5020",
         "float": null,
         "ice": "huge",
-        "citrus": null,
+        "citrus": "orange-peel",
         "garnish": [],
         "extras": []
       }
