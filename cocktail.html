@@ -1586,17 +1586,11 @@ const BM = {
     const isNew = this.isNew;
     const pendingName = this._pendingName;
     const bottleIdx = this.bottleIdx;
-
-    // Apply change to in-memory state first
-    if (isNew) {
-      cat.bottles.push({name: pendingName, notes, rating, imageUrl});
-    } else {
-      const b = cat.bottles[bottleIdx];
-      b.notes = notes; b.rating = rating; b.imageUrl = imageUrl;
-    }
+    const bottleName = isNew ? pendingName : (cat.bottles[bottleIdx]?.name || '');
 
     $('bm-status').textContent = 'Saving…';
-    const bottleName = isNew ? pendingName : cat.bottles[bottleIdx].name;
+
+    // GitHub first — only mutate local state on success
     const ok = await saveToGitHub(seed => {
       const seedCat = seed.bar_inventory.find(c => c.category === catName);
       if (!seedCat) throw new Error(`Category "${catName}" not found in seed.`);
@@ -1610,12 +1604,17 @@ const BM = {
     }, `Update bottle: ${bottleName}`);
 
     if (ok) {
+      // Now safe to update in-memory state
+      if (isNew) {
+        cat.bottles.push({name: pendingName, notes, rating, imageUrl});
+      } else {
+        const b = cat.bottles[bottleIdx];
+        b.notes = notes; b.rating = rating; b.imageUrl = imageUrl;
+      }
       $('bm-status').textContent = 'Saved.';
       setTimeout(() => { BM.close(); buildInventory(); }, 600);
     } else {
-      // Roll back in-memory change on failure
-      if (isNew) cat.bottles.pop();
-      $('bm-status').textContent = 'Save failed — check GitHub settings.';
+      $('bm-status').textContent = 'Save failed — nothing was changed. Check settings.';
     }
   }
 };
@@ -1697,7 +1696,7 @@ function buildInventory() {
   }).join('');
 
   // Event delegation on inventory container
-  inventoryCont.onclick = e => {
+  inventoryCont.onclick = async e => {
     const el = e.target.closest('[data-action]');
     if (!el) return;
     const action = el.dataset.action;
@@ -1710,12 +1709,20 @@ function buildInventory() {
       BM.open(ci, null, true);
     } else if (action === 'delete') {
       const bname = allInventory[ci].bottles[bi]?.name || 'this bottle';
-      if (confirm(`Remove "${bname}" from ${allInventory[ci].category}?`)) {
-        allInventory[ci].bottles.splice(bi, 1);
-        saveToGitHub().then(ok => {
-          if (!ok) alert('Removed locally but GitHub save failed — check settings.');
-        });
-        buildInventory();
+      const catName = allInventory[ci].category;
+      if (confirm(`Remove "${bname}" from ${catName}?`)) {
+        const ok = await saveToGitHub(seed => {
+          const seedCat = seed.bar_inventory.find(c => c.category === catName);
+          if (!seedCat) throw new Error(`Category "${catName}" not found.`);
+          const idx = seedCat.bottles.findIndex(b => b.name === bname);
+          if (idx !== -1) seedCat.bottles.splice(idx, 1);
+        }, `Remove bottle: ${bname}`);
+        if (ok) {
+          allInventory[ci].bottles.splice(bi, 1);
+          buildInventory();
+        } else {
+          alert('GitHub save failed — nothing was changed. Check settings.');
+        }
       }
     }
   };
@@ -2553,27 +2560,32 @@ async function savePresentation() {
     seed.recipes[recipeIndex].name         = newTitle;
     seed.recipes[recipeIndex].method       = newMethod || seed.recipes[recipeIndex].method;
     seed.recipes[recipeIndex].presentation = newPresentation;
+    // Keep glass field in sync with presentation vessel (reverse DR normalization)
+    const vesselToGlass = {cocktail:'martini', mule:'mule mug', irish:'mug', snifter:'wine'};
+    seed.recipes[recipeIndex].glass = vesselToGlass[newPresentation.vessel] || newPresentation.vessel;
   }, `Update recipe: ${newTitle}`);
 
   if (ok) {
-    // Update in-memory record
+    // GitHub confirmed — now safe to update in-memory state
+    const vesselToGlass = {cocktail:'martini', mule:'mule mug', irish:'mug', snifter:'wine'};
     const idx = allRecipes.findIndex(r => r.name === originalName);
     if (idx !== -1) {
       allRecipes[idx].name         = newTitle;
       allRecipes[idx].method       = newMethod || allRecipes[idx].method;
       allRecipes[idx].presentation = newPresentation;
+      allRecipes[idx].glass        = vesselToGlass[newPresentation.vessel] || newPresentation.vessel;
     }
-    // Update editorRecipe and advance _originalName to new name
-    editorRecipe.name         = newTitle;
-    editorRecipe.method       = newMethod || editorRecipe.method;
-    editorRecipe.presentation = newPresentation;
-    editorRecipe._originalName = newTitle;  // advance key for any subsequent save in same session
+    editorRecipe.name          = newTitle;
+    editorRecipe.method        = newMethod || editorRecipe.method;
+    editorRecipe.presentation  = newPresentation;
+    editorRecipe._originalName = newTitle;
 
     editorStatus.textContent = 'Saved ✓';
     saveBtn.disabled = false;
     setTimeout(() => { closeEditor(); showDetail(editorRecipe); }, 700);
   } else {
-    editorStatus.textContent = 'Error saving to GitHub — check settings.';
+    // GitHub failed — local state untouched, user can retry
+    editorStatus.textContent = 'Save failed — nothing was changed. Check settings.';
     saveBtn.disabled = false;
   }
 }
@@ -2618,13 +2630,13 @@ async function addNewRecipe() {
   }, `Add recipe: ${trimmed}`);
 
   if (ok) {
+    // GitHub confirmed — safe to add locally
     allRecipes.push(newRecipe);
     renderRecipeList();
-    // Open editor immediately so they can fill in details
     showDetail(newRecipe);
     setTimeout(() => openEditor(newRecipe), 300);
   } else {
-    alert('Failed to save to GitHub — check settings.');
+    alert('Save failed — recipe was not added. Check GitHub settings.');
   }
 }
 
