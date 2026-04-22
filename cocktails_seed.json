@@ -50,6 +50,12 @@
           "notes": null,
           "rating": 2,
           "imageUrl": null
+        },
+        {
+          "name": "Eagle Rare",
+          "notes": null,
+          "rating": 3,
+          "imageUrl": null
         }
       ]
     },
