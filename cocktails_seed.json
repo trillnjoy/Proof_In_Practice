@@ -4111,14 +4111,14 @@
       "name": "Cameron's Kick",
       "credit": null,
       "ingredients": [],
-      "method": "Mix 1oz Scotch, 1 ox Irish Whisky, 1/2 oz orgeat and 1/2 oz lemon juice in a shaker. Shake vigorously with ice. Strain into coupe. Garnish with lime peel.",
+      "method": "Mix 1oz Scotch, 1 ox Irish Whisky, 1/2 oz orgeat and 1/2 oz lemon juice in a shaker. Shake vigorously with ice. Strain into coupe. Garnish with lemon peel.",
       "glass": "rocks",
       "presentation": {
         "vessel": "coupe",
         "color": "#f2f7b7",
         "float": null,
         "ice": null,
-        "citrus": "lime-peel",
+        "citrus": "lemon-peel",
         "garnish": [],
         "extras": []
       }
