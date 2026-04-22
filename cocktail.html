@@ -2473,11 +2473,20 @@ $('editor-cancel-btn').addEventListener('click', closeEditor);
    GITHUB WRITE-BACK — SHARED
 ══════════════════════════════════════════════ */
 
-// Shared GitHub write: fetches seed, calls patchFn(seed) to mutate it, PUTs back.
-// Returns true on success, false on failure.
-async function saveToGitHub(patchFn, commitMsg) {
+// Serial GitHub write queue — prevents SHA conflicts from concurrent saves
+let _ghQueue = Promise.resolve();
+
+function saveToGitHub(patchFn, commitMsg) {
+  // Chain onto the queue — each save waits for the previous to finish
+  _ghQueue = _ghQueue.then(() => _doSaveToGitHub(patchFn, commitMsg));
+  return _ghQueue;
+}
+
+async function _doSaveToGitHub(patchFn, commitMsg) {
   const s = ghSettings();
-  if (!s.token || !s.owner || !s.repo || !s.path) return false;
+  if (!s.token || !s.owner || !s.repo || !s.path) {
+    return { ok: false, error: 'GitHub settings not configured.' };
+  }
 
   const apiBase = `https://api.github.com/repos/${s.owner}/${s.repo}/contents/${s.path}`;
   const headers = {
