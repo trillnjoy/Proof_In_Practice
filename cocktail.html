@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -1603,7 +1606,7 @@ const BM = {
       }
     }, `Update bottle: ${bottleName}`);
 
-    if (ok) {
+    if (ok.ok) {
       // Now safe to update in-memory state
       if (isNew) {
         cat.bottles.push({name: pendingName, notes, rating, imageUrl});
@@ -1614,7 +1617,7 @@ const BM = {
       $('bm-status').textContent = 'Saved.';
       setTimeout(() => { BM.close(); buildInventory(); }, 600);
     } else {
-      $('bm-status').textContent = 'Save failed — nothing was changed. Check settings.';
+      $('bm-status').textContent = `Save failed — ${ok.error}`;
     }
   }
 };
@@ -1711,17 +1714,17 @@ function buildInventory() {
       const bname = allInventory[ci].bottles[bi]?.name || 'this bottle';
       const catName = allInventory[ci].category;
       if (confirm(`Remove "${bname}" from ${catName}?`)) {
-        const ok = await saveToGitHub(seed => {
+        const delResult = await saveToGitHub(seed => {
           const seedCat = seed.bar_inventory.find(c => c.category === catName);
           if (!seedCat) throw new Error(`Category "${catName}" not found.`);
           const idx = seedCat.bottles.findIndex(b => b.name === bname);
           if (idx !== -1) seedCat.bottles.splice(idx, 1);
         }, `Remove bottle: ${bname}`);
-        if (ok) {
+        if (delResult.ok) {
           allInventory[ci].bottles.splice(bi, 1);
           buildInventory();
         } else {
-          alert('GitHub save failed — nothing was changed. Check settings.');
+          alert(`GitHub save failed — nothing was changed.\n\n${delResult.error}`);
         }
       }
     }
@@ -2506,10 +2509,10 @@ async function saveToGitHub(patchFn, commitMsg) {
       }),
     });
     if (!putRes.ok) throw new Error(`GitHub PUT ${putRes.status}: ${await putRes.text()}`);
-    return true;
+    return { ok: true };
   } catch(err) {
     console.error('saveToGitHub:', err);
-    return false;
+    return { ok: false, error: err.message };
   }
 }
 
@@ -2565,7 +2568,7 @@ async function savePresentation() {
     seed.recipes[recipeIndex].glass = vesselToGlass[newPresentation.vessel] || newPresentation.vessel;
   }, `Update recipe: ${newTitle}`);
 
-  if (ok) {
+  if (ok.ok) {
     // GitHub confirmed — now safe to update in-memory state
     const vesselToGlass = {cocktail:'martini', mule:'mule mug', irish:'mug', snifter:'wine'};
     const idx = allRecipes.findIndex(r => r.name === originalName);
@@ -2584,8 +2587,7 @@ async function savePresentation() {
     saveBtn.disabled = false;
     setTimeout(() => { closeEditor(); showDetail(editorRecipe); }, 700);
   } else {
-    // GitHub failed — local state untouched, user can retry
-    editorStatus.textContent = 'Save failed — nothing was changed. Check settings.';
+    editorStatus.textContent = `Save failed — ${ok.error}`;
     saveBtn.disabled = false;
   }
 }
@@ -2629,14 +2631,14 @@ async function addNewRecipe() {
     seed.recipes.push(newRecipe);
   }, `Add recipe: ${trimmed}`);
 
-  if (ok) {
+  if (ok.ok) {
     // GitHub confirmed — safe to add locally
     allRecipes.push(newRecipe);
     renderRecipeList();
     showDetail(newRecipe);
     setTimeout(() => openEditor(newRecipe), 300);
   } else {
-    alert('Save failed — recipe was not added. Check GitHub settings.');
+    alert(`Save failed — recipe was not added.\n\n${ok.error}`);
   }
 }
 
