@@ -2481,7 +2481,7 @@ async function saveToGitHub(patchFn, commitMsg) {
     const fileData = await getRes.json();
     const sha = fileData.sha;
 
-    const decoded = atob(fileData.content.replace(/\n/g,''));
+    const decoded = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g,''))));
     const seed = JSON.parse(decoded);
 
     patchFn(seed);
