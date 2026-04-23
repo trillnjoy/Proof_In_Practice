@@ -774,7 +774,8 @@
     /* Name cell — below shelf */
     .bottle-name-cell {
       position: relative;
-      padding: 3px 16px 3px 2px;
+      padding: 4px 14px 4px 4px;
+      text-align: center;
     }
     .bottle-name-text {
       font-family: var(--serif-body);
@@ -1112,8 +1113,9 @@
   </header>
 
   <!-- ── SEARCH (list view only) ── -->
-  <div id="recipe-list-header" style="display:flex;align-items:center;justify-content:flex-end;padding:6px 16px 0;">
-    <button id="add-recipe-btn" style="background:none;border:1px solid rgba(193,127,58,0.45);border-radius:3px;color:var(--amber);font-family:var(--serif-body);font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;padding:5px 12px;cursor:pointer;">+ New Recipe</button>
+  <div id="recipe-list-header" style="display:flex;align-items:center;justify-content:space-between;padding:6px 16px 0;min-height:32px;">
+    <span id="inventory-tagline" style="display:none;font-family:var(--serif-body);font-size:0.78rem;color:var(--ink-light);font-style:italic;flex:1;text-align:center;">The house collection — as of the last inventory.</span>
+    <button id="add-recipe-btn" style="background:none;border:1px solid rgba(193,127,58,0.45);border-radius:3px;color:var(--amber);font-family:var(--serif-body);font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;padding:5px 12px;cursor:pointer;margin-left:auto;">+ New Recipe</button>
   </div>
   <div id="search-bar">
     <div id="search-wrap">
@@ -1148,7 +1150,6 @@
 
     <!-- Bar Inventory View -->
     <div id="inventory-view" class="view" role="main">
-      <p class="inventory-intro">The house collection — as of the last inventory.</p>
       <div id="inventory-content"></div>
     </div>
 
@@ -1819,6 +1820,10 @@ function showView(view) {
 
   searchBar.style.display   = isListView ? '' : 'none';
   filterBar.style.display   = isListView ? '' : 'none';
+  const addBtn = $('add-recipe-btn');
+  const tagline = $('inventory-tagline');
+  if (addBtn) addBtn.style.display = isInventory ? 'none' : '';
+  if (tagline) tagline.style.display = isInventory ? '' : 'none';
   backBtn.classList.toggle('visible', isDetail);
   const logoWrap = $('logo-wrap');
   if (logoWrap) logoWrap.style.display = isDetail ? 'none' : '';
