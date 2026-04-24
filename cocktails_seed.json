@@ -196,7 +196,7 @@
           "abv": 43
         },
         {
-          "name": "Lambray",
+          "name": "Lambay",
           "notes": null,
           "rating": null,
           "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Lambray_216.png",
@@ -277,6 +277,41 @@
         },
         {
           "name": "SKYY",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null,
+          "abv": 40
+        },
+        {
+          "name": "Ketel One: Cucumber & Mint",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null,
+          "abv": 40
+        },
+        {
+          "name": "Ketel One: Grapefruit & Rose",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null,
+          "abv": 40
+        },
+        {
+          "name": "Woodinville Vodka",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null,
+          "abv": 40
+        },
+                {
+          "name": "Stolichnaya Pomagranate",
+          "notes": null,
+          "rating": null,
+          "imageUrl": null,
+          "abv": 40
+        },
+        {
+          "name": "Stolichnaya Citroen",
           "notes": null,
           "rating": null,
           "imageUrl": null,
