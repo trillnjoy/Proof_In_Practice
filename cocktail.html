@@ -1099,7 +1099,6 @@
   <header id="header">
     <div class="header-inner">
       <button id="back-btn" aria-label="Back">←</button>
-      <button id="settings-btn" aria-label="Settings" style="display:none;background:none;border:none;color:var(--amber);font-size:1.1rem;padding:4px 8px;cursor:pointer;flex-shrink:0;margin-left:auto;">⚙</button>
       <div id="app-title"></div>
       <div id="app-subtitle"></div>
       <div class="logo-wrap" id="logo-wrap">
@@ -1121,6 +1120,7 @@
         <button class="header-nav-btn" data-view="inventory" aria-label="Top Shelf">
           <span class="hnav-icon">🍾</span>Top Shelf
         </button>
+        <button id="settings-btn" aria-label="Settings" style="background:none;border:none;color:var(--amber);font-size:1rem;padding:4px 8px;cursor:pointer;flex-shrink:0;">⚙</button>
       </nav>
     </div>
   </header>
@@ -1171,14 +1171,14 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-24 14:02 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-24 14:42 UTC</div>
   </footer>
 
 
   <!-- ── SETTINGS DRAWER ── -->
   <div id="settings-overlay">
     <div id="settings-drawer">
-      <div class="settings-title">GitHub Sync Settings</div>
+      <div class="settings-title">GitHub Sync</div>
       <div class="settings-field">
         <label class="settings-label" for="gh-token">Personal Access Token</label>
         <input class="settings-input" type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
@@ -1204,6 +1204,13 @@
       <div class="settings-btn-row">
         <button class="settings-cancel-btn" id="settings-cancel-btn">Cancel</button>
         <button class="settings-save-btn" id="settings-save-btn">Save Settings</button>
+      </div>
+      <div style="border-top:1px solid var(--rule);margin-top:16px;padding-top:16px;">
+        <div style="font-family:var(--sans);font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-light);margin-bottom:10px;">Data Sync</div>
+        <div style="display:flex;gap:10px;">
+          <button id="export-btn" style="flex:1;padding:10px;background:var(--amber);border:none;border-radius:4px;font-family:var(--serif-display);font-size:0.82rem;font-weight:700;color:#fff;cursor:pointer;">Export to GitHub</button>
+          <button id="import-btn" style="flex:1;padding:10px;background:none;border:1px solid var(--rule);border-radius:4px;font-family:var(--serif-body);font-size:0.82rem;color:var(--ink-mid);cursor:pointer;">Import from GitHub</button>
+        </div>
       </div>
     </div>
   </div>
@@ -1636,30 +1643,20 @@ const BM = {
     $('bm-status').textContent = 'Saving…';
 
     // GitHub first — only mutate local state on success
-    const ok = await saveToGitHub(seed => {
-      const seedCat = seed.bar_inventory.find(c => c.category === catName);
-      if (!seedCat) throw new Error(`Category "${catName}" not found in seed.`);
-      if (isNew) {
-        seedCat.bottles.push({name: pendingName, notes, rating, imageUrl, abv});
-      } else {
-        const sb = seedCat.bottles[bottleIdx];
-        if (!sb) throw new Error(`Bottle index ${bottleIdx} not found in "${catName}".`);
-        sb.notes = notes; sb.rating = rating; sb.imageUrl = imageUrl; sb.abv = abv;
-      }
-    }, `Update bottle: ${bottleName}`);
-
-    if (ok.ok) {
-      // Now safe to update in-memory state
+    try {
+      // Update in-memory state
       if (isNew) {
         cat.bottles.push({name: pendingName, notes, rating, imageUrl, abv});
       } else {
         const b = cat.bottles[bottleIdx];
         b.notes = notes; b.rating = rating; b.imageUrl = imageUrl; b.abv = abv;
       }
+      // Write category to IDB
+      await idbPut('bar_inventory', cat);
       $('bm-status').textContent = 'Saved.';
       setTimeout(() => { BM.close(); buildInventory(); }, 600);
-    } else {
-      $('bm-status').textContent = `Save failed — ${ok.error}`;
+    } catch(err) {
+      $('bm-status').textContent = `Save failed: ${err.message}`;
     }
   }
 };
@@ -1797,17 +1794,12 @@ function buildInventory() {
       const bname = allInventory[ci].bottles[bi]?.name || 'this bottle';
       const catName = allInventory[ci].category;
       if (confirm(`Remove "${bname}" from ${catName}?`)) {
-        const delResult = await saveToGitHub(seed => {
-          const seedCat = seed.bar_inventory.find(c => c.category === catName);
-          if (!seedCat) throw new Error(`Category "${catName}" not found.`);
-          const idx = seedCat.bottles.findIndex(b => b.name === bname);
-          if (idx !== -1) seedCat.bottles.splice(idx, 1);
-        }, `Remove bottle: ${bname}`);
-        if (delResult.ok) {
+        try {
           allInventory[ci].bottles.splice(bi, 1);
+          await idbPut('bar_inventory', allInventory[ci]);
           buildInventory();
-        } else {
-          alert(`GitHub save failed — nothing was changed.\n\n${delResult.error}`);
+        } catch(err) {
+          alert(`Delete failed: ${err.message}`);
         }
       }
     }
@@ -1841,6 +1833,7 @@ function showView(view) {
   const tagline = $('inventory-tagline');
   if (addBtn) addBtn.style.display = isInventory ? 'none' : '';
   if (tagline) tagline.style.display = isInventory ? '' : 'none';
+  // settings-btn always visible — no show/hide needed
   backBtn.classList.toggle('visible', isDetail);
   const logoWrap = $('logo-wrap');
   if (logoWrap) logoWrap.style.display = isDetail ? 'none' : '';
@@ -2375,7 +2368,6 @@ function ghSettings() {
 function saveGhSettings(s) { localStorage.setItem(GH_KEY, JSON.stringify(s)); }
 
 const settingsOverlay = $('settings-overlay');
-const settingsBtn     = $('settings-btn');
 const settingsCancelBtn = $('settings-cancel-btn');
 const settingsSaveBtn   = $('settings-save-btn');
 const settingsStatus    = $('settings-status');
@@ -2392,7 +2384,7 @@ function openSettings() {
 }
 function closeSettings() { settingsOverlay.classList.remove('open'); }
 
-settingsBtn.addEventListener('click', openSettings);
+$('settings-btn').addEventListener('click', openSettings);
 settingsCancelBtn.addEventListener('click', closeSettings);
 settingsOverlay.addEventListener('click', e => { if(e.target===settingsOverlay) closeSettings(); });
 settingsSaveBtn.addEventListener('click', () => {
@@ -2560,91 +2552,10 @@ $('editor-cancel-btn').addEventListener('click', closeEditor);
    GITHUB WRITE-BACK — SHARED
 ══════════════════════════════════════════════ */
 
-// GitHub write lock — one operation at a time, UI blocked while in flight
-let _ghBusy = false;
-
-function _setGhBusy(busy) {
-  _ghBusy = busy;
-  // Disable/enable all inventory action buttons while saving
-  const inv = $('inventory-content');
-  if (inv) {
-    inv.querySelectorAll('.bottle-delete-btn, .bottle-add-cell, .bottle-img-cell')
-      .forEach(el => el.style.pointerEvents = busy ? 'none' : '');
-    inv.style.opacity = busy ? '0.6' : '';
-  }
-  // Disable bottle modal save button
-  const bmSave = $('bm-save-btn');
-  if (bmSave) bmSave.disabled = busy;
-}
-
-async function saveToGitHub(patchFn, commitMsg) {
-  if (_ghBusy) return { ok: false, error: 'A save is already in progress. Please wait.' };
-  _setGhBusy(true);
-  try {
-    // 15s timeout — guarantees UI unlock even if network hangs
-    const timeout = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('Request timed out after 8 seconds.')), 8000)
-    );
-    return await Promise.race([_doSaveToGitHub(patchFn, commitMsg), timeout]);
-  } catch(err) {
-    return { ok: false, error: err.message };
-  } finally {
-    _setGhBusy(false);
-  }
-}
-
-async function _doSaveToGitHub(patchFn, commitMsg) {
-  const s = ghSettings();
-  if (!s.token || !s.owner || !s.repo || !s.path) {
-    return { ok: false, error: 'GitHub settings not configured.' };
-  }
-
-  const apiBase = `https://api.github.com/repos/${s.owner}/${s.repo}/contents/${s.path}`;
-  const headers = {
-    'Authorization': `Bearer ${s.token}`,
-    'Accept': 'application/vnd.github.v3+json',
-    'Content-Type': 'application/json',
-  };
-
-  try {
-    const getRes = await fetch(`${apiBase}?ref=${s.branch||'main'}`, { headers });
-    if (!getRes.ok) throw new Error(`GitHub GET ${getRes.status}: ${await getRes.text()}`);
-    const fileData = await getRes.json();
-    const sha = fileData.sha;
-
-    const decoded = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g,''))));
-    const seed = JSON.parse(decoded);
-
-    patchFn(seed);
-
-    const newContent = btoa(unescape(encodeURIComponent(JSON.stringify(seed, null, 2))));
-    const putRes = await fetch(apiBase, {
-      method: 'PUT',
-      headers,
-      body: JSON.stringify({
-        message: commitMsg || 'Update seed',
-        content: newContent,
-        sha,
-        branch: s.branch || 'main',
-      }),
-    });
-    if (!putRes.ok) throw new Error(`GitHub PUT ${putRes.status}: ${await putRes.text()}`);
-    return { ok: true };
-  } catch(err) {
-    console.error('saveToGitHub:', err);
-    return { ok: false, error: err.message };
-  }
-}
+/* ── GitHub write helper — used only by Export/Import in settings ── */
 
 async function savePresentation() {
   const saveBtn = $('editor-save-btn');
-  const s = ghSettings();
-  if (!s.token || !s.owner || !s.repo || !s.path) {
-    editorStatus.textContent = 'Configure GitHub settings first (⚙).';
-    openSettings();
-    return;
-  }
-
   const newTitle  = ($('ef-title').value  || '').trim();
   const newMethod = ($('ef-method').value || '').trim();
 
@@ -2676,20 +2587,7 @@ async function savePresentation() {
     extras:  [...ES.extras],
   };
 
-  const ok = await saveToGitHub(seed => {
-    // Use _originalName as the lookup key — safe across renames
-    const recipeIndex = seed.recipes.findIndex(r => r.name === originalName);
-    if (recipeIndex === -1) throw new Error(`Recipe "${originalName}" not found in seed.`);
-    seed.recipes[recipeIndex].name         = newTitle;
-    seed.recipes[recipeIndex].method       = newMethod || seed.recipes[recipeIndex].method;
-    seed.recipes[recipeIndex].presentation = newPresentation;
-    // Keep glass field in sync with presentation vessel (reverse DR normalization)
-    const vesselToGlass = {cocktail:'martini', mule:'mule mug', irish:'mug', snifter:'wine'};
-    seed.recipes[recipeIndex].glass = vesselToGlass[newPresentation.vessel] || newPresentation.vessel;
-  }, `Update recipe: ${newTitle}`);
-
-  if (ok.ok) {
-    // GitHub confirmed — now safe to update in-memory state
+  try {
     const vesselToGlass = {cocktail:'martini', mule:'mule mug', irish:'mug', snifter:'wine'};
     const idx = allRecipes.findIndex(r => r.name === originalName);
     if (idx !== -1) {
@@ -2698,6 +2596,10 @@ async function savePresentation() {
       allRecipes[idx].presentation = newPresentation;
       allRecipes[idx].glass        = vesselToGlass[newPresentation.vessel] || newPresentation.vessel;
     }
+    // If renamed, delete old IDB record and write new one
+    if (newTitle !== originalName) await idbDelete('recipes', originalName);
+    await idbPut('recipes', allRecipes[idx !== -1 ? idx : allRecipes.length - 1]);
+
     editorRecipe.name          = newTitle;
     editorRecipe.method        = newMethod || editorRecipe.method;
     editorRecipe.presentation  = newPresentation;
@@ -2706,8 +2608,8 @@ async function savePresentation() {
     editorStatus.textContent = 'Saved ✓';
     saveBtn.disabled = false;
     setTimeout(() => { closeEditor(); showDetail(editorRecipe); }, 700);
-  } else {
-    editorStatus.textContent = `Save failed — ${ok.error}`;
+  } catch(err) {
+    editorStatus.textContent = `Save failed: ${err.message}`;
     saveBtn.disabled = false;
   }
 }
@@ -2748,16 +2650,191 @@ function promptText(label, defaultVal = '') {
 }
 
 /* ══════════════════════════════════════════════
+   INDEXEDDB — LOCAL STORE
+══════════════════════════════════════════════ */
+const IDB_NAME    = 'PiP_Cellar';
+const IDB_VERSION = 1;
+let _db = null;
+
+function idbOpen() {
+  return new Promise((resolve, reject) => {
+    if (_db) { resolve(_db); return; }
+    const req = indexedDB.open(IDB_NAME, IDB_VERSION);
+    req.onupgradeneeded = e => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains('recipes'))
+        db.createObjectStore('recipes', { keyPath: 'name' });
+      if (!db.objectStoreNames.contains('bar_inventory'))
+        db.createObjectStore('bar_inventory', { keyPath: 'category' });
+    };
+    req.onsuccess = e => { _db = e.target.result; resolve(_db); };
+    req.onerror   = e => reject(e.target.error);
+  });
+}
+
+async function idbGetAll(store) {
+  const db = await idbOpen();
+  return new Promise((resolve, reject) => {
+    const tx  = db.transaction(store, 'readonly');
+    const req = tx.objectStore(store).getAll();
+    req.onsuccess = () => resolve(req.result);
+    req.onerror   = () => reject(req.error);
+  });
+}
+
+async function idbPut(store, record) {
+  const db = await idbOpen();
+  return new Promise((resolve, reject) => {
+    const tx  = db.transaction(store, 'readwrite');
+    const req = tx.objectStore(store).put(record);
+    req.onsuccess = () => resolve();
+    req.onerror   = () => reject(req.error);
+  });
+}
+
+async function idbDelete(store, key) {
+  const db = await idbOpen();
+  return new Promise((resolve, reject) => {
+    const tx  = db.transaction(store, 'readwrite');
+    const req = tx.objectStore(store).delete(key);
+    req.onsuccess = () => resolve();
+    req.onerror   = () => reject(req.error);
+  });
+}
+
+async function idbClear(store) {
+  const db = await idbOpen();
+  return new Promise((resolve, reject) => {
+    const tx  = db.transaction(store, 'readwrite');
+    const req = tx.objectStore(store).clear();
+    req.onsuccess = () => resolve();
+    req.onerror   = () => reject(req.error);
+  });
+}
+
+async function idbCount(store) {
+  const db = await idbOpen();
+  return new Promise((resolve, reject) => {
+    const tx  = db.transaction(store, 'readonly');
+    const req = tx.objectStore(store).count();
+    req.onsuccess = () => resolve(req.result);
+    req.onerror   = () => reject(req.error);
+  });
+}
+
+async function idbSeedFromJSON(data) {
+  await idbClear('recipes');
+  await idbClear('bar_inventory');
+  for (const r of data.recipes)       await idbPut('recipes', r);
+  for (const c of data.bar_inventory) await idbPut('bar_inventory', c);
+}
+
+/* ── Load app data: IDB first, fallback to seed JSON, fallback to inline ── */
+async function loadData() {
+  try {
+    const recipeCount = await idbCount('recipes');
+    if (recipeCount > 0) {
+      // Load from IndexedDB
+      allRecipes   = await idbGetAll('recipes');
+      allInventory = await idbGetAll('bar_inventory');
+      console.log(`Loaded ${allRecipes.length} recipes from IndexedDB`);
+      init();
+      return;
+    }
+  } catch(e) {
+    console.warn('IDB read failed, falling back to seed fetch', e);
+  }
+
+  // IDB empty — fetch seed JSON and seed IDB
+  try {
+    const res  = await fetch('./cocktails_seed.json');
+    if (!res.ok) throw new Error('fetch failed');
+    const data = await res.json();
+    await idbSeedFromJSON(data);
+    allRecipes   = data.recipes       || [];
+    allInventory = data.bar_inventory || [];
+    console.log(`Seeded IDB from cocktails_seed.json: ${allRecipes.length} recipes`);
+  } catch(e) {
+    console.warn('Could not load cocktails_seed.json — using fallback seed');
+    await idbSeedFromJSON(FALLBACK_SEED);
+    allRecipes   = FALLBACK_SEED.recipes       || [];
+    allInventory = FALLBACK_SEED.bar_inventory || [];
+  }
+  init();
+}
+
+/* ── GitHub Export / Import ── */
+async function exportToGitHub() {
+  const s = ghSettings();
+  if (!s.token || !s.owner || !s.repo || !s.path) {
+    settingsStatus.textContent = 'Fill in all GitHub settings first.';
+    return;
+  }
+  settingsStatus.textContent = 'Exporting…';
+  try {
+    const recipes   = await idbGetAll('recipes');
+    const inventory = await idbGetAll('bar_inventory');
+    const data = { bar_inventory: inventory, recipes };
+
+    const apiBase = `https://api.github.com/repos/${s.owner}/${s.repo}/contents/${s.path}`;
+    const headers = {
+      'Authorization': `Bearer ${s.token}`,
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json',
+    };
+    const getRes = await fetch(`${apiBase}?ref=${s.branch||'main'}`, { headers });
+    if (!getRes.ok) throw new Error(`GET ${getRes.status}`);
+    const fileData = await getRes.json();
+
+    const newContent = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    const putRes = await fetch(apiBase, {
+      method: 'PUT', headers,
+      body: JSON.stringify({
+        message: 'Export from Proof In Practice',
+        content: newContent,
+        sha: fileData.sha,
+        branch: s.branch || 'main',
+      }),
+    });
+    if (!putRes.ok) throw new Error(`PUT ${putRes.status}: ${await putRes.text()}`);
+    settingsStatus.textContent = 'Exported ✓';
+  } catch(err) {
+    settingsStatus.textContent = `Export failed: ${err.message}`;
+  }
+}
+
+async function importFromGitHub() {
+  const s = ghSettings();
+  if (!s.token || !s.owner || !s.repo || !s.path) {
+    settingsStatus.textContent = 'Fill in all GitHub settings first.';
+    return;
+  }
+  if (!confirm('Import from GitHub? This will replace your local data.')) return;
+  settingsStatus.textContent = 'Importing…';
+  try {
+    const apiBase = `https://api.github.com/repos/${s.owner}/${s.repo}/contents/${s.path}`;
+    const headers = { 'Authorization': `Bearer ${s.token}`, 'Accept': 'application/vnd.github.v3+json' };
+    const getRes = await fetch(`${apiBase}?ref=${s.branch||'main'}`, { headers });
+    if (!getRes.ok) throw new Error(`GET ${getRes.status}`);
+    const fileData = await getRes.json();
+    const decoded  = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g,''))));
+    const data     = JSON.parse(decoded);
+
+    await idbSeedFromJSON(data);
+    allRecipes   = data.recipes       || [];
+    allInventory = data.bar_inventory || [];
+    renderRecipeList();
+    buildInventory();
+    settingsStatus.textContent = `Imported ✓ — ${allRecipes.length} recipes`;
+  } catch(err) {
+    settingsStatus.textContent = `Import failed: ${err.message}`;
+  }
+}
+
+/* ══════════════════════════════════════════════
    NEW RECIPE
 ══════════════════════════════════════════════ */
 async function addNewRecipe() {
-  const s = ghSettings();
-  if (!s.token || !s.owner || !s.repo || !s.path) {
-    alert('Configure GitHub settings (⚙) before adding recipes.');
-    openSettings();
-    return;
-  }
-
   const name = await promptText('Recipe name:');
   if (!name) return;
   const trimmed = name;
@@ -2779,22 +2856,23 @@ async function addNewRecipe() {
     }
   };
 
-  const ok = await saveToGitHub(seed => {
-    seed.recipes.push(newRecipe);
-  }, `Add recipe: ${trimmed}`);
-
-  if (ok.ok) {
-    // GitHub confirmed — safe to add locally
+  try {
+    await idbPut('recipes', newRecipe);
     allRecipes.push(newRecipe);
     renderRecipeList();
     showDetail(newRecipe);
     setTimeout(() => openEditor(newRecipe), 300);
-  } else {
-    alert(`Save failed — recipe was not added.\n\n${ok.error}`);
+  } catch(err) {
+    alert(`Failed to add recipe: ${err.message}`);
   }
 }
 
 $('add-recipe-btn').addEventListener('click', addNewRecipe);
+$('export-btn').addEventListener('click', exportToGitHub);
+$('import-btn').addEventListener('click', importFromGitHub);
+
+// Remove old GitHub settings check from addNewRecipe
+// (no longer needed — IDB writes are always available)
 
 loadData();
 
