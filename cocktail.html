@@ -737,7 +737,7 @@
       position: absolute;
       top: 4px; right: 4px;
       font-family: var(--serif-body);
-      font-size: 0.52rem;
+      font-size: 0.65rem;
       color: var(--amber);
       background: rgba(255,255,255,0.88);
       border-radius: 3px;
@@ -750,7 +750,7 @@
       position: absolute;
       top: 4px; left: 4px;
       font-family: var(--serif-body);
-      font-size: 0.52rem;
+      font-size: 0.65rem;
       color: var(--ink-mid);
       background: rgba(255,255,255,0.88);
       border-radius: 3px;
@@ -1738,7 +1738,7 @@ function buildInventory() {
           data-ci="${ci}" data-bi="${bi}" data-action="modal"
           title="${escHtml(b.name)}">
           ${ratingStr ? `<span class="bottle-cost">${ratingStr}</span>` : ''}
-          ${b.abv != null ? `<span class="bottle-abv">${b.abv}%</span>` : ''}
+          ${b.abv != null ? `<span class="bottle-abv">${Math.round(b.abv)}%</span>` : ''}
           ${hasImg
             ? `<img src="${escHtml(b.imageUrl)}" alt="${escHtml(b.name)}" loading="lazy">`
             : BOTTLE_SVG}
