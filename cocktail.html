@@ -1171,7 +1171,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-24 13:46 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-24 14:02 UTC</div>
   </footer>
 
 
@@ -2560,13 +2560,37 @@ $('editor-cancel-btn').addEventListener('click', closeEditor);
    GITHUB WRITE-BACK — SHARED
 ══════════════════════════════════════════════ */
 
-// Serial GitHub write queue — prevents SHA conflicts from concurrent saves
-let _ghQueue = Promise.resolve();
+// GitHub write lock — one operation at a time, UI blocked while in flight
+let _ghBusy = false;
 
-function saveToGitHub(patchFn, commitMsg) {
-  // Chain onto the queue — each save waits for the previous to finish
-  _ghQueue = _ghQueue.then(() => _doSaveToGitHub(patchFn, commitMsg));
-  return _ghQueue;
+function _setGhBusy(busy) {
+  _ghBusy = busy;
+  // Disable/enable all inventory action buttons while saving
+  const inv = $('inventory-content');
+  if (inv) {
+    inv.querySelectorAll('.bottle-delete-btn, .bottle-add-cell, .bottle-img-cell')
+      .forEach(el => el.style.pointerEvents = busy ? 'none' : '');
+    inv.style.opacity = busy ? '0.6' : '';
+  }
+  // Disable bottle modal save button
+  const bmSave = $('bm-save-btn');
+  if (bmSave) bmSave.disabled = busy;
+}
+
+async function saveToGitHub(patchFn, commitMsg) {
+  if (_ghBusy) return { ok: false, error: 'A save is already in progress. Please wait.' };
+  _setGhBusy(true);
+  try {
+    // 15s timeout — guarantees UI unlock even if network hangs
+    const timeout = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Request timed out after 8 seconds.')), 8000)
+    );
+    return await Promise.race([_doSaveToGitHub(patchFn, commitMsg), timeout]);
+  } catch(err) {
+    return { ok: false, error: err.message };
+  } finally {
+    _setGhBusy(false);
+  }
 }
 
 async function _doSaveToGitHub(patchFn, commitMsg) {
@@ -2574,9 +2598,6 @@ async function _doSaveToGitHub(patchFn, commitMsg) {
   if (!s.token || !s.owner || !s.repo || !s.path) {
     return { ok: false, error: 'GitHub settings not configured.' };
   }
-
-  // Brief delay to allow GitHub API to propagate previous write before GET
-  await new Promise(r => setTimeout(r, 800));
 
   const apiBase = `https://api.github.com/repos/${s.owner}/${s.repo}/contents/${s.path}`;
   const headers = {
