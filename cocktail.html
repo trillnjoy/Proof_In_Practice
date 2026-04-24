@@ -1171,7 +1171,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-24 20:04 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-24 20:32 UTC</div>
   </footer>
 
 
@@ -1686,11 +1686,14 @@ function initBottleModal() {
   });
 }
 
-function buildInventory() {
+async function buildInventory() {
   if (!allInventory.length) {
     inventoryCont.innerHTML = `<div class="empty-state"><span class="orn">🍾</span><p>No inventory data loaded.</p></div>`;
     return;
   }
+
+  const hiddenSet = await idbGetHidden();
+  const owner = isOwner();
 
   // Bottle SVG placeholder
   const BOTTLE_SVG = `<svg viewBox="0 0 60 160" xmlns="http://www.w3.org/2000/svg" class="bottle-silhouette">
@@ -1712,11 +1715,14 @@ function buildInventory() {
     const bottles = cat.bottles || [];
     const count = bottles.length;
 
-    // Build slots: all bottles + add button at end
+    // Build slots: visible bottles only (filter hidden), + add button
     const slots = [
-      ...bottles.map((b, bi) => ({ b, bi })),
+      ...bottles
+        .map((b, bi) => ({ b, bi }))
+        .filter(({ b }) => !hiddenSet.has(hiddenKey(cat.category, b.name))),
       { b: '__add__', bi: bottles.length }
     ];
+    const visibleCount = slots.length - 1;
 
     // Chunk into rows of `cols`
     const rows = [];
@@ -1748,7 +1754,8 @@ function buildInventory() {
         }
         return `<div class="bottle-name-cell">
           <span class="bottle-name-text">${escHtml(b.name)}</span>
-          <button class="bottle-delete-btn" data-ci="${ci}" data-bi="${bi}" data-action="delete" title="Remove">×</button>
+          <button class="bottle-delete-btn" data-ci="${ci}" data-bi="${bi}" data-action="delete"
+            title="${owner ? 'Remove' : 'Hide'}">${owner ? '×' : '&#128065;'}</button>
         </div>`;
       }).join('');
 
@@ -1763,7 +1770,7 @@ function buildInventory() {
       <div class="inv-category">
         <div class="inv-cat-header">
           ${escHtml(cat.category)}
-          <span class="inv-cat-count">${count} bottle${count !== 1 ? 's' : ''}</span>
+          <span class="inv-cat-count">${visibleCount}${visibleCount !== count ? ` of ${count}` : ''} bottle${count !== 1 ? 's' : ''}</span>
         </div>
         ${shelfRows}
       </div>
@@ -1793,13 +1800,24 @@ function buildInventory() {
     } else if (action === 'delete') {
       const bname = allInventory[ci].bottles[bi]?.name || 'this bottle';
       const catName = allInventory[ci].category;
-      if (confirm(`Remove "${bname}" from ${catName}?`)) {
+      if (isOwner()) {
+        // Owner: true delete from IDB
+        if (confirm(`Remove "${bname}" from ${catName}?`)) {
+          try {
+            allInventory[ci].bottles.splice(bi, 1);
+            await idbPut('bar_inventory', allInventory[ci]);
+            buildInventory();
+          } catch(err) {
+            alert(`Delete failed: ${err.message}`);
+          }
+        }
+      } else {
+        // Non-owner: hide locally only
         try {
-          allInventory[ci].bottles.splice(bi, 1);
-          await idbPut('bar_inventory', allInventory[ci]);
+          await idbHideBottle(catName, bname);
           buildInventory();
         } catch(err) {
-          alert(`Delete failed: ${err.message}`);
+          alert(`Hide failed: ${err.message}`);
         }
       }
     }
@@ -2372,6 +2390,15 @@ const settingsCancelBtn = $('settings-cancel-btn');
 const settingsSaveBtn   = $('settings-save-btn');
 const settingsStatus    = $('settings-status');
 
+function updateExportBtn() {
+  const btn = $('export-btn');
+  if (!btn) return;
+  const hasToken = !!$('gh-token').value.trim();
+  btn.disabled = !hasToken;
+  btn.style.opacity = hasToken ? '1' : '0.35';
+  btn.style.cursor  = hasToken ? 'pointer' : 'not-allowed';
+}
+
 function openSettings() {
   const s = ghSettings();
   $('gh-token').value  = s.token  || '';
@@ -2380,11 +2407,13 @@ function openSettings() {
   $('gh-path').value   = s.path   || 'cocktails_seed.json';
   $('gh-branch').value = s.branch || 'main';
   settingsStatus.textContent = '';
+  updateExportBtn();
   settingsOverlay.classList.add('open');
 }
 function closeSettings() { settingsOverlay.classList.remove('open'); }
 
 $('settings-btn').addEventListener('click', openSettings);
+$('gh-token').addEventListener('input', updateExportBtn);
 settingsCancelBtn.addEventListener('click', closeSettings);
 settingsOverlay.addEventListener('click', e => { if(e.target===settingsOverlay) closeSettings(); });
 settingsSaveBtn.addEventListener('click', () => {
@@ -2666,6 +2695,8 @@ function idbOpen() {
         db.createObjectStore('recipes', { keyPath: 'name' });
       if (!db.objectStoreNames.contains('bar_inventory'))
         db.createObjectStore('bar_inventory', { keyPath: 'category' });
+      if (!db.objectStoreNames.contains('hidden_bottles'))
+        db.createObjectStore('hidden_bottles', { keyPath: 'key' });
     };
     req.onsuccess = e => { _db = e.target.result; resolve(_db); };
     req.onerror   = e => reject(e.target.error);
@@ -2720,6 +2751,27 @@ async function idbCount(store) {
     req.onsuccess = () => resolve(req.result);
     req.onerror   = () => reject(req.error);
   });
+}
+
+// Hidden bottles store — local only, never exported
+function hiddenKey(catName, bottleName) {
+  return `${catName}::${bottleName}`;
+}
+async function idbHideBottle(catName, bottleName) {
+  await idbPut('hidden_bottles', { key: hiddenKey(catName, bottleName) });
+}
+async function idbUnhideBottle(catName, bottleName) {
+  await idbDelete('hidden_bottles', hiddenKey(catName, bottleName));
+}
+async function idbGetHidden() {
+  const all = await idbGetAll('hidden_bottles');
+  return new Set(all.map(r => r.key));
+}
+
+// Owner = PAT configured. Determines delete vs hide behaviour.
+function isOwner() {
+  const s = ghSettings();
+  return !!(s.token && s.token.trim());
 }
 
 async function idbSeedFromJSON(data) {
@@ -2805,21 +2857,18 @@ async function exportToGitHub() {
 }
 
 async function importFromGitHub() {
-  const s = ghSettings();
-  if (!s.token || !s.owner || !s.repo || !s.path) {
-    settingsStatus.textContent = 'Fill in all GitHub settings first.';
-    return;
-  }
   if (!confirm('Import from GitHub? This will replace your local data.')) return;
   settingsStatus.textContent = 'Importing…';
   try {
-    const apiBase = `https://api.github.com/repos/${s.owner}/${s.repo}/contents/${s.path}`;
-    const headers = { 'Authorization': `Bearer ${s.token}`, 'Accept': 'application/vnd.github.v3+json' };
-    const getRes = await fetch(`${apiBase}?ref=${s.branch||'main'}`, { headers });
-    if (!getRes.ok) throw new Error(`GET ${getRes.status}`);
-    const fileData = await getRes.json();
-    const decoded  = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g,''))));
-    const data     = JSON.parse(decoded);
+    // Use public GitHub Pages URL — no PAT required, available to all users
+    const s = ghSettings();
+    const owner  = s.owner  || 'trillnjoy';
+    const repo   = s.repo   || 'Proof_In_Practice';
+    const path   = s.path   || 'cocktails_seed.json';
+    const url = `https://${owner}.github.io/${repo}/${path}`;
+    const res = await fetch(url + '?t=' + Date.now()); // cache bust
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
 
     await idbSeedFromJSON(data);
     allRecipes   = data.recipes       || [];
