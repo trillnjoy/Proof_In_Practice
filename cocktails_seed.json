@@ -303,7 +303,7 @@
           "imageUrl": null,
           "abv": 40
         },
-                {
+        {
           "name": "Stolichnaya Pomagranate",
           "notes": null,
           "rating": null,
@@ -363,6 +363,13 @@
           "rating": null,
           "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Malibu_216.png",
           "abv": 21
+        },
+        {
+          "name": "Captain Morgan Spiced Rum",
+          "notes": null,
+          "rating": 1,
+          "imageUrl": null,
+          "abv": 35
         }
       ]
     },
