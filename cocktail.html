@@ -1171,7 +1171,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-24 14:42 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-24 15:48 UTC</div>
   </footer>
 
 
@@ -1831,14 +1831,14 @@ function showView(view) {
   filterBar.style.display   = isListView ? '' : 'none';
   const addBtn = $('add-recipe-btn');
   const tagline = $('inventory-tagline');
-  if (addBtn) addBtn.style.display = isInventory ? 'none' : '';
+  if (addBtn) addBtn.style.display = (isInventory || isDetail) ? 'none' : '';
   if (tagline) tagline.style.display = isInventory ? '' : 'none';
   // settings-btn always visible — no show/hide needed
   backBtn.classList.toggle('visible', isDetail);
   const logoWrap = $('logo-wrap');
   if (logoWrap) logoWrap.style.display = isDetail ? 'none' : '';
   const sbtn = $('settings-btn');
-  if (sbtn) sbtn.style.display = isDetail ? 'block' : 'none';
+  // settings-btn always visible in header nav
   // Close editor when leaving detail view
   if (!isDetail) closeEditor();
 
