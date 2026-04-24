@@ -1171,7 +1171,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-24 20:32 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-24 20:42 UTC</div>
   </footer>
 
 
@@ -1692,7 +1692,15 @@ async function buildInventory() {
     return;
   }
 
-  const hiddenSet = await idbGetHidden();
+  // Show loading state while async ops resolve
+  inventoryCont.innerHTML = '<div style="padding:20px;text-align:center;color:var(--ink-light);font-style:italic;font-family:var(--serif-body)">Loading shelf…</div>';
+
+  let hiddenSet;
+  try {
+    hiddenSet = await idbGetHidden();
+  } catch(e) {
+    hiddenSet = new Set();
+  }
   const owner = isOwner();
 
   // Bottle SVG placeholder
@@ -1812,12 +1820,14 @@ async function buildInventory() {
           }
         }
       } else {
-        // Non-owner: hide locally only
-        try {
-          await idbHideBottle(catName, bname);
-          buildInventory();
-        } catch(err) {
-          alert(`Hide failed: ${err.message}`);
+        // Non-owner: hide locally only — confirm first
+        if (confirm(`Hide "${bname}" from your shelf?\nThis only affects your device.`)) {
+          try {
+            await idbHideBottle(catName, bname);
+            buildInventory();
+          } catch(err) {
+            alert(`Hide failed: ${err.message}`);
+          }
         }
       }
     }
@@ -2682,7 +2692,7 @@ function promptText(label, defaultVal = '') {
    INDEXEDDB — LOCAL STORE
 ══════════════════════════════════════════════ */
 const IDB_NAME    = 'PiP_Cellar';
-const IDB_VERSION = 1;
+const IDB_VERSION = 2;  // bumped to add hidden_bottles store
 let _db = null;
 
 function idbOpen() {
