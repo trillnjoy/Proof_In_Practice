@@ -1171,7 +1171,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-24 15:48 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-24 20:04 UTC</div>
   </footer>
 
 
@@ -2798,6 +2798,7 @@ async function exportToGitHub() {
     });
     if (!putRes.ok) throw new Error(`PUT ${putRes.status}: ${await putRes.text()}`);
     settingsStatus.textContent = 'Exported ✓';
+    setTimeout(closeSettings, 1200);
   } catch(err) {
     settingsStatus.textContent = `Export failed: ${err.message}`;
   }
@@ -2826,6 +2827,7 @@ async function importFromGitHub() {
     renderRecipeList();
     buildInventory();
     settingsStatus.textContent = `Imported ✓ — ${allRecipes.length} recipes`;
+    setTimeout(closeSettings, 1200);
   } catch(err) {
     settingsStatus.textContent = `Import failed: ${err.message}`;
   }
