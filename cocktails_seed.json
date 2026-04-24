@@ -3588,11 +3588,14 @@
       "glass": "tropical",
       "presentation": {
         "vessel": "tropical",
-        "color": "#5a1050",
+        "color": "#7a219e",
         "float": null,
         "ice": "crushed",
-        "citrus": null,
-        "garnish": [],
+        "citrus": "orange-wedge",
+        "garnish": [
+          "pineapple-wedge",
+          "strawberry"
+        ],
         "extras": [
           "umbrella"
         ]
