@@ -363,13 +363,6 @@
       "category": "Cognac & Brandy",
       "bottles": [
         {
-          "name": "Pierre Ferrand 1840",
-          "notes": null,
-          "rating": null,
-          "imageUrl": null,
-          "abv": 45
-        },
-        {
           "name": "Pierre Vallet VSOP",
           "notes": null,
           "rating": null,
