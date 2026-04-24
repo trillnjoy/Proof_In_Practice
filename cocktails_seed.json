@@ -323,13 +323,6 @@
       "category": "Rum",
       "bottles": [
         {
-          "name": "Diplomatico Reserva Exclusiva",
-          "notes": null,
-          "rating": null,
-          "imageUrl": null,
-          "abv": 40
-        },
-        {
           "name": "Plantation Original Dark",
           "notes": null,
           "rating": null,
