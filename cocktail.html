@@ -745,6 +745,19 @@
       letter-spacing: 0.04em;
       pointer-events: none;
     }
+    /* ABV indicator — upper left of image cell */
+    .bottle-img-cell .bottle-abv {
+      position: absolute;
+      top: 4px; left: 4px;
+      font-family: var(--serif-body);
+      font-size: 0.52rem;
+      color: var(--ink-mid);
+      background: rgba(255,255,255,0.88);
+      border-radius: 3px;
+      padding: 1px 4px;
+      letter-spacing: 0.03em;
+      pointer-events: none;
+    }
 
     /* Bottle silhouette — SVG-based realistic shape */
     .bottle-silhouette {
@@ -1565,6 +1578,7 @@ const BM = {
     $('bm-subtitle').textContent = cat.category;
     $('bm-notes').value = bottle.notes || '';
     $('bm-imageurl').value = bottle.imageUrl || '';
+    $('bm-abv').value = bottle.abv != null ? bottle.abv : '';
     this.updateRatingBtns();
     this.updateImgPreview(bottle.imageUrl);
     $('bm-status').textContent = '';
@@ -1611,6 +1625,8 @@ const BM = {
     const notes = $('bm-notes').value.trim() || null;
     const imageUrl = $('bm-imageurl').value.trim() || null;
     const rating = this.rating;
+    const abvRaw = $('bm-abv').value.trim();
+    const abv = abvRaw !== '' ? parseFloat(abvRaw) : null;
     const catName = cat.category;
     const isNew = this.isNew;
     const pendingName = this._pendingName;
@@ -1624,21 +1640,21 @@ const BM = {
       const seedCat = seed.bar_inventory.find(c => c.category === catName);
       if (!seedCat) throw new Error(`Category "${catName}" not found in seed.`);
       if (isNew) {
-        seedCat.bottles.push({name: pendingName, notes, rating, imageUrl});
+        seedCat.bottles.push({name: pendingName, notes, rating, imageUrl, abv});
       } else {
         const sb = seedCat.bottles[bottleIdx];
         if (!sb) throw new Error(`Bottle index ${bottleIdx} not found in "${catName}".`);
-        sb.notes = notes; sb.rating = rating; sb.imageUrl = imageUrl;
+        sb.notes = notes; sb.rating = rating; sb.imageUrl = imageUrl; sb.abv = abv;
       }
     }, `Update bottle: ${bottleName}`);
 
     if (ok.ok) {
       // Now safe to update in-memory state
       if (isNew) {
-        cat.bottles.push({name: pendingName, notes, rating, imageUrl});
+        cat.bottles.push({name: pendingName, notes, rating, imageUrl, abv});
       } else {
         const b = cat.bottles[bottleIdx];
-        b.notes = notes; b.rating = rating; b.imageUrl = imageUrl;
+        b.notes = notes; b.rating = rating; b.imageUrl = imageUrl; b.abv = abv;
       }
       $('bm-status').textContent = 'Saved.';
       setTimeout(() => { BM.close(); buildInventory(); }, 600);
@@ -1722,6 +1738,7 @@ function buildInventory() {
           data-ci="${ci}" data-bi="${bi}" data-action="modal"
           title="${escHtml(b.name)}">
           ${ratingStr ? `<span class="bottle-cost">${ratingStr}</span>` : ''}
+          ${b.abv != null ? `<span class="bottle-abv">${b.abv}%</span>` : ''}
           ${hasImg
             ? `<img src="${escHtml(b.imageUrl)}" alt="${escHtml(b.name)}" loading="lazy">`
             : BOTTLE_SVG}
@@ -2777,6 +2794,9 @@ loadData();
           </div>
         </div>
       </div>
+
+      <div class="bm-section-label">ABV %</div>
+      <input class="bm-input" type="number" id="bm-abv" placeholder="e.g. 46" min="0" max="100" step="0.1" style="width:120px;">
 
       <div class="bm-section-label">Tasting Notes</div>
       <textarea class="bm-textarea" id="bm-notes" placeholder="Aroma, palate, finish…" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
