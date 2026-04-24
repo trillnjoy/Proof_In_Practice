@@ -7,85 +7,73 @@
           "name": "Larceny",
           "notes": "Buttery, caramel, heated and smooth.",
           "rating": 2,
-          "imageUrl": "https://www.remedyliquor.com/cdn/shop/products/larceny-straight-whiskey-bourbon.png?v=1672782342&width=1100",
-          "abv": 46.0
+          "imageUrl": "https://www.remedyliquor.com/cdn/shop/products/larceny-straight-whiskey-bourbon.png?v=1672782342&width=1100"
         },
         {
           "name": "Willett Pot Still",
           "notes": null,
           "rating": 3,
-          "imageUrl": "https://cdn.shopify.com/s/files/1/0681/3348/6842/files/100272__03407.1701207350.1280.1280.jpg?v=1748455465",
-          "abv": 47.0
+          "imageUrl": "https://cdn.shopify.com/s/files/1/0681/3348/6842/files/100272__03407.1701207350.1280.1280.jpg?v=1748455465"
         },
         {
           "name": "Maker's Mark",
           "notes": null,
           "rating": 2,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Makers_216.png",
-          "abv": 45.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Makers_216.png"
         },
         {
           "name": "Mischief Rye Whiskey",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Mischief_216.png",
-          "abv": null
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Mischief_216.png"
         },
         {
           "name": "Noah's Mill",
           "notes": null,
           "rating": 3,
-          "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOBWab0NaYdChOwJHHWqjV2FGONYATaUzW1j4AL1ReFg&s=10",
-          "abv": 57.15
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOBWab0NaYdChOwJHHWqjV2FGONYATaUzW1j4AL1ReFg&s=10"
         },
         {
           "name": "Medley Bros.",
           "notes": null,
           "rating": 2,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/MedBros_216.png",
-          "abv": null
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/MedBros_216.png"
         },
         {
           "name": "Bib & Tucker 6 year",
           "notes": null,
           "rating": 2,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/BibTucker_216.png",
-          "abv": 46.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/BibTucker_216.png"
         },
         {
           "name": "Woodinville Straight",
           "notes": null,
           "rating": 2,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/WoodinvilleS_216.png",
-          "abv": 45.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/WoodinvilleS_216.png"
         },
         {
           "name": "Eagle Rare",
           "notes": null,
           "rating": 3,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/EagleRare_216.png",
-          "abv": 45.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/EagleRare_216.png"
         },
         {
           "name": "Old Grand-Dad Bonded",
           "notes": null,
           "rating": 1,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/OldGD_216.png",
-          "abv": 50.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/OldGD_216.png"
         },
         {
           "name": "Bulleit Bourbon",
           "notes": null,
           "rating": 1,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/BulleitB_216.png",
-          "abv": 45.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/BulleitB_216.png"
         },
         {
           "name": "Bulleit Rye",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/BulleitRye_216.png",
-          "abv": 45.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/BulleitRye_216.png"
         }
       ]
     },
@@ -96,57 +84,49 @@
           "name": "Redbreast 12 Year",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Redbreast12_216.png",
-          "abv": 40.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Redbreast12_216.png"
         },
         {
           "name": "Bushmills Originals",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/BushmillsBlack_216.png",
-          "abv": 40.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/BushmillsBlack_216.png"
         },
         {
           "name": "Jameson Caskmate Stout",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Jameson_216.png",
-          "abv": 40.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Jameson_216.png"
         },
         {
           "name": "Green Spot",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/GreenSpot_216.png",
-          "abv": 40.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/GreenSpot_216.png"
         },
         {
           "name": "The Irishman Founder's Reserve",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/IrishmanFounders_216.png",
-          "abv": 40.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/IrishmanFounders_216.png"
         },
         {
           "name": "Teeling Single Malt",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/TeelingSingle_216.png",
-          "abv": 46.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/TeelingSingle_216.png"
         },
         {
           "name": "Trader Joe's Irish Whiskey",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/TraderJoeIrish_216.png",
-          "abv": 40.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/TraderJoeIrish_216.png"
         },
         {
           "name": "Jameson Black Barrel",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/JamesonBlack_216.png",
-          "abv": 40.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/JamesonBlack_216.png"
         }
       ]
     },
@@ -157,71 +137,61 @@
           "name": "Balvenie Doublewood 12 YR",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 40.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/BalvenieDouble_216.png"
         },
         {
           "name": "Shackleton Blended",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Shackleford_216.png",
-          "abv": 40.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Shackleford_216.png"
         },
         {
           "name": "Lagavulin 16 YR",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Lagavulin16_216.png",
-          "abv": 43.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Lagavulin16_216.png"
         },
         {
           "name": "Johnnie Walker Black Label",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/JohnnyWalkBlack_216.png",
-          "abv": 40.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/JohnnyWalkBlack_216.png"
         },
         {
           "name": "Arran Lochrenza",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/ArranLochrenza_216.png",
-          "abv": 40.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/ArranLochrenza_216.png"
         },
         {
           "name": "Bank Note",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/BankNote_216.png",
-          "abv": 43.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/BankNote_216.png"
         },
         {
           "name": "Lambray",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Lambray_216.png",
-          "abv": null
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Lambray_216.png"
         },
         {
           "name": "Laphroaig Triple Wood",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/LaphroaigTriple_216.png",
-          "abv": 48.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/LaphroaigTriple_216.png"
         },
         {
           "name": "Omar",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Omar_216.png",
-          "abv": 46.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Omar_216.png"
         },
         {
           "name": "Indri Trini",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Indri_216.png",
-          "abv": 46.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Indri_216.png"
         }
       ]
     },
@@ -232,36 +202,31 @@
           "name": "Bombay Sapphire Gin",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 47.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Bombay_216.png"
         },
         {
           "name": "Hendrick's Original",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 41.4
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/HendricksOriginal_216.png"
         },
         {
           "name": "Uncle Val's Botanical",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 45.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/UncleVals_216.png"
         },
         {
           "name": "Tanqueray 10",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 47.3
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/TanquerayTen_216.png"
         },
         {
           "name": "Empress Gin",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 42.5
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/EmpressGin_216.png"
         }
       ]
     },
@@ -272,15 +237,13 @@
           "name": "Stolichnaya",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 40.0
+          "imageUrl": null
         },
         {
           "name": "SKYY",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 40.0
+          "imageUrl": null
         }
       ]
     },
@@ -291,43 +254,37 @@
           "name": "Diplomatico Reserva Exclusiva",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 40.0
+          "imageUrl": null
         },
         {
           "name": "Plantation Original Dark",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 40.0
+          "imageUrl": null
         },
         {
           "name": "Bacardi Superior",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 40.0
+          "imageUrl": null
         },
         {
           "name": "Cruzan Aged Light Rum",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 40.0
+          "imageUrl": null
         },
         {
           "name": "The Kraken Black Spiced",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Kraken_216.png",
-          "abv": 47.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Kraken_216.png"
         },
         {
           "name": "Malibu Coconut Rum",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Malibu_216.png",
-          "abv": 21.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Malibu_216.png"
         }
       ]
     },
@@ -338,15 +295,13 @@
           "name": "Pierre Ferrand 1840",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 45.0
+          "imageUrl": null
         },
         {
           "name": "Pierre Vallet VSOP",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/PierreValletVSOP_216.png",
-          "abv": 40.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/PierreValletVSOP_216.png"
         }
       ]
     },
@@ -361,36 +316,31 @@
           "name": "Hornitos Reposado Tequila",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 40.0
+          "imageUrl": null
         },
         {
           "name": "Espolón Tequila Blanco",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 40.0
+          "imageUrl": null
         },
         {
           "name": "Herradura Reposado",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 40.0
+          "imageUrl": null
         },
         {
           "name": "Gran Malo Mezcal",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/GranMaloMezcal_216.png",
-          "abv": 40.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/GranMaloMezcal_216.png"
         },
         {
           "name": "Del Maguey Vida Clásico",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/DelMagueyVidaClasico_216.png",
-          "abv": 42.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/DelMagueyVidaClasico_216.png"
         }
       ]
     },
@@ -401,15 +351,13 @@
           "name": "Aperol",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Aperol_216.png",
-          "abv": 11.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Aperol_216.png"
         },
         {
           "name": "Fratelli Milano Campari",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Campari_216.png",
-          "abv": 25.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Campari_216.png"
         }
       ]
     },
@@ -420,64 +368,55 @@
           "name": "Domaine de Canton Ginger",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 28.0
+          "imageUrl": null
         },
         {
           "name": "Cointreau",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Cointreau_216.png",
-          "abv": 40.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Cointreau_216.png"
         },
         {
           "name": "Triple Sec",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 30.0
+          "imageUrl": null
         },
         {
           "name": "Blue Curacao",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 25.0
+          "imageUrl": null
         },
         {
           "name": "Soho Lychee",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 20.0
+          "imageUrl": null
         },
         {
           "name": "St Germain Elderflower",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 20.0
+          "imageUrl": null
         },
         {
           "name": "Cardamaro",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 17.0
+          "imageUrl": null
         },
         {
           "name": "Pama Pomegranate",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 17.0
+          "imageUrl": null
         },
         {
           "name": "Chambord Black Raspberry Liqueur",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 16.5
+          "imageUrl": null
         }
       ]
     },
@@ -488,85 +427,73 @@
           "name": "Frangelico Hazelnut",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Frangelica_216.png",
-          "abv": 20.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Frangelica_216.png"
         },
         {
           "name": "Amaretto Disaronno",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 28.0
+          "imageUrl": null
         },
         {
           "name": "St Elizabeth Allspice Dram",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 22.5
+          "imageUrl": null
         },
         {
           "name": "Bailey's Original Irish Cream",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 17.0
+          "imageUrl": null
         },
         {
           "name": "Licor Cuarenta y Tres",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 31.0
+          "imageUrl": null
         },
         {
           "name": "Pacifique Liqueur",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 45.0
+          "imageUrl": null
         },
         {
           "name": "Noilly Prat Dry Vermouth",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/NoillyPratDry_216.png",
-          "abv": 18.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/NoillyPratDry_216.png"
         },
         {
           "name": "Noilly Prat Vermouth Rouge",
           "notes": null,
           "rating": null,
-          "imageUrl": null,
-          "abv": 16.0
+          "imageUrl": null
         },
         {
           "name": "Liquore Strega",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/LiquoreStrega_216.png",
-          "abv": 40.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/LiquoreStrega_216.png"
         },
         {
           "name": "Dolin Dry Vermouth",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/DolinDry_216.png",
-          "abv": 17.5
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/DolinDry_216.png"
         },
         {
           "name": "Velvet Falernum",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/VelvetFalernum_216.png",
-          "abv": 11.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/VelvetFalernum_216.png"
         },
         {
           "name": "Orgeat",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Orgeat_216.png",
-          "abv": 0.0
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Orgeat_216.png"
         }
       ]
     }
