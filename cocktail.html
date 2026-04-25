@@ -1005,6 +1005,36 @@
       min-height: 1.2em;
     }
 
+    /* ─── INGREDIENT AUTOCOMPLETE ─── */
+    .ing-item-wrapper {
+      position: relative;
+      flex: 1;
+    }
+    .ing-suggestions {
+      position: absolute;
+      bottom: 100%;
+      left: 0; right: 0;
+      background: #fff;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.12);
+      max-height: 160px;
+      overflow-y: auto;
+      z-index: 10;
+      display: none;
+    }
+    .ing-suggestions.open { display: block; }
+    .ing-suggestion-item {
+      padding: 8px 10px;
+      font-family: var(--serif-body);
+      font-size: 0.82rem;
+      color: var(--ink);
+      cursor: pointer;
+      border-bottom: 1px solid var(--rule-light);
+    }
+    .ing-suggestion-item:last-child { border-bottom: none; }
+    .ing-suggestion-item:active { background: var(--cream-white); }
+
     /* ─── NO RESULTS ─── */
     .empty-state {
       text-align: center;
@@ -1186,7 +1216,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-25 19:06 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-25 19:30 UTC</div>
   </footer>
 
 
@@ -1243,10 +1273,6 @@
       <div class="ef-row">
         <label class="ef-label">Title</label>
         <input class="ef-input" type="text" id="ef-title" autocomplete="off" autocorrect="off" spellcheck="false">
-      </div>
-      <div class="ef-row">
-        <label class="ef-label">Method</label>
-        <textarea class="ef-textarea" id="ef-method" rows="3" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
       </div>
       <div class="ef-row" style="display:flex;align-items:center;gap:10px;">
         <label class="ef-label" style="margin-bottom:0;">Frozen / Ninja Recipe</label>
@@ -1608,6 +1634,48 @@ function calculateRecipeABV(recipe) {
 }
 
 /* ══════════════════════════════════════════════
+   METHOD EDITOR
+══════════════════════════════════════════════ */
+let methodEditorRecipe = null;
+
+function openMethodEditor(recipe) {
+  methodEditorRecipe = recipe;
+  $('method-editor-text').value = recipe.method || '';
+  $('method-editor-status').textContent = '';
+  $('method-editor-overlay').style.display = 'block';
+  setTimeout(() => $('method-editor-text').focus(), 100);
+}
+
+function closeMethodEditor() {
+  $('method-editor-overlay').style.display = 'none';
+  methodEditorRecipe = null;
+}
+
+async function saveMethod() {
+  const recipe  = methodEditorRecipe;
+  const newMethod = $('method-editor-text').value.trim();
+  $('method-editor-status').textContent = 'Saving…';
+  try {
+    recipe.method = newMethod;
+    await idbPut('recipes', recipe);
+    const idx = allRecipes.findIndex(r => r.name === recipe.name);
+    if (idx !== -1) allRecipes[idx].method = newMethod;
+    $('method-editor-status').textContent = 'Saved ✓';
+    setTimeout(() => { closeMethodEditor(); showDetail(recipe); }, 500);
+  } catch(err) {
+    $('method-editor-status').textContent = `Save failed: ${err.message}`;
+  }
+}
+
+function initMethodEditor() {
+  $('method-editor-overlay').addEventListener('click', e => {
+    if (e.target === $('method-editor-overlay')) closeMethodEditor();
+  });
+  $('method-editor-sheet').addEventListener('click', e => e.stopPropagation());
+  $('method-editor-done').addEventListener('click', saveMethod);
+}
+
+/* ══════════════════════════════════════════════
    INGREDIENT EDITOR
 ══════════════════════════════════════════════ */
 const UNITS = ['oz','tsp','tbsp','dash','drop','pinch',''];
@@ -1627,12 +1695,70 @@ function ingRowHTML(ing, idx) {
       style="flex-shrink:0;background:var(--cream-white);border:1px solid var(--rule);border-radius:3px;padding:7px 4px;font-family:var(--serif-body);font-size:0.82rem;color:var(--ink);">
       ${unitOpts}
     </select>
-    <input class="ing-item-input" type="text" value="${escHtml(ing.item||'')}"
-      placeholder="Ingredient" autocorrect="off" autocapitalize="words"
-      style="flex:1;background:var(--cream-white);border:1px solid var(--rule);border-radius:3px;padding:7px 8px;font-family:var(--serif-body);font-size:0.82rem;color:var(--ink);">
+    <div class="ing-item-wrapper">
+      <input class="ing-item-input" type="text" value="${escHtml(ing.item||'')}"
+        placeholder="Ingredient" autocorrect="off" autocapitalize="words"
+        style="width:100%;background:var(--cream-white);border:1px solid var(--rule);border-radius:3px;padding:7px 8px;font-family:var(--serif-body);font-size:0.82rem;color:var(--ink);box-sizing:border-box;">
+      <div class="ing-suggestions"></div>
+    </div>
     <button class="ing-delete-row" data-idx="${idx}"
       style="flex-shrink:0;background:rgba(180,50,30,0.12);border:1px solid rgba(180,50,30,0.3);border-radius:3px;color:var(--terracotta);font-size:0.8rem;padding:6px 8px;cursor:pointer;">×</button>
   </div>`;
+}
+
+function buildIngLexicon() {
+  const seen = new Set();
+  // From bar inventory bottle names
+  for (const cat of allInventory) {
+    for (const b of cat.bottles) {
+      if (b.name) seen.add(b.name);
+    }
+  }
+  // From all recipe ingredients
+  for (const r of allRecipes) {
+    for (const ing of (r.ingredients || [])) {
+      if (ing.item && ing.item.trim()) seen.add(ing.item.trim());
+    }
+  }
+  return [...seen].sort((a, b) => a.localeCompare(b));
+}
+
+function wireAutocomplete(input, suggestionsEl) {
+  const lexicon = buildIngLexicon();
+
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    if (q.length < 1) { suggestionsEl.classList.remove('open'); return; }
+    const matches = lexicon.filter(s => {
+      const sl = s.toLowerCase();
+      if (q.length < 3) {
+        // Short query: match start of string or start of any word
+        return sl.startsWith(q) || sl.split(/[\s,&'-]+/).some(w => w.startsWith(q));
+      }
+      return sl.includes(q);
+    }).slice(0, 8);
+    if (!matches.length) { suggestionsEl.classList.remove('open'); return; }
+    suggestionsEl.innerHTML = matches.map(m =>
+      `<div class="ing-suggestion-item">${escHtml(m)}</div>`
+    ).join('');
+    suggestionsEl.classList.add('open');
+
+    suggestionsEl.querySelectorAll('.ing-suggestion-item').forEach(item => {
+      item.addEventListener('mousedown', e => {
+        e.preventDefault();  // prevent blur before click
+        input.value = item.textContent;
+        suggestionsEl.classList.remove('open');
+      });
+    });
+  });
+
+  input.addEventListener('blur', () => {
+    setTimeout(() => suggestionsEl.classList.remove('open'), 150);
+  });
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Escape') suggestionsEl.classList.remove('open');
+  });
 }
 
 function renderIngRows() {
@@ -1646,6 +1772,13 @@ function renderIngRows() {
       ingEditorRows.splice(idx, 1);
       renderIngRows();
     });
+  });
+
+  // Wire autocomplete on each item input
+  container.querySelectorAll('.ing-row-edit').forEach(row => {
+    const input = row.querySelector('.ing-item-input');
+    const suggestions = row.querySelector('.ing-suggestions');
+    if (input && suggestions) wireAutocomplete(input, suggestions);
   });
 }
 
@@ -1756,8 +1889,11 @@ function showDetail(recipe) {
         <button class="edit-ing-btn" id="edit-ing-btn" style="background:none;border:1px solid rgba(193,127,58,0.35);border-radius:3px;color:var(--amber);font-family:var(--serif-body);font-size:0.6rem;letter-spacing:0.08em;text-transform:uppercase;padding:3px 9px;cursor:pointer;">Edit</button>
       </div>
       <ul class="ingredients-list">${ings || '<li style="color:var(--ink-light);font-style:italic;font-size:0.85rem;padding:6px 0">No ingredients added yet</li>'}</ul>
-      <div class="detail-section-title">Method</div>
-      <p class="method-text">${escHtml(recipe.method || '')}</p>
+      <div class="detail-section-title" style="display:flex;align-items:center;justify-content:space-between;">
+        <span>Method</span>
+        <button class="edit-ing-btn" id="edit-method-btn" style="background:none;border:1px solid rgba(193,127,58,0.35);border-radius:3px;color:var(--amber);font-family:var(--serif-body);font-size:0.6rem;letter-spacing:0.08em;text-transform:uppercase;padding:3px 9px;cursor:pointer;">Edit</button>
+      </div>
+      <p class="method-text">${recipe.method ? escHtml(recipe.method) : '<em style="color:var(--ink-light)">No method added yet</em>'}</p>
       <div class="detail-glass-tag">
         ${glassIcon(recipe.glass)} Serve in ${(()=>{const M={'rocks':'a rocks glass','collins':'a collins glass','highball':'a highball glass','coupe':'a coupe','martini':'a martini glass','nick-nora':'a Nick & Nora glass','flute':'a flute','snifter':'a snifter','irish':'an Irish mug','tropical':'a tropical glass','julep':'a Julep cup','mule mug':'a mule mug','mule':'a mule mug','wine':'a wine glass','mug':'a mug'};const g=recipe.glass||'';return M[g]||'a glass';})()}
       </div>
@@ -1770,6 +1906,8 @@ function showDetail(recipe) {
   if(evb) evb.addEventListener('click', () => openEditor(recipe));
   const eib = document.getElementById('edit-ing-btn');
   if(eib) eib.addEventListener('click', () => openIngEditor(recipe));
+  const emb = document.getElementById('edit-method-btn');
+  if(emb) emb.addEventListener('click', () => openMethodEditor(recipe));
 }
 
 /* ══════════════════════════════════════════════
@@ -2778,7 +2916,6 @@ function openEditor(recipe) {
   };
   $('editor-recipe-name').textContent = recipe.name;
   $('ef-title').value  = recipe.name || '';
-  $('ef-method').value = recipe.method || '';
   $('ef-frozen').checked = !!(recipe.frozen);
   editorStatus.textContent = '';
   buildEditorControls();
@@ -2794,7 +2931,6 @@ $('editor-cancel-btn').addEventListener('click', closeEditor);
 async function savePresentation() {
   const saveBtn = $('editor-save-btn');
   const newTitle  = ($('ef-title').value  || '').trim();
-  const newMethod = ($('ef-method').value || '').trim();
   const newFrozen = $('ef-frozen').checked;
 
   if (!newTitle) {
@@ -2830,7 +2966,7 @@ async function savePresentation() {
     const idx = allRecipes.findIndex(r => r.name === originalName);
     if (idx !== -1) {
       allRecipes[idx].name         = newTitle;
-      allRecipes[idx].method       = newMethod || allRecipes[idx].method;
+
       allRecipes[idx].presentation = newPresentation;
       allRecipes[idx].glass        = vesselToGlass[newPresentation.vessel] || newPresentation.vessel;
       allRecipes[idx].frozen       = newFrozen;
@@ -2840,7 +2976,7 @@ async function savePresentation() {
     await idbPut('recipes', allRecipes[idx !== -1 ? idx : allRecipes.length - 1]);
 
     editorRecipe.name          = newTitle;
-    editorRecipe.method        = newMethod || editorRecipe.method;
+
     editorRecipe.presentation  = newPresentation;
     editorRecipe.frozen        = newFrozen;
     editorRecipe._originalName = newTitle;
@@ -3000,6 +3136,7 @@ function init() {
   showView('recipes');
   initBottleModal();
   initIngEditor();
+  initMethodEditor();
 }
 
 async function loadData() {
@@ -3201,6 +3338,19 @@ loadData();
         <button id="text-input-cancel" style="flex:1;padding:9px;background:none;border:1px solid var(--rule);border-radius:4px;font-family:var(--serif-body);font-size:0.85rem;color:var(--ink-mid);cursor:pointer;">Cancel</button>
         <button id="text-input-ok" style="flex:2;padding:9px;background:var(--amber);border:none;border-radius:4px;font-family:var(--serif-display);font-size:0.85rem;font-weight:700;color:#fff;cursor:pointer;">OK</button>
       </div>
+    </div>
+  </div>
+
+  <!-- ── METHOD EDITOR MODAL ── -->
+  <div id="method-editor-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.62);z-index:400;">
+    <div id="method-editor-sheet" style="position:absolute;bottom:0;left:0;right:0;background:var(--parchment);border-radius:14px 14px 0 0;padding:20px 16px calc(var(--safe-bottom,0px) + 20px);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+        <div style="font-family:var(--serif-display);font-size:1rem;color:var(--ink);">Method</div>
+        <button id="method-editor-done" style="background:var(--amber);border:none;border-radius:4px;color:#fff;font-family:var(--serif-display);font-size:0.85rem;font-weight:700;padding:7px 18px;cursor:pointer;">Done</button>
+      </div>
+      <textarea id="method-editor-text" rows="6" autocorrect="off" autocapitalize="sentences" spellcheck="false"
+        style="width:100%;background:var(--cream-white);border:1px solid var(--rule);border-radius:4px;padding:10px 12px;font-family:var(--serif-body);font-size:0.85rem;color:var(--ink);line-height:1.5;resize:vertical;box-sizing:border-box;"></textarea>
+      <div id="method-editor-status" style="font-family:var(--serif-body);font-size:0.75rem;color:var(--terracotta);text-align:center;margin-top:8px;min-height:1.2em;"></div>
     </div>
   </div>
 
