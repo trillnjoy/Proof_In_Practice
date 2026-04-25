@@ -775,7 +775,7 @@
         {
           "amount": "3/4",
           "unit": "oz",
-          "item": "CrÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¨me de Cacao (Brown)"
+          "item": "Crème de Cacao (Brown)"
         },
         {
           "amount": "1",
@@ -819,7 +819,7 @@
         {
           "amount": "3/4",
           "unit": "oz",
-          "item": "Orange Curacao"
+          "item": "Orange Curaçao"
         },
         {
           "amount": "3/4",
@@ -1221,7 +1221,7 @@
         {
           "amount": "1",
           "unit": "oz",
-          "item": "Blue CuraÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ§ao"
+          "item": "Blue Curaçao"
         },
         {
           "amount": "1",
@@ -1276,7 +1276,7 @@
         {
           "amount": "1",
           "unit": "oz",
-          "item": "Blue CuraÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ§ao"
+          "item": "Blue Curaçao"
         },
         {
           "amount": "1",
@@ -1289,7 +1289,7 @@
           "item": "Lime Juice"
         }
       ],
-      "method": "Rim a chilled margarita glass with the lime wedge and salt. Combine the tequila, curaÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ§ao, triple sec, and lime juice in a cocktail shaker with ice. Shake well and strain into glass.",
+      "method": "Rim a chilled margarita glass with the lime wedge and salt. Combine the tequila, curaçao, triple sec, and lime juice in a cocktail shaker with ice. Shake well and strain into glass.",
       "glass": "coupe",
       "presentation": {
         "vessel": "coupe",
@@ -1885,7 +1885,7 @@
         {
           "amount": "1/2",
           "unit": "oz",
-          "item": "Blue CuraÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ§ao"
+          "item": "Blue Curaçao"
         },
         {
           "amount": "2",
@@ -1927,7 +1927,7 @@
         {
           "amount": "1/3",
           "unit": "oz",
-          "item": "KahlÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂºa"
+          "item": "Kahlúa"
         },
         {
           "amount": null,
@@ -2579,10 +2579,10 @@
         {
           "amount": "1/2",
           "unit": "tsp",
-          "item": "CrÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¨me de Cassis"
+          "item": "Crème de Cassis"
         }
       ],
-      "method": "Rim the glass with lemon twist and then drop into flute. Pour CrÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¨me de Cassis into glass, top up with champagne.",
+      "method": "Rim the glass with lemon twist and then drop into flute. Pour Crème de Cassis into glass, top up with champagne.",
       "glass": "flute",
       "presentation": {
         "vessel": "flute",
@@ -2885,7 +2885,7 @@
         {
           "amount": "1/2",
           "unit": "oz",
-          "item": "Orange CuraÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ§ao"
+          "item": "Orange Curaçao"
         },
         {
           "amount": "1/2",
@@ -4113,7 +4113,7 @@
         {
           "amount": "2/3",
           "unit": "oz",
-          "item": "Blue CuraÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ§ao"
+          "item": "Blue Curaçao"
         },
         {
           "amount": "1/2",
@@ -4254,15 +4254,41 @@
     {
       "name": "United Nations",
       "credit": null,
-      "ingredients": [],
-      "method": "mix 60 mL Tanqueray Sevilla Orange gin, 30 mL Liquore Strega, 30 mL lingonberry syrup, 30 mL Cointreau and 45 mL lime juice. Shake with ice in a cocktail shaker; strain into coupe garnish with kumquats split into three slices on a cocktail stick.",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Tanqueray Sevilla Orange Gin"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Liquore Strega"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Lingonberry Syrup"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Cointreau"
+        },
+        {
+          "amount": "1.5",
+          "unit": "oz",
+          "item": "Lime Juice"
+        }
+      ],
+      "method": "Combine all ingredients in cocktail shaker with ice. Shake until chilled. Strain into coupe. Garnish with kumquats split into three slices on a cocktail stick.",
       "glass": "coupe",
       "presentation": {
         "vessel": "coupe",
-        "color": "#ffa57d",
+        "color": "#e8c840",
         "float": null,
         "ice": null,
-        "citrus": "lime-twist",
+        "citrus": null,
         "garnish": [],
         "extras": []
       },
