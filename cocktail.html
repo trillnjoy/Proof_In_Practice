@@ -1607,6 +1607,112 @@ function calculateRecipeABV(recipe) {
   return { abv: finalABV, usedDefault };
 }
 
+/* ══════════════════════════════════════════════
+   INGREDIENT EDITOR
+══════════════════════════════════════════════ */
+const UNITS = ['oz','tsp','tbsp','dash','drop','pinch',''];
+
+let ingEditorRecipe = null;
+let ingEditorRows   = [];  // working copy of ingredients
+
+function ingRowHTML(ing, idx) {
+  const unitOpts = UNITS.map(u =>
+    `<option value="${u}" ${ing.unit === u ? 'selected' : ''}>${u || '—'}</option>`
+  ).join('');
+  return `<div class="ing-row-edit" data-idx="${idx}" style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+    <input class="ing-amount-input" type="text" value="${escHtml(ing.amount||'')}"
+      placeholder="Amt" autocorrect="off" inputmode="decimal"
+      style="width:52px;flex-shrink:0;background:var(--cream-white);border:1px solid var(--rule);border-radius:3px;padding:7px 6px;font-family:var(--serif-body);font-size:0.82rem;color:var(--ink);">
+    <select class="ing-unit-select"
+      style="flex-shrink:0;background:var(--cream-white);border:1px solid var(--rule);border-radius:3px;padding:7px 4px;font-family:var(--serif-body);font-size:0.82rem;color:var(--ink);">
+      ${unitOpts}
+    </select>
+    <input class="ing-item-input" type="text" value="${escHtml(ing.item||'')}"
+      placeholder="Ingredient" autocorrect="off" autocapitalize="words"
+      style="flex:1;background:var(--cream-white);border:1px solid var(--rule);border-radius:3px;padding:7px 8px;font-family:var(--serif-body);font-size:0.82rem;color:var(--ink);">
+    <button class="ing-delete-row" data-idx="${idx}"
+      style="flex-shrink:0;background:rgba(180,50,30,0.12);border:1px solid rgba(180,50,30,0.3);border-radius:3px;color:var(--terracotta);font-size:0.8rem;padding:6px 8px;cursor:pointer;">×</button>
+  </div>`;
+}
+
+function renderIngRows() {
+  const container = $('ing-rows');
+  container.innerHTML = ingEditorRows.map((ing, i) => ingRowHTML(ing, i)).join('');
+
+  // Wire delete buttons
+  container.querySelectorAll('.ing-delete-row').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.idx);
+      ingEditorRows.splice(idx, 1);
+      renderIngRows();
+    });
+  });
+}
+
+function collectIngRows() {
+  const rows = $('ing-rows').querySelectorAll('.ing-row-edit');
+  return Array.from(rows).map(row => ({
+    amount: row.querySelector('.ing-amount-input').value.trim() || null,
+    unit:   row.querySelector('.ing-unit-select').value || null,
+    item:   row.querySelector('.ing-item-input').value.trim(),
+  })).filter(r => r.item);  // skip rows with no item name
+}
+
+function openIngEditor(recipe) {
+  ingEditorRecipe = recipe;
+  ingEditorRows   = (recipe.ingredients || []).map(i => ({...i}));
+  $('ing-editor-title').textContent = recipe.name;
+  $('ing-editor-status').textContent = '';
+  renderIngRows();
+  $('ing-editor-overlay').style.display = 'block';
+}
+
+function closeIngEditor() {
+  $('ing-editor-overlay').style.display = 'none';
+  ingEditorRecipe = null;
+  ingEditorRows   = [];
+}
+
+async function saveIngredients() {
+  const updated = collectIngRows();
+  const recipe  = ingEditorRecipe;
+  $('ing-editor-status').textContent = 'Saving…';
+
+  try {
+    recipe.ingredients = updated;
+    await idbPut('recipes', recipe);
+
+    // Update allRecipes in memory
+    const idx = allRecipes.findIndex(r => r.name === recipe.name);
+    if (idx !== -1) allRecipes[idx].ingredients = updated;
+
+    $('ing-editor-status').textContent = 'Saved ✓';
+    setTimeout(() => {
+      closeIngEditor();
+      showDetail(recipe);  // re-render detail with new ingredients
+    }, 500);
+  } catch(err) {
+    $('ing-editor-status').textContent = `Save failed: ${err.message}`;
+  }
+}
+
+// Wire ingredient editor events (called from init)
+function initIngEditor() {
+  $('ing-editor-overlay').addEventListener('click', e => {
+    if (e.target === $('ing-editor-overlay')) closeIngEditor();
+  });
+  $('ing-editor-sheet').addEventListener('click', e => e.stopPropagation());
+  $('ing-editor-done').addEventListener('click', saveIngredients);
+  $('ing-add-row').addEventListener('click', () => {
+    ingEditorRows = collectIngRows();
+    ingEditorRows.push({amount: null, unit: 'oz', item: ''});
+    renderIngRows();
+    // Focus the new item input
+    const rows = $('ing-rows').querySelectorAll('.ing-item-input');
+    if (rows.length) rows[rows.length - 1].focus();
+  });
+}
+
 function showDetail(recipe) {
   detailRecipe = recipe;
 
@@ -1645,12 +1751,15 @@ function showDetail(recipe) {
       <button class="edit-visual-btn" id="edit-visual-btn">Edit Visual</button>
     </div>
     <div class="detail-body">
-      <div class="detail-section-title">Ingredients</div>
-      <ul class="ingredients-list">${ings}</ul>
+      <div class="detail-section-title" style="display:flex;align-items:center;justify-content:space-between;">
+        <span>Ingredients</span>
+        <button class="edit-ing-btn" id="edit-ing-btn" style="background:none;border:1px solid rgba(193,127,58,0.35);border-radius:3px;color:var(--amber);font-family:var(--serif-body);font-size:0.6rem;letter-spacing:0.08em;text-transform:uppercase;padding:3px 9px;cursor:pointer;">Edit</button>
+      </div>
+      <ul class="ingredients-list">${ings || '<li style="color:var(--ink-light);font-style:italic;font-size:0.85rem;padding:6px 0">No ingredients added yet</li>'}</ul>
       <div class="detail-section-title">Method</div>
       <p class="method-text">${escHtml(recipe.method || '')}</p>
       <div class="detail-glass-tag">
-        ${glassIcon(recipe.glass)} Serve in a ${(()=>{const M={'rocks':'a rocks glass','collins':'a collins glass','highball':'a highball glass','coupe':'a coupe','martini':'a martini glass','nick-nora':'a Nick & Nora glass','flute':'a flute','snifter':'a snifter','irish':'an Irish mug','tropical':'a Tropical glass','julep':'a Julep cup','mule mug':'a mule mug','wine':'a wine glass','mug':'a mug'};const g=recipe.glass||'glass';return M[g]||('a '+g);})()}
+        ${glassIcon(recipe.glass)} Serve in ${(()=>{const M={'rocks':'a rocks glass','collins':'a collins glass','highball':'a highball glass','coupe':'a coupe','martini':'a martini glass','nick-nora':'a Nick & Nora glass','flute':'a flute','snifter':'a snifter','irish':'an Irish mug','tropical':'a tropical glass','julep':'a Julep cup','mule mug':'a mule mug','mule':'a mule mug','wine':'a wine glass','mug':'a mug'};const g=recipe.glass||'';return M[g]||'a glass';})()}
       </div>
     </div>
   `;
@@ -1659,6 +1768,8 @@ function showDetail(recipe) {
   // Wire edit button (exists in innerHTML so must be queried after render)
   const evb = document.getElementById('edit-visual-btn');
   if(evb) evb.addEventListener('click', () => openEditor(recipe));
+  const eib = document.getElementById('edit-ing-btn');
+  if(eib) eib.addEventListener('click', () => openIngEditor(recipe));
 }
 
 /* ══════════════════════════════════════════════
@@ -2888,6 +2999,7 @@ function init() {
   renderRecipeList();
   showView('recipes');
   initBottleModal();
+  initIngEditor();
 }
 
 async function loadData() {
@@ -3089,6 +3201,19 @@ loadData();
         <button id="text-input-cancel" style="flex:1;padding:9px;background:none;border:1px solid var(--rule);border-radius:4px;font-family:var(--serif-body);font-size:0.85rem;color:var(--ink-mid);cursor:pointer;">Cancel</button>
         <button id="text-input-ok" style="flex:2;padding:9px;background:var(--amber);border:none;border-radius:4px;font-family:var(--serif-display);font-size:0.85rem;font-weight:700;color:#fff;cursor:pointer;">OK</button>
       </div>
+    </div>
+  </div>
+
+  <!-- ── INGREDIENT EDITOR MODAL ── -->
+  <div id="ing-editor-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.62);z-index:400;">
+    <div id="ing-editor-sheet" style="position:absolute;bottom:0;left:0;right:0;background:var(--parchment);border-radius:14px 14px 0 0;max-height:85vh;overflow-y:auto;padding:20px 16px calc(var(--safe-bottom,0px) + 20px);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div style="font-family:var(--serif-display);font-size:1rem;color:var(--ink);" id="ing-editor-title">Ingredients</div>
+        <button id="ing-editor-done" style="background:var(--amber);border:none;border-radius:4px;color:#fff;font-family:var(--serif-display);font-size:0.85rem;font-weight:700;padding:7px 18px;cursor:pointer;">Done</button>
+      </div>
+      <div id="ing-rows"></div>
+      <button id="ing-add-row" style="width:100%;margin-top:10px;padding:10px;background:none;border:1px dashed rgba(193,127,58,0.4);border-radius:4px;color:var(--amber);font-family:var(--serif-body);font-size:0.85rem;cursor:pointer;">+ Add Ingredient</button>
+      <div id="ing-editor-status" style="font-family:var(--serif-body);font-size:0.75rem;color:var(--terracotta);text-align:center;margin-top:8px;min-height:1.2em;"></div>
     </div>
   </div>
 
