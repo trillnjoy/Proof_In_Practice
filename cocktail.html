@@ -582,6 +582,21 @@
     }
     .edit-visual-btn:hover { background: rgba(193,127,58,0.28); border-color: var(--amber); }
 
+    /* ABV pill — detail header upper right */
+    .recipe-abv-pill {
+      position: absolute;
+      top: 44px; right: 14px;
+      background: rgba(193,127,58,0.18);
+      border: 1px solid rgba(193,127,58,0.4);
+      border-radius: 4px;
+      color: var(--amber);
+      font-family: var(--serif-body);
+      font-size: 0.65rem;
+      letter-spacing: 0.06em;
+      padding: 3px 8px;
+      pointer-events: none;
+    }
+
     /* ─── SETTINGS DRAWER ─── */
     #settings-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:200; }
     #settings-overlay.open { display:block; }
@@ -1171,7 +1186,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-25 03:10 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-25 14:50 UTC</div>
   </footer>
 
 
@@ -1232,6 +1247,10 @@
       <div class="ef-row">
         <label class="ef-label">Method</label>
         <textarea class="ef-textarea" id="ef-method" rows="3" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+      </div>
+      <div class="ef-row" style="display:flex;align-items:center;gap:10px;">
+        <label class="ef-label" style="margin-bottom:0;">Frozen / Ninja Recipe</label>
+        <input type="checkbox" id="ef-frozen" style="width:18px;height:18px;accent-color:var(--amber);cursor:pointer;">
       </div>
     </div>
     <div class="editor-body">
@@ -1366,45 +1385,24 @@ const FALLBACK_SEED = {
     {
       category: "Bourbon & Rye",
       bottles: [
-        {name:"Larceny", notes:null, rating:2, imageUrl:null},
-        {name:"Willett Pot Still", notes:null, rating:3, imageUrl:null},
-        {name:"Maker's Mark", notes:null, rating:null, imageUrl:null},
-        {name:"Four Roses Small Batch", notes:null, rating:null, imageUrl:null},
-        {name:"Eagle Rare 10", notes:null, rating:3, imageUrl:null}
+        {name:"Larceny",             notes:null, rating:2,    imageUrl:null, abv:46},
+        {name:"Willett Pot Still",    notes:null, rating:3,    imageUrl:null, abv:47},
+        {name:"Maker's Mark",         notes:null, rating:null, imageUrl:null, abv:45},
+        {name:"Four Roses Small Batch",notes:null,rating:null, imageUrl:null, abv:45},
+        {name:"Eagle Rare 10",        notes:null, rating:3,    imageUrl:null, abv:45}
       ]
     },
     {
       category: "Tequila & Mezcal",
-      bottles: ["Hornitos Reposado Tequila", "Espolón Tequila Blanco"]
+      bottles: [
+        {name:"Hornitos Reposado Tequila", notes:null, rating:null, imageUrl:null, abv:40},
+        {name:"Espolón Tequila Blanco",    notes:null, rating:null, imageUrl:null, abv:40}
+      ]
     }
   ]
 };
 
-async function loadData() {
-  try {
-    const res = await fetch('./cocktails_seed.json');
-    if (!res.ok) throw new Error('Fetch failed');
-    const data = await res.json();
-    allRecipes   = data.recipes   || [];
-    allInventory = data.bar_inventory || [];
-  } catch (e) {
-    console.warn('Could not load cocktails_seed.json — using fallback seed', e);
-    allRecipes   = FALLBACK_SEED.recipes;
-    allInventory = FALLBACK_SEED.bar_inventory;
-  }
-  init();
-}
 
-/* ══════════════════════════════════════════════
-   INIT
-══════════════════════════════════════════════ */
-function init() {
-  loadingEl.style.display = 'none';
-  buildFilterChips();
-  renderRecipeList();
-  showView('recipes');
-  initBottleModal();
-}
 
 /* ══════════════════════════════════════════════
    FILTER CHIPS — derive glass types from data
@@ -1520,6 +1518,95 @@ function renderRecipeList() {
 /* ══════════════════════════════════════════════
    RECIPE DETAIL
 ══════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════
+   ABV CALCULATION ENGINE
+══════════════════════════════════════════════ */
+
+const UNIT_TO_OZ = {
+  'oz': 1, 'tbsp': 0.5, 'tsp': 0.1667,
+  'dash': 0.021, 'drop': 0.0017,
+  'pinch': 0, 'null': 0
+};
+
+const SPIRIT_DEFAULTS = [
+  { words: ['bourbon','rye'],                     abv: 0.45 },
+  { words: ['scotch'],                             abv: 0.40 },
+  { words: ['irish'],                              abv: 0.40 },
+  { words: ['vodka'],                              abv: 0.40 },
+  { words: ['rum'],                                abv: 0.40 },
+  { words: ['gin'],                                abv: 0.42 },
+  { words: ['tequila','mezcal'],                   abv: 0.40 },
+  { words: ['cognac','brandy'],                    abv: 0.40 },
+  { words: ['whiskey','whisky'],                   abv: 0.45 },
+  { words: ['liqueur','schnapps','triple sec',
+            'curaçao','curacao','amaro','vermouth',
+            'aperol','campari','falernum','strega',
+            'benedictine','frangelico','amaretto',
+            'kahlua','kahlúa','cointreau','chartreuse'], abv: 0.20 },
+  { words: ['champagne','prosecco','wine','beer','cider'], abv: 0.12 },
+  { words: ['syrup','juice','water','soda','cream',
+            'milk','egg','bitters','grenadine',
+            'orgeat','honey','sugar'],             abv: 0 },
+];
+
+function getDilutionFactor(recipe) {
+  if (recipe.frozen) return 0;
+  const ice    = recipe.presentation?.ice || null;
+  const method = (recipe.method || '').toLowerCase();
+  const shaken  = method.includes('shake') || method.includes('shaken');
+  const stirred = method.includes('stir')  || method.includes('stirred');
+  if (ice === 'crushed') return 0.15;
+  if (ice === 'cubes')   return shaken ? 0.40 : 0.10;
+  if (ice === 'huge')    return 0.05;
+  if (shaken)            return 0.30;
+  if (stirred)           return 0.20;
+  return 0;
+}
+
+function lookupIngredientABV(itemName) {
+  if (!itemName) return { abv: 0, usedDefault: false };
+  const lower = itemName.toLowerCase();
+  for (const cat of allInventory) {
+    for (const bottle of cat.bottles) {
+      if (bottle.abv != null) {
+        const bname = bottle.name.toLowerCase();
+        const firstWord = lower.split(' ')[0];
+        if (bname === lower || lower.includes(bname) ||
+            (firstWord.length > 3 && bname.includes(firstWord))) {
+          return { abv: bottle.abv / 100, usedDefault: false };
+        }
+      }
+    }
+  }
+  for (const entry of SPIRIT_DEFAULTS) {
+    if (entry.words.some(w => lower.includes(w))) {
+      return { abv: entry.abv, usedDefault: true };
+    }
+  }
+  return { abv: 0, usedDefault: false };
+}
+
+function calculateRecipeABV(recipe) {
+  const ings = recipe.ingredients || [];
+  if (!ings.length) return null;
+  let totalEtOH = 0, totalVol = 0;
+  let usedDefault = false, hasAlcohol = false;
+  for (const ing of ings) {
+    const unit = (ing.unit || 'null').toLowerCase();
+    const oz   = (parseFloat(ing.amount) || 0) * (UNIT_TO_OZ[unit] ?? 0);
+    if (oz === 0) continue;
+    const { abv, usedDefault: ud } = lookupIngredientABV(ing.item);
+    if (abv > 0) hasAlcohol = true;
+    if (ud) usedDefault = true;
+    totalEtOH += oz * abv;
+    totalVol  += oz;
+  }
+  if (!hasAlcohol || totalVol === 0) return null;
+  const dilution = getDilutionFactor(recipe);
+  const finalABV = (totalEtOH / (totalVol * (1 + dilution))) * 100;
+  return { abv: finalABV, usedDefault };
+}
+
 function showDetail(recipe) {
   detailRecipe = recipe;
 
@@ -1547,6 +1634,12 @@ function showDetail(recipe) {
   detailView.innerHTML = `
     <div class="detail-header" style="position:relative">
       <div class="detail-glass-icon">${recipe.presentation ? DR.hero(recipe.presentation) : `<span style="font-size:2.8rem;display:block;text-align:center;padding:8px 0">${glassIcon(recipe.glass)}</span>`}</div>
+      ${(() => {
+        const result = calculateRecipeABV(recipe);
+        if (!result) return '';
+        const sym = result.usedDefault ? '≈' : '~';
+        return `<div class="recipe-abv-pill">${sym}${result.abv.toFixed(1)}% ABV</div>`;
+      })()}
       <h1 class="detail-name">${escHtml(recipe.name)}</h1>
       ${credit}
       <button class="edit-visual-btn" id="edit-visual-btn">Edit Visual</button>
@@ -1861,16 +1954,13 @@ function showView(view) {
   const tagline = $('inventory-tagline');
   if (addBtn) addBtn.style.display = (isInventory || isDetail) ? 'none' : '';
   if (tagline) tagline.style.display = isInventory ? '' : 'none';
-  // settings-btn always visible — no show/hide needed
   backBtn.classList.toggle('visible', isDetail);
   const logoWrap = $('logo-wrap');
   if (logoWrap) logoWrap.style.display = isDetail ? 'none' : '';
-  const sbtn = $('settings-btn');
-  // settings-btn always visible in header nav
   // Close editor when leaving detail view
   if (!isDetail) closeEditor();
 
-  // Header title (hidden elements, kept for any legacy refs)
+  // Header title
   if (isDetail && detailRecipe) {
     appTitle.textContent    = detailRecipe.name;
     appSubtitle.textContent = '';
@@ -2578,6 +2668,7 @@ function openEditor(recipe) {
   $('editor-recipe-name').textContent = recipe.name;
   $('ef-title').value  = recipe.name || '';
   $('ef-method').value = recipe.method || '';
+  $('ef-frozen').checked = !!(recipe.frozen);
   editorStatus.textContent = '';
   buildEditorControls();
   edRender();
@@ -2587,16 +2678,13 @@ function openEditor(recipe) {
 
 $('editor-cancel-btn').addEventListener('click', closeEditor);
 
-/* ══════════════════════════════════════════════
-   GITHUB WRITE-BACK — SHARED
-══════════════════════════════════════════════ */
-
-/* ── GitHub write helper — used only by Export/Import in settings ── */
+/* ── GitHub write — used only by Export/Import in settings ── */
 
 async function savePresentation() {
   const saveBtn = $('editor-save-btn');
   const newTitle  = ($('ef-title').value  || '').trim();
   const newMethod = ($('ef-method').value || '').trim();
+  const newFrozen = $('ef-frozen').checked;
 
   if (!newTitle) {
     editorStatus.textContent = 'Title cannot be empty.';
@@ -2634,6 +2722,7 @@ async function savePresentation() {
       allRecipes[idx].method       = newMethod || allRecipes[idx].method;
       allRecipes[idx].presentation = newPresentation;
       allRecipes[idx].glass        = vesselToGlass[newPresentation.vessel] || newPresentation.vessel;
+      allRecipes[idx].frozen       = newFrozen;
     }
     // If renamed, delete old IDB record and write new one
     if (newTitle !== originalName) await idbDelete('recipes', originalName);
@@ -2642,6 +2731,7 @@ async function savePresentation() {
     editorRecipe.name          = newTitle;
     editorRecipe.method        = newMethod || editorRecipe.method;
     editorRecipe.presentation  = newPresentation;
+    editorRecipe.frozen        = newFrozen;
     editorRecipe._originalName = newTitle;
 
     editorStatus.textContent = 'Saved ✓';
@@ -2792,11 +2882,18 @@ async function idbSeedFromJSON(data) {
 }
 
 /* ── Load app data: IDB first, fallback to seed JSON, fallback to inline ── */
+function init() {
+  loadingEl.style.display = 'none';
+  buildFilterChips();
+  renderRecipeList();
+  showView('recipes');
+  initBottleModal();
+}
+
 async function loadData() {
   try {
     const recipeCount = await idbCount('recipes');
     if (recipeCount > 0) {
-      // Load from IndexedDB
       allRecipes   = await idbGetAll('recipes');
       allInventory = await idbGetAll('bar_inventory');
       console.log(`Loaded ${allRecipes.length} recipes from IndexedDB`);
@@ -2804,7 +2901,8 @@ async function loadData() {
       return;
     }
   } catch(e) {
-    console.warn('IDB read failed, falling back to seed fetch', e);
+    // IDB unavailable (sandbox/private browsing) — skip to fetch
+    console.warn('IDB unavailable, falling back to seed fetch', e);
   }
 
   // IDB empty — fetch seed JSON and seed IDB
@@ -2812,15 +2910,19 @@ async function loadData() {
     const res  = await fetch('./cocktails_seed.json');
     if (!res.ok) throw new Error('fetch failed');
     const data = await res.json();
-    await idbSeedFromJSON(data);
     allRecipes   = data.recipes       || [];
     allInventory = data.bar_inventory || [];
-    console.log(`Seeded IDB from cocktails_seed.json: ${allRecipes.length} recipes`);
+    try { await idbSeedFromJSON(data); } catch(e) {
+      console.warn('IDB seed failed, running from memory', e);
+    }
+    console.log(`Loaded ${allRecipes.length} recipes from seed JSON`);
   } catch(e) {
     console.warn('Could not load cocktails_seed.json — using fallback seed');
-    await idbSeedFromJSON(FALLBACK_SEED);
     allRecipes   = FALLBACK_SEED.recipes       || [];
     allInventory = FALLBACK_SEED.bar_inventory || [];
+    try { await idbSeedFromJSON(FALLBACK_SEED); } catch(idbErr) {
+      console.warn('IDB unavailable, running from fallback in memory only', idbErr);
+    }
   }
   init();
 }
@@ -2911,6 +3013,7 @@ async function addNewRecipe() {
     ingredients: [],
     method: '',
     glass: 'rocks',
+    frozen: false,
     presentation: {
       vessel: 'rocks', color: null, float: null,
       ice: null, citrus: null, garnish: [], extras: []
