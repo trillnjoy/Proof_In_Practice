@@ -1186,7 +1186,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-25 15:13 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-25 15:31 UTC</div>
   </footer>
 
 
@@ -1650,7 +1650,7 @@ function showDetail(recipe) {
       <div class="detail-section-title">Method</div>
       <p class="method-text">${escHtml(recipe.method || '')}</p>
       <div class="detail-glass-tag">
-        ${glassIcon(recipe.glass)} Serve in a ${(()=>{const S=new Set(['rocks','collins','highball','nick-nora','irish','tropical','julep','mule mug']);const g=recipe.glass||'glass';return S.has(g)?g+' glass':g;})()}
+        ${glassIcon(recipe.glass)} Serve in a ${(()=>{const M={'rocks':'a rocks glass','collins':'a collins glass','highball':'a highball glass','coupe':'a coupe','martini':'a martini glass','nick-nora':'a Nick & Nora glass','flute':'a flute','snifter':'a snifter','irish':'an Irish mug','tropical':'a Tropical glass','julep':'a Julep cup','mule mug':'a mule mug','wine':'a wine glass','mug':'a mug'};const g=recipe.glass||'glass';return M[g]||('a '+g);})()}
       </div>
     </div>
   `;
