@@ -110,7 +110,7 @@
           "name": "Abasolo Corn Whisky",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/AbosoloCornWhisky_216.png",
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/AbasoloCornWhisky_216.png",
           "abv": null
         }
       ]
@@ -152,14 +152,14 @@
           "name": "Blue Curacao",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/BlueCuracao_216.png",
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/BlueCuracaoTS_216.png",
           "abv": 25
         },
         {
           "name": "Soho Lychee",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/SohoLychee_216.png",
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/SohoLycheeLiqueur_216.png",
           "abv": 20
         },
         {
@@ -194,7 +194,7 @@
           "name": "Ensign Red Pineapple Whisky",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/EnsignRedPineapple_216.png",
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/EnsignRedPineappleW_216.png",
           "abv": null
         },
         {
@@ -208,14 +208,14 @@
           "name": "Grand Marnier",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/GrandMarnier_216.png",
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/GrandMarn_216.png",
           "abv": null
         },
         {
           "name": "Nixta Licor de Elote",
           "notes": "Corn",
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/NixtaElote_216.png",
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/NixtaEloteLicor_216.png",
           "abv": null
         }
       ]
@@ -262,7 +262,7 @@
           "name": "Bombay Blackberry & Rasperry Bramble Gin",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/BombayBerryBramble_216.png",
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/BombayBramble_216.png",
           "abv": 43
         }
       ]
@@ -342,7 +342,7 @@
           "name": "Amaretto Disaronno",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/AmarettoDisaronno_216.png",
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/AmarettoDisaro_216.png",
           "abv": 28
         },
         {
@@ -461,35 +461,35 @@
           "name": "Trader Vic's Macadamia Nut Liqueur",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/TraderVicMacadamia_216.png",
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/TraderVicMacad_216.png",
           "abv": null
         },
         {
           "name": "B&B Benedictine Liqueur",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/BnBBenedictine_216.png",
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/BnBBenedictineLiqueur_216.png",
           "abv": null
         },
         {
           "name": "Absinthe Ordinaire",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/AbsintheOrdinaire_216.png",
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/AbsintheOrdin_216.png",
           "abv": null
         },
         {
           "name": "Doppelt Kummel Extra Liqueur",
           "notes": "Cumin",
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/KummelExtraLiqueur_216.png",
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/KummelExtraLiqu_216.png",
           "abv": 38
         },
         {
           "name": "Ancho Reyes Verde Chile Poblano Liqueur",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/AnchoReyesVerde_216.png",
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/AnchoReyesVerdePoblano_216.png",
           "abv": null
         }
       ]
@@ -529,28 +529,28 @@
           "name": "Captain Morgan Spiced Rum",
           "notes": null,
           "rating": 1,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/CaptMorgSpiced_216.png",
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/CaptainMorganSpiced_216.png",
           "abv": 35
         },
         {
           "name": "Clément Martinique Rhum Agricole",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/ClementRhumAgricole_216.png",
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/ClementRhumAgr_216.png",
           "abv": null
         },
         {
           "name": "Stiggins Fancy Pineapple Rum",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/StigginsPineappleRum_216.png",
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/StigginsFancyPineapple_216.png",
           "abv": null
         },
         {
           "name": "Kahlua",
           "notes": "coffee",
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Kahlua_216.png",
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/KahluaLiqueur_216.png",
           "abv": 20
         }
       ]
@@ -691,14 +691,14 @@
           "name": "Ketel One: Cucumber & Mint",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/KetelCucMint_216.png",
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/KetelOneCucumMint_216.png",
           "abv": 40
         },
         {
           "name": "Ketel One: Grapefruit & Rose",
           "notes": null,
           "rating": null,
-          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/KetelGrapefRose_216.png",
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/KetelOneGrapefrRose_216.png",
           "abv": 40
         },
         {
