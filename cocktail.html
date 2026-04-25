@@ -1035,6 +1035,92 @@
     .ing-suggestion-item:last-child { border-bottom: none; }
     .ing-suggestion-item:active { background: var(--cream-white); }
 
+    /* ─── NINJA PANEL ─── */
+    .ninja-panel {
+      margin: 16px 0 8px;
+      border: 1px solid rgba(193,127,58,0.25);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .ninja-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: rgba(193,127,58,0.06);
+    }
+    .ninja-label {
+      font-family: var(--serif-body);
+      font-size: 0.82rem;
+      color: var(--ink-mid);
+      letter-spacing: 0.03em;
+    }
+    .ninja-toggle-wrap {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      height: 22px;
+      cursor: pointer;
+    }
+    .ninja-toggle-wrap input { opacity: 0; width: 0; height: 0; }
+    .ninja-toggle-track {
+      position: absolute;
+      inset: 0;
+      background: #ccc;
+      border-radius: 22px;
+      transition: background 0.2s;
+    }
+    .ninja-toggle-track::before {
+      content: '';
+      position: absolute;
+      width: 16px; height: 16px;
+      left: 3px; top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+    .ninja-toggle-wrap input:checked + .ninja-toggle-track { background: var(--amber); }
+    .ninja-toggle-wrap input:checked + .ninja-toggle-track::before { transform: translateX(18px); }
+    .ninja-controls {
+      padding: 12px 14px;
+      border-top: 1px solid rgba(193,127,58,0.15);
+    }
+    .ninja-slider-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .ninja-slider-label {
+      font-family: var(--sans);
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      flex-shrink: 0;
+    }
+    .ninja-slider-val {
+      font-family: var(--serif-body);
+      font-size: 0.85rem;
+      color: var(--amber);
+      font-weight: 600;
+      flex-shrink: 0;
+      min-width: 32px;
+      text-align: right;
+    }
+    .ninja-result {
+      font-family: var(--serif-body);
+      font-size: 0.85rem;
+      color: var(--ink-mid);
+      line-height: 1.5;
+      background: var(--cream-white);
+      border-radius: 4px;
+      padding: 10px 12px;
+      min-height: 2.5em;
+    }
+    .ninja-result strong { color: var(--ink); }
+    .ninja-result em { color: var(--ink-light); font-style: italic; }
+
     /* ─── NO RESULTS ─── */
     .empty-state {
       text-align: center;
@@ -1216,7 +1302,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-25 19:30 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-25 20:11 UTC</div>
   </footer>
 
 
@@ -1274,10 +1360,7 @@
         <label class="ef-label">Title</label>
         <input class="ef-input" type="text" id="ef-title" autocomplete="off" autocorrect="off" spellcheck="false">
       </div>
-      <div class="ef-row" style="display:flex;align-items:center;gap:10px;">
-        <label class="ef-label" style="margin-bottom:0;">Frozen / Ninja Recipe</label>
-        <input type="checkbox" id="ef-frozen" style="width:18px;height:18px;accent-color:var(--amber);cursor:pointer;">
-      </div>
+
     </div>
     <div class="editor-body">
       <div class="editor-preview">
@@ -1634,6 +1717,90 @@ function calculateRecipeABV(recipe) {
 }
 
 /* ══════════════════════════════════════════════
+   NINJA SLUSHIE CALCULATOR
+══════════════════════════════════════════════ */
+
+function calcNinjaWater(recipe, targetPct) {
+  const ings = recipe.ingredients || [];
+  let totalEtOH = 0, totalVol = 0;
+
+  for (const ing of ings) {
+    const unit = (ing.unit || 'null').toLowerCase();
+    const oz   = (parseFloat(ing.amount) || 0) * (UNIT_TO_OZ[unit] ?? 0);
+    if (oz === 0) continue;
+    const { abv } = lookupIngredientABV(ing.item);
+    totalEtOH += oz * abv;
+    totalVol  += oz;
+  }
+
+  if (totalEtOH === 0 || totalVol === 0) return null;
+
+  const target = targetPct / 100;
+  // targetVol = totalEtOH / target
+  // nonAlcVol = targetVol - totalVol
+  const targetVol  = totalEtOH / target;
+  const nonAlcVol  = targetVol - totalVol;
+  const currentABV = (totalEtOH / totalVol) * 100;
+
+  return { nonAlcVol, currentABV, totalVol, targetVol };
+}
+
+function renderNinjaResult(recipe) {
+  const slider = document.getElementById('ninja-slider');
+  const result = document.getElementById('ninja-result');
+  const valEl  = document.getElementById('ninja-slider-val');
+  if (!slider || !result) return;
+
+  const targetPct = parseInt(slider.value);
+  valEl.textContent = targetPct + '%';
+
+  const calc = calcNinjaWater(recipe, targetPct);
+  if (!calc) {
+    result.innerHTML = '<em>Add ingredients to calculate</em>';
+    return;
+  }
+
+  const { nonAlcVol, currentABV, totalVol } = calc;
+
+  if (nonAlcVol <= 0) {
+    // Already at or below target — may need to add spirit
+    const excessVol = totalVol - (totalVol * currentABV / 100) / (targetPct / 100);
+    result.innerHTML = `Current mix is <strong>${currentABV.toFixed(1)}% ABV</strong> — already at or below ${targetPct}% target. Recipe is ready.`;
+  } else {
+    const ozStr = nonAlcVol.toFixed(1);
+    const mlStr = (nonAlcVol * 29.57).toFixed(0);
+    result.innerHTML = `Add <strong>${ozStr} oz (${mlStr} mL)</strong> non-alcoholic liquid to reach <strong>${targetPct}% ABV</strong><br>
+      <em>Current spirit mix: ${currentABV.toFixed(1)}% ABV over ${totalVol.toFixed(1)} oz</em>`;
+  }
+}
+
+function initNinjaPanel(recipe) {
+  const toggle   = document.getElementById('ninja-toggle');
+  const controls = document.getElementById('ninja-controls');
+  const slider   = document.getElementById('ninja-slider');
+  if (!toggle) return;
+
+  // Toggle show/hide controls
+  toggle.addEventListener('change', async () => {
+    controls.style.display = toggle.checked ? 'block' : 'none';
+    if (toggle.checked) renderNinjaResult(recipe);
+    // Save frozen state to IDB
+    recipe.frozen = toggle.checked;
+    try {
+      await idbPut('recipes', recipe);
+      const idx = allRecipes.findIndex(r => r.name === recipe.name);
+      if (idx !== -1) allRecipes[idx].frozen = recipe.frozen;
+    } catch(e) { console.warn('Could not save frozen state', e); }
+  });
+
+  // Slider updates result in real time
+  if (slider) {
+    slider.addEventListener('input', () => renderNinjaResult(recipe));
+    if (toggle.checked) renderNinjaResult(recipe);
+  }
+}
+
+/* ══════════════════════════════════════════════
    METHOD EDITOR
 ══════════════════════════════════════════════ */
 let methodEditorRecipe = null;
@@ -1897,6 +2064,24 @@ function showDetail(recipe) {
       <div class="detail-glass-tag">
         ${glassIcon(recipe.glass)} Serve in ${(()=>{const M={'rocks':'a rocks glass','collins':'a collins glass','highball':'a highball glass','coupe':'a coupe','martini':'a martini glass','nick-nora':'a Nick & Nora glass','flute':'a flute','snifter':'a snifter','irish':'an Irish mug','tropical':'a tropical glass','julep':'a Julep cup','mule mug':'a mule mug','mule':'a mule mug','wine':'a wine glass','mug':'a mug'};const g=recipe.glass||'';return M[g]||'a glass';})()}
       </div>
+      <div class="ninja-panel" id="ninja-panel">
+        <div class="ninja-header">
+          <span class="ninja-label">🧊 Ninja Slushie</span>
+          <label class="ninja-toggle-wrap">
+            <input type="checkbox" id="ninja-toggle" ${recipe.frozen ? 'checked' : ''}>
+            <span class="ninja-toggle-track"></span>
+          </label>
+        </div>
+        <div class="ninja-controls" id="ninja-controls" style="display:${recipe.frozen ? 'block' : 'none'}">
+          <div class="ninja-slider-row">
+            <span class="ninja-slider-label">Target ABV</span>
+            <input type="range" id="ninja-slider" min="6" max="14" step="2" value="10"
+              style="flex:1;accent-color:var(--amber);">
+            <span class="ninja-slider-val" id="ninja-slider-val">10%</span>
+          </div>
+          <div class="ninja-result" id="ninja-result"></div>
+        </div>
+      </div>
     </div>
   `;
 
@@ -1908,6 +2093,7 @@ function showDetail(recipe) {
   if(eib) eib.addEventListener('click', () => openIngEditor(recipe));
   const emb = document.getElementById('edit-method-btn');
   if(emb) emb.addEventListener('click', () => openMethodEditor(recipe));
+  initNinjaPanel(recipe);
 }
 
 /* ══════════════════════════════════════════════
@@ -2916,7 +3102,6 @@ function openEditor(recipe) {
   };
   $('editor-recipe-name').textContent = recipe.name;
   $('ef-title').value  = recipe.name || '';
-  $('ef-frozen').checked = !!(recipe.frozen);
   editorStatus.textContent = '';
   buildEditorControls();
   edRender();
@@ -2931,7 +3116,6 @@ $('editor-cancel-btn').addEventListener('click', closeEditor);
 async function savePresentation() {
   const saveBtn = $('editor-save-btn');
   const newTitle  = ($('ef-title').value  || '').trim();
-  const newFrozen = $('ef-frozen').checked;
 
   if (!newTitle) {
     editorStatus.textContent = 'Title cannot be empty.';
@@ -2969,7 +3153,6 @@ async function savePresentation() {
 
       allRecipes[idx].presentation = newPresentation;
       allRecipes[idx].glass        = vesselToGlass[newPresentation.vessel] || newPresentation.vessel;
-      allRecipes[idx].frozen       = newFrozen;
     }
     // If renamed, delete old IDB record and write new one
     if (newTitle !== originalName) await idbDelete('recipes', originalName);
@@ -2978,7 +3161,6 @@ async function savePresentation() {
     editorRecipe.name          = newTitle;
 
     editorRecipe.presentation  = newPresentation;
-    editorRecipe.frozen        = newFrozen;
     editorRecipe._originalName = newTitle;
 
     editorStatus.textContent = 'Saved ✓';
