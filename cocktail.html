@@ -1413,7 +1413,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-27 07:00 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-27 10:00 UTC</div>
   </footer>
 
 
@@ -1470,6 +1470,7 @@
     <div class="editor-header">
       <span class="editor-title" id="editor-recipe-name">Edit Visual</span>
       <div class="editor-btn-row">
+        <button class="editor-delete-btn" id="editor-delete-btn" style="display:none;background:transparent;border:1px solid rgba(180,50,30,0.45);border-radius:3px;color:#c84030;font-family:var(--serif-body);font-size:0.6rem;padding:5px 10px;cursor:pointer;letter-spacing:0.04em;">Delete</button>
         <button class="editor-cancel-btn" id="editor-cancel-btn">Cancel</button>
         <button class="editor-save-btn" id="editor-save-btn">Save</button>
       </div>
@@ -1523,6 +1524,13 @@
         <div class="ec-section">
           <div class="ec-label">Extras</div>
           <div class="ec-row" id="ec-extras-row"></div>
+        </div>
+        <div class="ec-section" style="border-top:1px solid rgba(255,255,255,0.07);padding-top:8px;margin-top:2px;">
+          <div class="ec-label">Ninja Slushie</div>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px 0;">
+            <input type="checkbox" id="ec-slushie-opt-out" style="width:14px;height:14px;accent-color:var(--amber);">
+            <span style="font-size:0.5rem;letter-spacing:0.06em;color:#a08060;line-height:1.3;">Hide Ninja panel for this recipe</span>
+          </label>
         </div>
       </div>
     </div>
@@ -1845,6 +1853,18 @@ function calculateRecipeABV(recipe) {
    NINJA SLUSHIE CALCULATOR
 ══════════════════════════════════════════════ */
 
+// Known Ninja Slushie machines
+// oz range is min–max fill; abvCeil is the machine's maximum ABV limit.
+// Target ABV slider runs 6–ceiling in even integers; default 12%.
+const NINJA_MACHINES = [
+  { id: 'slushi',    label: 'Slushi',    ozMin: 16, ozMax: 64,  abvCeil: 16 },
+  { id: 'slushixl',  label: 'SlushiXL',  ozMin: 24, ozMax: 96,  abvCeil: 20 },
+  { id: 'slushimax', label: 'SlushiMax', ozMin: 24, ozMax: 112, abvCeil: 20 },
+];
+
+// Per-detail-view state — which machine is selected
+let ninjaSelectedMachine = NINJA_MACHINES[0].id;
+
 function calcNinjaWater(recipe, targetPct) {
   const ings = recipe.ingredients || [];
   let totalEtOH = 0, totalVol = 0;
@@ -1870,32 +1890,140 @@ function calcNinjaWater(recipe, targetPct) {
   return { nonAlcVol, currentABV, totalVol, targetVol };
 }
 
+// Scale a recipe's ingredient amounts by a multiplier
+function scaleIngredients(ingredients, multiplier) {
+  return ingredients.map(ing => {
+    const raw = ing.amount;
+    if (!raw) return ing;
+    // Handle fractions like "1/3", "1/2", "3/4"
+    let num;
+    if (raw.includes('/')) {
+      const parts = raw.split('/');
+      num = parseFloat(parts[0]) / parseFloat(parts[1]);
+    } else {
+      num = parseFloat(raw);
+    }
+    if (isNaN(num)) return ing;
+    const scaled = num * multiplier;
+    // Format nicely
+    let fmt;
+    if (scaled === Math.floor(scaled)) {
+      fmt = String(scaled);
+    } else {
+      fmt = scaled.toFixed(2).replace(/\.?0+$/, '');
+    }
+    return { ...ing, amount: fmt };
+  });
+}
+
+// Calculate water needed to hit target ABV at exactly machine capacity
+function calcNinjaMachine(recipe, machine, targetPct) {
+  const base = calcNinjaWater(recipe, targetPct);
+  if (!base) return null;
+
+  const { nonAlcVol, currentABV, totalVol } = base;
+
+  // Total volume at target ABV = totalVol + nonAlcVol (unscaled batch)
+  const batchVol = totalVol + Math.max(0, nonAlcVol);
+
+  // Multiplier to fill machine to max capacity
+  const multiplier = machine.ozMax / batchVol;
+
+  // ABV check — if currentABV > machine ceiling, even with max water it won't reach ceiling
+  const exceedsCeiling = currentABV > machine.abvCeil * 2; // rough sanity: if spirit ratio is way over
+
+  // Scaled ingredient amounts
+  const scaledIngs = scaleIngredients(recipe.ingredients || [], multiplier);
+
+  // Water to add (scaled to machine)
+  const scaledWater = Math.max(0, nonAlcVol * multiplier);
+
+  return {
+    machine,
+    multiplier,
+    scaledIngs,
+    scaledWater,
+    currentABV,
+    targetPct,
+    batchVol,
+    exceedsCeiling,
+  };
+}
+
 function renderNinjaResult(recipe) {
-  const slider = document.getElementById('ninja-slider');
-  const result = document.getElementById('ninja-result');
-  const valEl  = document.getElementById('ninja-slider-val');
+  const slider   = document.getElementById('ninja-slider');
+  const result   = document.getElementById('ninja-result');
+  const valEl    = document.getElementById('ninja-slider-val');
+  const scaleEl  = document.getElementById('ninja-scale-section');
   if (!slider || !result) return;
+
+  const machine = NINJA_MACHINES.find(m => m.id === ninjaSelectedMachine) || NINJA_MACHINES[0];
+
+  // Clamp slider max to machine ceiling on every render
+  const currentMax = parseInt(slider.max);
+  if (currentMax !== machine.abvCeil) {
+    slider.max = machine.abvCeil;
+    // If current value exceeds new ceiling, clamp it
+    if (parseInt(slider.value) > machine.abvCeil) slider.value = machine.abvCeil;
+  }
 
   const targetPct = parseInt(slider.value);
   valEl.textContent = targetPct + '%';
 
+  // ABV ceiling warning — only if slider is somehow past ceiling (shouldn't happen but guard anyway)
+  const abvCeilEl = document.getElementById('ninja-abv-warn');
+  if (abvCeilEl) abvCeilEl.style.display = 'none';
+
   const calc = calcNinjaWater(recipe, targetPct);
   if (!calc) {
     result.innerHTML = '<em>Add ingredients to calculate</em>';
+    if (scaleEl) scaleEl.style.display = 'none';
     return;
   }
 
   const { nonAlcVol, currentABV, totalVol } = calc;
 
   if (nonAlcVol <= 0) {
-    // Already at or below target — may need to add spirit
-    const excessVol = totalVol - (totalVol * currentABV / 100) / (targetPct / 100);
     result.innerHTML = `Current mix is <strong>${currentABV.toFixed(1)}% ABV</strong> — already at or below ${targetPct}% target. Recipe is ready.`;
+    if (scaleEl) scaleEl.style.display = 'none';
   } else {
     const ozStr = nonAlcVol.toFixed(1);
     const mlStr = (nonAlcVol * 29.57).toFixed(0);
     result.innerHTML = `Add <strong>${ozStr} oz (${mlStr} mL)</strong> non-alcoholic liquid to reach <strong>${targetPct}% ABV</strong><br>
       <em>Current spirit mix: ${currentABV.toFixed(1)}% ABV over ${totalVol.toFixed(1)} oz</em>`;
+
+    // Scale for machine section — use ozMax
+    if (scaleEl) {
+      const mc = calcNinjaMachine(recipe, machine, targetPct);
+      if (mc) {
+        const scaleBody = document.getElementById('ninja-scale-body');
+        if (scaleBody) {
+          let html = `<div style="font-size:0.72rem;color:var(--ink-light);margin-bottom:6px;">
+            Scaled to fill <strong style="color:var(--amber)">${machine.label} max (${machine.ozMax} oz)</strong>
+            — ×${mc.multiplier.toFixed(2)}
+          </div>`;
+          html += `<ul style="list-style:none;margin:0;padding:0;">`;
+          for (const ing of mc.scaledIngs) {
+            if (!ing.item) continue;
+            const amt = [ing.amount, ing.unit].filter(Boolean).join(' ');
+            html += `<li style="display:flex;gap:8px;padding:3px 0;border-bottom:1px solid rgba(193,127,58,0.1);font-size:0.78rem;">
+              <span style="min-width:54px;text-align:right;color:var(--terracotta);font-family:var(--serif-display);font-weight:600;">${amt || '—'}</span>
+              <span>${ing.item}</span>
+            </li>`;
+          }
+          html += `</ul>`;
+          if (mc.scaledWater > 0) {
+            html += `<div style="margin-top:8px;padding:6px 10px;background:rgba(100,160,220,0.08);border-radius:4px;font-size:0.78rem;color:var(--ink-mid);">
+              + add <strong>${mc.scaledWater.toFixed(1)} oz (${(mc.scaledWater*29.57).toFixed(0)} mL)</strong> water
+            </div>`;
+          }
+          scaleBody.innerHTML = html;
+        }
+        scaleEl.style.display = 'block';
+      } else {
+        scaleEl.style.display = 'none';
+      }
+    }
   }
 }
 
@@ -1904,6 +2032,35 @@ function initNinjaPanel(recipe) {
   const controls = document.getElementById('ninja-controls');
   const slider   = document.getElementById('ninja-slider');
   if (!toggle) return;
+
+  // Wire machine selector buttons
+  document.querySelectorAll('.ninja-machine-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      ninjaSelectedMachine = btn.dataset.machine;
+      document.querySelectorAll('.ninja-machine-btn').forEach(b =>
+        b.classList.toggle('active', b.dataset.machine === ninjaSelectedMachine)
+      );
+      // Update slider max to new machine's ABV ceiling, clamp value if needed
+      const m = NINJA_MACHINES.find(x => x.id === ninjaSelectedMachine);
+      if (m && slider) {
+        slider.max = m.abvCeil;
+        if (parseInt(slider.value) > m.abvCeil) slider.value = m.abvCeil;
+      }
+      renderNinjaResult(recipe);
+    });
+  });
+
+  // Scale section toggle
+  const scaleToggle = document.getElementById('ninja-scale-toggle');
+  const scaleEl     = document.getElementById('ninja-scale-section');
+  if (scaleToggle && scaleEl) {
+    scaleToggle.addEventListener('click', () => {
+      const open = scaleEl.dataset.open === '1';
+      scaleEl.dataset.open = open ? '0' : '1';
+      scaleEl.querySelector('#ninja-scale-body').style.display = open ? 'none' : 'block';
+      scaleToggle.textContent = open ? '▸ Scale for Slushie' : '▾ Scale for Slushie';
+    });
+  }
 
   // Toggle show/hide controls
   toggle.addEventListener('change', async () => {
@@ -2192,6 +2349,7 @@ function showDetail(recipe) {
       <div class="detail-glass-tag">
         ${glassIcon(recipe.glass)} Serve in ${(()=>{const M={'rocks':'a rocks glass','collins':'a collins glass','highball':'a highball glass','coupe':'a coupe','martini':'a martini glass','nick-nora':'a Nick & Nora glass','flute':'a flute','snifter':'a snifter','irish':'an Irish mug','tropical':'a tropical glass','julep':'a Julep cup','mule mug':'a mule mug','mule':'a mule mug','wine':'a wine glass','mug':'a mug'};const g=recipe.glass||'';return M[g]||'a glass';})()}
       </div>
+      ${recipe.presentation?.slushie === false ? '' : `
       <div class="ninja-panel" id="ninja-panel">
         <div class="ninja-header">
           <span class="ninja-label">🧊 Ninja Slushie</span>
@@ -2201,15 +2359,29 @@ function showDetail(recipe) {
           </label>
         </div>
         <div class="ninja-controls" id="ninja-controls" style="display:${recipe.frozen ? 'block' : 'none'}">
+          <div style="display:flex;gap:5px;margin-bottom:10px;">
+            ${NINJA_MACHINES.map(m => `
+              <button class="ninja-machine-btn ${m.id === ninjaSelectedMachine ? 'active' : ''}"
+                data-machine="${m.id}"
+                style="flex:1;padding:5px 4px;background:${m.id === ninjaSelectedMachine ? 'var(--amber)' : 'rgba(193,127,58,0.08)'};border:1px solid ${m.id === ninjaSelectedMachine ? 'var(--amber)' : 'rgba(193,127,58,0.3)'};border-radius:4px;color:${m.id === ninjaSelectedMachine ? '#fff' : 'var(--ink-mid)'};font-family:var(--serif-body);font-size:0.62rem;letter-spacing:0.04em;cursor:pointer;transition:all 0.15s;text-align:center;line-height:1.3;">
+                ${m.label}<br><span style="font-size:0.52rem;opacity:0.8;">${m.ozMin}–${m.ozMax} oz</span>
+              </button>
+            `).join('')}
+          </div>
           <div class="ninja-slider-row">
             <span class="ninja-slider-label">Target ABV</span>
-            <input type="range" id="ninja-slider" min="6" max="14" step="2" value="10"
+            <input type="range" id="ninja-slider" min="6" max="${NINJA_MACHINES.find(m=>m.id===ninjaSelectedMachine)?.abvCeil||16}" step="2" value="12"
               style="flex:1;accent-color:var(--amber);">
-            <span class="ninja-slider-val" id="ninja-slider-val">10%</span>
+            <span class="ninja-slider-val" id="ninja-slider-val">12%</span>
           </div>
           <div class="ninja-result" id="ninja-result"></div>
+          <div id="ninja-scale-section" style="display:none;margin-top:8px;">
+            <button id="ninja-scale-toggle" style="width:100%;text-align:left;background:none;border:none;color:var(--amber);font-family:var(--serif-body);font-size:0.72rem;letter-spacing:0.04em;padding:4px 0;cursor:pointer;">▸ Scale for Slushie</button>
+            <div id="ninja-scale-body" style="display:none;padding:8px 0 4px;"></div>
+          </div>
         </div>
       </div>
+      `}
     </div>
   `;
 
@@ -3265,6 +3437,15 @@ function openEditor(recipe) {
   $('ef-title').value  = recipe.name || '';
   $('ef-credit').value = recipe.credit || '';
   editorStatus.textContent = '';
+
+  // Show delete button for owners only
+  const delBtn = $('editor-delete-btn');
+  if (delBtn) delBtn.style.display = isOwner() ? 'inline-block' : 'none';
+
+  // Slushie opt-out toggle
+  const slushieOptOut = $('ec-slushie-opt-out');
+  if (slushieOptOut) slushieOptOut.checked = (recipe.presentation?.slushie === false);
+
   buildEditorControls();
   edRender();
   visualEditor.classList.add('open');
@@ -3306,7 +3487,10 @@ async function savePresentation() {
     citrus:  ES.citrus  || null,
     garnish: [...ES.garnish],
     extras:  [...ES.extras],
+    slushie: $('ec-slushie-opt-out')?.checked ? false : undefined,
   };
+  // Clean up undefined slushie key so it doesn't pollute seed
+  if (newPresentation.slushie === undefined) delete newPresentation.slushie;
 
   try {
     const vesselToGlass = {cocktail:'martini', mule:'mule mug', irish:'mug', snifter:'wine'};
@@ -3337,6 +3521,56 @@ async function savePresentation() {
 
 $('editor-save-btn').addEventListener('click', savePresentation);
 
+/* ══════════════════════════════════════════════
+   EDITOR — DELETE RECIPE
+══════════════════════════════════════════════ */
+async function deleteRecipe() {
+  const recipe = editorRecipe;
+  if (!recipe) return;
+
+  // Use confirm dialog styled like the app
+  const confirmed = await promptConfirm(`Delete "${recipe.name}"?\n\nThis cannot be undone. The recipe will be removed from your local collection. Export to GitHub to sync the deletion.`);
+  if (!confirmed) return;
+
+  try {
+    await idbDelete('recipes', recipe.name);
+    const idx = allRecipes.findIndex(r => r.name === recipe.name);
+    if (idx !== -1) allRecipes.splice(idx, 1);
+    closeEditor();
+    showView('recipes');
+    renderRecipeList();
+  } catch(err) {
+    editorStatus.textContent = `Delete failed: ${err.message}`;
+  }
+}
+
+$('editor-delete-btn').addEventListener('click', deleteRecipe);
+
+
+/* ══════════════════════════════════════════════
+   CONFIRM MODAL — yes/no dialog
+══════════════════════════════════════════════ */
+function promptConfirm(message) {
+  return new Promise(resolve => {
+    // Reuse text-input overlay structure but swap for confirm layout
+    const overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:500;display:flex;align-items:center;justify-content:center;';
+    overlay.innerHTML = `
+      <div style="background:var(--parchment);border-radius:10px;padding:24px 20px;width:86%;max-width:380px;box-shadow:0 8px 32px rgba(0,0,0,0.3);">
+        <div style="font-family:var(--serif-body);font-size:0.88rem;color:var(--ink);margin-bottom:20px;line-height:1.55;white-space:pre-line;">${message}</div>
+        <div style="display:flex;gap:10px;">
+          <button id="confirm-cancel" style="flex:1;padding:9px;background:none;border:1px solid var(--rule);border-radius:4px;font-family:var(--serif-body);font-size:0.85rem;color:var(--ink-mid);cursor:pointer;">Cancel</button>
+          <button id="confirm-ok" style="flex:1.5;padding:9px;background:#c84030;border:none;border-radius:4px;font-family:var(--serif-display);font-size:0.85rem;font-weight:700;color:#fff;cursor:pointer;">Delete</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    const cleanup = val => { document.body.removeChild(overlay); resolve(val); };
+    overlay.querySelector('#confirm-ok').addEventListener('click', () => cleanup(true));
+    overlay.querySelector('#confirm-cancel').addEventListener('click', () => cleanup(false));
+    overlay.addEventListener('click', e => { if (e.target === overlay) cleanup(false); });
+  });
+}
 
 /* ══════════════════════════════════════════════
    TEXT INPUT MODAL — replaces prompt()
@@ -3697,11 +3931,19 @@ async function buildShareCard(recipe) {
   y += 12;
 
   // Ninja panel
-  const ninja = shareCalcNinja(recipe.ingredients || [], 12);
+  // Ninja panel — use currently selected machine, 12% ABV target (standardized for sharing)
+  const shareMachine = NINJA_MACHINES.find(m => m.id === ninjaSelectedMachine) || NINJA_MACHINES[0];
+  const ninjaBase = shareCalcNinja(recipe.ingredients || [], 12);
+  const ninja = ninjaBase;
   if (ninja && ninja.nonAlcVol > 0) {
+    // Scaled batch to fill machine to max capacity
+    const batchVol = ninja.totalVol + ninja.nonAlcVol;
+    const multiplier = shareMachine.ozMax / batchVol;
+    const scaledWater = ninja.nonAlcVol * multiplier;
+
     // Panel background
     ctx.fillStyle = 'rgba(44,31,14,0.06)';
-    const panelH = 88;
+    const panelH = 138;
     roundRect(ctx, BX - 4, y, BW + 8, panelH, 12);
     ctx.fill();
     ctx.strokeStyle = 'rgba(193,127,58,0.18)';
@@ -3711,12 +3953,31 @@ async function buildShareCard(recipe) {
 
     ctx.font      = '18px "Lora", Georgia, serif';
     ctx.fillStyle = '#7a5c3a';
-    ctx.fillText('🧊 NINJA SLUSHIE · 12% ABV TARGET', BX + 8, y + 28);
+    ctx.fillText(`🧊 NINJA SLUSHIE · ${shareMachine.label.toUpperCase()} · ${shareMachine.abvCeil}% ABV`, BX + 8, y + 28);
+
+    // Scaled ingredients line
+    const scaledIngs = (recipe.ingredients || [])
+      .filter(i => i.item)
+      .map(i => {
+        let num;
+        if ((i.amount || '').includes('/')) {
+          const p = i.amount.split('/');
+          num = parseFloat(p[0]) / parseFloat(p[1]);
+        } else { num = parseFloat(i.amount) || 0; }
+        const s = (num * multiplier).toFixed(1).replace(/\.0$/, '');
+        return `${s}${i.unit ? ' ' + i.unit : ''} ${i.item}`;
+      }).join(' · ');
+
+    ctx.font      = '20px "Lora", Georgia, serif';
+    ctx.fillStyle = '#5a3e28';
+    const ingLines = wrapText(ctx, scaledIngs, BW - 16);
+    let iy = y + 56;
+    for (const line of ingLines.slice(0, 2)) { ctx.fillText(line, BX + 8, iy); iy += 28; }
 
     ctx.font      = 'bold 26px "Playfair Display", Georgia, serif';
     ctx.fillStyle = '#2c1f0e';
-    const ninjaText = `Add ${ninja.nonAlcVol.toFixed(1)} oz (${(ninja.nonAlcVol * 29.57).toFixed(0)} mL) water before freezing`;
-    ctx.fillText(ninjaText, BX + 8, y + 62);
+    const ninjaText = `+ add ${scaledWater.toFixed(1)} oz (${(scaledWater * 29.57).toFixed(0)} mL) water before freezing`;
+    ctx.fillText(ninjaText, BX + 8, y + panelH - 14);
   }
 
   return new Promise(resolve => {
@@ -3872,6 +4133,10 @@ function openImportSheet() {
 
 function closeImportSheet() {
   $('import-overlay').classList.remove('open');
+  // Always reset the extract button so re-open finds a clean state
+  const btn = $('import-extract-btn');
+  if (btn) { btn.disabled = false; btn.textContent = 'Extract Recipe'; }
+  $('import-status').textContent = '';
 }
 
 function setImportTab(tab) {
@@ -3905,6 +4170,8 @@ function initImportSheet() {
       prev.src = importImageDataUrl;
       prev.style.display = 'block';
       $('import-image-area').querySelector('.import-image-label').textContent = file.name;
+      // Reset input value so the same file can be re-selected (iOS quirk)
+      e.target.value = '';
     };
     reader.readAsDataURL(file);
   });

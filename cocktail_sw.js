@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════
    Proof In Practice — Service Worker
-   v2026-04-26
+   v2026-04-27
 
    Strategy:
    - Shell (cocktail.html):  network-first, cache fallback
@@ -18,7 +18,7 @@
 ═══════════════════════════════════════════════ */
 
 // ── BUMP THIS TO MATCH THE FOOTER TIMESTAMP ON EVERY BUILD ──
-const CACHE_VERSION = '2026-04-26-b';
+const CACHE_VERSION = '2026-04-27-d';
 
 const SHELL_CACHE  = `pip-shell-${CACHE_VERSION}`;
 const FONT_CACHE   = `pip-fonts-${CACHE_VERSION}`;
@@ -111,8 +111,6 @@ self.addEventListener('fetch', event => {
   }
 
   // Shell (cocktail.html, manifest, icons) — network-first
-  // This is the key change from v1: live users always get the freshest
-  // HTML. If the network is unavailable, the last-cached version serves.
   event.respondWith(networkFirst(request, SHELL_CACHE));
 });
 
@@ -121,19 +119,17 @@ self.addEventListener('fetch', event => {
 ══════════════════════════════════════════════ */
 
 // Network-first: try network, update cache, fall back to cache.
-// Offline fallback returns the cached version if available.
 async function networkFirst(request, cacheName) {
   try {
     const response = await fetch(request);
     if (response.ok) {
       const cache = await caches.open(cacheName);
-      cache.put(request, response.clone());  // fire-and-forget cache update
+      cache.put(request, response.clone());
     }
     return response;
   } catch {
     const cached = await caches.match(request, { cacheName });
     if (cached) return cached;
-    // Last-resort offline fallback for the shell
     if (request.destination === 'document') {
       const fallback = await caches.match('./cocktail.html');
       if (fallback) return fallback;
@@ -146,7 +142,6 @@ async function networkFirst(request, cacheName) {
 }
 
 // Cache-first: serve from cache, fetch and cache on miss.
-// Used for stable assets (fonts, bottle images) that don't change.
 async function cacheFirst(request, cacheName) {
   const cached = await caches.match(request);
   if (cached) return cached;
