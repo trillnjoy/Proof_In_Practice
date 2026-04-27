@@ -1413,7 +1413,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-27 06:00 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-27 06:30 UTC</div>
   </footer>
 
 
@@ -3812,8 +3812,9 @@ function generateQRImage(url, size) {
 ══════════════════════════════════════════════ */
 
 // Schema prompt sent to Claude with every extraction call
-const IMPORT_SCHEMA_PROMPT = `You are a cocktail recipe extraction engine for the app "Proof In Practice".
-Extract the recipe from the provided content and return ONLY a valid JSON object matching this exact schema — no markdown, no explanation, no extra keys:
+const IMPORT_SCHEMA_PROMPT = `You are a cocktail recipe extraction engine. Your response must be a single valid JSON object and nothing else — no preamble, no explanation, no markdown fences, no "I" statements. Start your response with { and end with }.
+
+Extract the recipe and return ONLY this JSON schema:
 
 {
   "name": "string — recipe title",
@@ -3970,8 +3971,10 @@ async function handleExtractClick() {
     if (!response.ok) throw new Error(`API ${response.status}`);
     const data = await response.json();
     const raw  = data.content.filter(b => b.type === 'text').map(b => b.text).join('');
-    const clean = raw.replace(/```json|```/g, '').trim();
-    const recipe = JSON.parse(clean);
+    // Extract JSON even if model adds preamble — find first { to last }
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('No JSON found in response — try again.');
+    const recipe = JSON.parse(jsonMatch[0]);
 
     // Validate minimum required fields
     if (!recipe.name || !Array.isArray(recipe.ingredients)) {
