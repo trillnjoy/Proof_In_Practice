@@ -2,9 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -3470,6 +3467,34 @@ $('import-btn').addEventListener('click', importFromGitHub);
 // (no longer needed — IDB writes are always available)
 
 loadData();
+
+/* ── Service Worker Registration ── */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./cocktail_sw.js')
+      .then(reg => {
+        console.log('[PiP] SW registered, scope:', reg.scope);
+        // When a new SW is waiting, reload automatically so users
+        // always get the latest version without a manual hard-refresh.
+        reg.addEventListener('updatefound', () => {
+          const newWorker = reg.installing;
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              // New version available — tell it to skip waiting, then reload.
+              newWorker.postMessage({ type: 'SKIP_WAITING' });
+            }
+          });
+        });
+      })
+      .catch(err => console.warn('[PiP] SW registration failed:', err));
+
+    // When the SW signals it has taken control, reload once to serve fresh assets.
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!refreshing) { refreshing = true; window.location.reload(); }
+    });
+  });
+}
 
 </script>
   <!-- ── BOTTLE MODAL ── -->
