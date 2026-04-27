@@ -561,6 +561,112 @@
       margin-bottom: 20px;
     }
 
+    /* ─── IMPORT SHEET ─── */
+    .import-overlay {
+      position: fixed; inset: 0;
+      background: rgba(20,10,4,0.72);
+      z-index: 200;
+      display: flex; align-items: flex-end;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.22s ease;
+    }
+    .import-overlay.open { opacity: 1; pointer-events: all; }
+    .import-sheet {
+      width: 100%;
+      background: var(--parchment);
+      border-radius: 18px 18px 0 0;
+      padding: 0 0 env(safe-area-inset-bottom, 16px);
+      transform: translateY(100%);
+      transition: transform 0.28s cubic-bezier(0.32,0.72,0,1);
+      max-height: 92vh;
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .import-overlay.open .import-sheet { transform: translateY(0); }
+    .import-sheet-handle {
+      width: 40px; height: 4px; background: var(--rule);
+      border-radius: 2px; margin: 12px auto 0; flex-shrink: 0;
+    }
+    .import-sheet-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 18px 10px; flex-shrink: 0;
+      border-bottom: 1px solid var(--rule-light);
+    }
+    .import-sheet-title {
+      font-family: var(--serif-display); font-size: 0.9rem;
+      font-weight: 700; color: var(--ink); letter-spacing: 0.04em;
+    }
+    .import-close-btn {
+      background: none; border: none; color: var(--ink-light);
+      font-size: 1.1rem; cursor: pointer; padding: 4px 6px; line-height: 1;
+    }
+    .import-sheet-body {
+      padding: 14px 18px; overflow-y: auto; flex: 1;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .import-tabs { display: flex; gap: 6px; }
+    .import-tab {
+      flex: 1; background: none; border: 1px solid var(--rule);
+      border-radius: 5px; color: var(--ink-light);
+      font-family: var(--serif-body); font-size: 0.62rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 6px 4px; cursor: pointer; transition: all 0.15s; text-align: center;
+    }
+    .import-tab.active {
+      background: rgba(193,127,58,0.12); border-color: var(--amber); color: var(--amber);
+    }
+    .import-textarea {
+      width: 100%; min-height: 140px; background: white;
+      border: 1px solid var(--rule); border-radius: 8px;
+      padding: 10px 12px; font-family: var(--serif-body);
+      font-size: 0.8rem; color: var(--ink); resize: vertical; line-height: 1.5;
+    }
+    .import-textarea:focus, .import-url-input:focus, .import-notes-input:focus {
+      outline: none; border-color: var(--amber);
+    }
+    .import-url-input, .import-notes-input {
+      width: 100%; background: white; border: 1px solid var(--rule);
+      border-radius: 8px; padding: 10px 12px;
+      font-family: var(--serif-body); font-size: 0.8rem; color: var(--ink);
+    }
+    .import-notes-input { font-style: italic; }
+    .import-image-area {
+      border: 1.5px dashed var(--rule); border-radius: 8px;
+      padding: 20px; text-align: center; cursor: pointer;
+      transition: border-color 0.15s; position: relative;
+    }
+    .import-image-area:hover { border-color: var(--amber); }
+    .import-image-area input[type=file] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer;
+      width: 100%; height: 100%;
+    }
+    .import-image-label {
+      font-family: var(--serif-body); font-size: 0.75rem;
+      color: var(--ink-light); pointer-events: none;
+    }
+    .import-image-preview {
+      max-width: 100%; max-height: 160px; border-radius: 6px;
+      margin-top: 8px; display: none;
+    }
+    .import-notes-label {
+      font-family: var(--serif-body); font-size: 0.6rem;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--ink-light); margin-bottom: 4px;
+    }
+    .import-extract-btn {
+      width: 100%; background: var(--amber); border: none;
+      border-radius: 8px; color: white;
+      font-family: var(--serif-display); font-size: 0.85rem;
+      font-weight: 700; letter-spacing: 0.06em;
+      padding: 13px; cursor: pointer; transition: opacity 0.15s; margin-top: 4px;
+    }
+    .import-extract-btn:disabled { opacity: 0.5; cursor: default; }
+    .import-extract-btn:not(:disabled):hover { opacity: 0.88; }
+    .import-status {
+      font-family: var(--serif-body); font-size: 0.75rem;
+      color: var(--ink-light); font-style: italic;
+      text-align: center; min-height: 1.2em;
+    }
+
     /* ─── DETAIL HEADER BUTTON ROW (Edit Visual + Share) ─── */
     .detail-header-btns {
       display: flex;
@@ -1261,7 +1367,10 @@
   <div id="recipe-list-header" style="display:flex;align-items:center;justify-content:space-between;padding:6px 16px 0;min-height:32px;">
     <span id="inventory-tagline" style="display:none;font-family:var(--serif-body);font-size:0.78rem;color:var(--ink-light);font-style:italic;flex:1;text-align:center;">The house collection — as of the last inventory.</span>
     <button id="show-hidden-btn" style="display:none;background:none;border:1px solid rgba(193,127,58,0.35);border-radius:3px;color:var(--ink-light);font-family:var(--serif-body);font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;padding:5px 10px;cursor:pointer;margin-left:auto;">👁 Show Hidden</button>
-    <button id="add-recipe-btn" style="background:none;border:1px solid rgba(193,127,58,0.45);border-radius:3px;color:var(--amber);font-family:var(--serif-body);font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;padding:5px 12px;cursor:pointer;margin-left:auto;">+ New Recipe</button>
+    <div style="display:flex;gap:8px;margin-left:auto;">
+      <button id="import-recipe-btn" style="background:none;border:1px solid rgba(193,127,58,0.35);border-radius:3px;color:var(--ink-light);font-family:var(--serif-body);font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;padding:5px 12px;cursor:pointer;">⊕ Import</button>
+      <button id="add-recipe-btn" style="background:none;border:1px solid rgba(193,127,58,0.45);border-radius:3px;color:var(--amber);font-family:var(--serif-body);font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;padding:5px 12px;cursor:pointer;">+ New Recipe</button>
+    </div>
   </div>
   <div id="search-bar">
     <div id="search-wrap">
@@ -1304,7 +1413,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-26 20:15 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-26 23:15 UTC</div>
   </footer>
 
 
@@ -2423,6 +2532,8 @@ function showView(view) {
   const addBtn = $('add-recipe-btn');
   const tagline = $('inventory-tagline');
   if (addBtn) addBtn.style.display = (isInventory || isDetail) ? 'none' : '';
+  const importRecipeBtn = $('import-recipe-btn');
+  if (importRecipeBtn) importRecipeBtn.style.display = (isInventory || isDetail) ? 'none' : '';
   if (tagline) tagline.style.display = isInventory ? '' : 'none';
   const showHiddenBtn = $('show-hidden-btn');
   if (showHiddenBtn) showHiddenBtn.style.display = (isInventory && !isOwner()) ? '' : 'none';
@@ -3686,6 +3797,204 @@ function generateQRImage(url, size) {
   });
 }
 
+/* ══════════════════════════════════════════════
+   IMPORT RECIPE SHEET
+══════════════════════════════════════════════ */
+
+// Schema prompt sent to Claude with every extraction call
+const IMPORT_SCHEMA_PROMPT = `You are a cocktail recipe extraction engine for the app "Proof In Practice".
+Extract the recipe from the provided content and return ONLY a valid JSON object matching this exact schema — no markdown, no explanation, no extra keys:
+
+{
+  "name": "string — recipe title",
+  "credit": "string or null — source/author",
+  "ingredients": [
+    {"amount": "string", "unit": "oz|tsp|tbsp|dash|drop|pinch|null", "item": "string"}
+  ],
+  "method": "string — full preparation instructions",
+  "glass": "rocks|martini|coupe|highball|collins|mule mug|mug|flute|wine|snifter|tropical|nick-nora",
+  "frozen": false,
+  "presentation": {
+    "vessel": "rocks|cocktail|coupe|highball|collins|mule|irish|flute|snifter|tropical|julep|nick-nora",
+    "color": "#rrggbb hex string — pick a color that matches the drink's appearance",
+    "float": null,
+    "ice": "huge|cubes|crushed|null",
+    "citrus": "lemon-twist|lemon-wedge|lime-twist|lime-wedge|orange-twist|orange-wedge|null",
+    "garnish": [],
+    "extras": []
+  }
+}
+
+Vessel mapping (glass → vessel): rocks→rocks, martini→cocktail, mule mug→mule, mug→irish, wine→snifter.
+Unit rules: convert tablespoons to tbsp, teaspoons to tsp, use null for countable items with no volume unit.
+If riff notes are provided, apply them — they override the source material.
+Return ONLY the JSON object.`;
+
+let importImageDataUrl = null;
+let importActiveTab = 'text';
+
+function openImportSheet() {
+  const overlay = $('import-overlay');
+  overlay.classList.add('open');
+  // Reset state
+  $('import-text-input').value = '';
+  $('import-url-input').value = '';
+  $('import-notes-input').value = '';
+  $('import-status').textContent = '';
+  $('import-image-preview').style.display = 'none';
+  $('import-image-preview').src = '';
+  $('import-image-input').value = '';
+  importImageDataUrl = null;
+  setImportTab('text');
+}
+
+function closeImportSheet() {
+  $('import-overlay').classList.remove('open');
+}
+
+function setImportTab(tab) {
+  importActiveTab = tab;
+  document.querySelectorAll('.import-tab').forEach(b => {
+    b.classList.toggle('active', b.dataset.tab === tab);
+  });
+  $('import-panel-text').style.display  = tab === 'text'  ? '' : 'none';
+  $('import-panel-url').style.display   = tab === 'url'   ? '' : 'none';
+  $('import-panel-image').style.display = tab === 'image' ? '' : 'none';
+}
+
+function initImportSheet() {
+  // Tab switching
+  document.querySelectorAll('.import-tab').forEach(btn => {
+    btn.addEventListener('click', () => setImportTab(btn.dataset.tab));
+  });
+  // Close button + backdrop tap
+  $('import-close-btn').addEventListener('click', closeImportSheet);
+  $('import-overlay').addEventListener('click', e => {
+    if (e.target === $('import-overlay')) closeImportSheet();
+  });
+  // Image picker — show preview
+  $('import-image-input').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      importImageDataUrl = ev.target.result;
+      const prev = $('import-image-preview');
+      prev.src = importImageDataUrl;
+      prev.style.display = 'block';
+      $('import-image-area').querySelector('.import-image-label').textContent = file.name;
+    };
+    reader.readAsDataURL(file);
+  });
+  // Extract button
+  $('import-extract-btn').addEventListener('click', handleExtractClick);
+}
+
+// Main extraction call — wired in initImportSheet()
+async function handleExtractClick() {
+  const btn    = $('import-extract-btn');
+  const status = $('import-status');
+  const notes  = ($('import-notes-input').value || '').trim();
+
+  btn.disabled = true;
+  btn.textContent = 'Extracting…';
+  status.textContent = '';
+
+  try {
+    let userContent = [];
+
+    if (importActiveTab === 'text') {
+      const text = ($('import-text-input').value || '').trim();
+      if (!text) { status.textContent = 'Paste some recipe text first.'; btn.disabled = false; btn.textContent = 'Extract Recipe'; return; }
+      userContent = [{ type: 'text', text: 'Recipe source:\n' + text + (notes ? '\n\nRiff notes: ' + notes : '') }];
+
+    } else if (importActiveTab === 'url') {
+      const url = ($('import-url-input').value || '').trim();
+      if (!url) { status.textContent = 'Enter a URL first.'; btn.disabled = false; btn.textContent = 'Extract Recipe'; return; }
+      status.textContent = 'Fetching URL…';
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const html = await res.text();
+        // Strip tags, collapse whitespace
+        const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').slice(0, 8000);
+        userContent = [{ type: 'text', text: 'Recipe source (from ' + url + '):\n' + text + (notes ? '\n\nRiff notes: ' + notes : '') }];
+      } catch(fetchErr) {
+        status.textContent = `Could not fetch URL — paste the text instead. (${fetchErr.message})`;
+        btn.disabled = false; btn.textContent = 'Extract Recipe'; return;
+      }
+
+    } else if (importActiveTab === 'image') {
+      if (!importImageDataUrl) { status.textContent = 'Choose an image first.'; btn.disabled = false; btn.textContent = 'Extract Recipe'; return; }
+      const base64 = importImageDataUrl.split(',')[1];
+      const mediaType = importImageDataUrl.split(';')[0].split(':')[1];
+      userContent = [
+        { type: 'image', source: { type: 'base64', media_type: mediaType, data: base64 } },
+        { type: 'text',  text: `Extract the cocktail recipe from this image.${notes ? ' Riff notes: ' + notes : ''}` }
+      ];
+    }
+
+    status.textContent = 'Claude is reading the recipe…';
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: IMPORT_SCHEMA_PROMPT,
+        messages: [{ role: 'user', content: userContent }]
+      })
+    });
+
+    if (!response.ok) throw new Error(`API ${response.status}`);
+    const data = await response.json();
+    const raw  = data.content.filter(b => b.type === 'text').map(b => b.text).join('');
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const recipe = JSON.parse(clean);
+
+    // Validate minimum required fields
+    if (!recipe.name || !Array.isArray(recipe.ingredients)) {
+      throw new Error('Unexpected response format — try again or paste text instead.');
+    }
+
+    // Duplicate check
+    if (allRecipes.some(r => r.name === recipe.name)) {
+      const proceed = confirm(`"${recipe.name}" already exists. Add anyway with a different name?`);
+      if (!proceed) { btn.disabled = false; btn.textContent = 'Extract Recipe'; status.textContent = ''; return; }
+      recipe.name = recipe.name + ' (imported)';
+    }
+
+    // Ensure all required fields have defaults
+    recipe.frozen = recipe.frozen || false;
+    recipe.presentation = recipe.presentation || { vessel:'rocks', color:null, float:null, ice:null, citrus:null, garnish:[], extras:[] };
+
+    status.textContent = `Got it — review and save "${recipe.name}"`;
+
+    // Close sheet and open the pre-filled recipe in the editor
+    closeImportSheet();
+    await addImportedRecipe(recipe);
+
+  } catch(err) {
+    console.error('Import extraction failed:', err);
+    status.textContent = `Error: ${err.message}`;
+    btn.disabled = false;
+    btn.textContent = 'Extract Recipe';
+  }
+}
+
+async function addImportedRecipe(recipe) {
+  try {
+    await idbPut('recipes', recipe);
+    allRecipes.push(recipe);
+    renderRecipeList();
+    showDetail(recipe);
+    setTimeout(() => openEditor(recipe), 300);
+  } catch(err) {
+    alert(`Failed to save imported recipe: ${err.message}`);
+  }
+}
+
 /* ── Load app data: IDB first, fallback to seed JSON, fallback to inline ── */
 function init() {
   loadingEl.style.display = 'none';
@@ -3705,6 +4014,7 @@ async function loadData() {
       allInventory = await idbGetAll('bar_inventory');
       console.log(`Loaded ${allRecipes.length} recipes from IndexedDB`);
       init();
+      initImportSheet();
       checkDeepLink();
       return;
     }
@@ -3733,6 +4043,7 @@ async function loadData() {
     }
   }
   init();
+  initImportSheet();
   checkDeepLink();
 }
 
@@ -3840,6 +4151,7 @@ async function addNewRecipe() {
   }
 }
 
+$('import-recipe-btn').addEventListener('click', openImportSheet);
 $('add-recipe-btn').addEventListener('click', addNewRecipe);
 $('export-btn').addEventListener('click', exportToGitHub);
 $('import-btn').addEventListener('click', importFromGitHub);
@@ -3934,6 +4246,62 @@ loadData();
       <div id="ing-rows"></div>
       <button id="ing-add-row" style="width:100%;margin-top:10px;padding:10px;background:none;border:1px dashed rgba(193,127,58,0.4);border-radius:4px;color:var(--amber);font-family:var(--serif-body);font-size:0.85rem;cursor:pointer;">+ Add Ingredient</button>
       <div id="ing-editor-status" style="font-family:var(--serif-body);font-size:0.75rem;color:var(--terracotta);text-align:center;margin-top:8px;min-height:1.2em;"></div>
+    </div>
+  </div>
+
+  <!-- ── IMPORT SHEET ── -->
+  <div class="import-overlay" id="import-overlay">
+    <div class="import-sheet" id="import-sheet">
+      <div class="import-sheet-handle"></div>
+      <div class="import-sheet-header">
+        <span class="import-sheet-title">Import Recipe</span>
+        <button class="import-close-btn" id="import-close-btn">✕</button>
+      </div>
+      <div class="import-sheet-body">
+        <!-- Input type tabs -->
+        <div class="import-tabs">
+          <button class="import-tab active" data-tab="text">Text / Paste</button>
+          <button class="import-tab" data-tab="url">URL</button>
+          <button class="import-tab" data-tab="image">Photo / File</button>
+        </div>
+
+        <!-- Text panel -->
+        <div id="import-panel-text">
+          <textarea class="import-textarea" id="import-text-input"
+            placeholder="Paste recipe text here — ingredients, method, title. Or type a recipe from memory. Claude will extract and structure it."></textarea>
+        </div>
+
+        <!-- URL panel -->
+        <div id="import-panel-url" style="display:none;">
+          <input class="import-url-input" type="url" id="import-url-input"
+            placeholder="https://…">
+          <p style="font-size:0.68rem;color:var(--ink-light);font-style:italic;margin-top:6px;">
+            Paywalled pages won't fetch — paste the text instead.
+          </p>
+        </div>
+
+        <!-- Image panel -->
+        <div id="import-panel-image" style="display:none;">
+          <div class="import-image-area" id="import-image-area">
+            <input type="file" id="import-image-input" accept="image/*">
+            <div class="import-image-label">📷 Tap to take a photo, choose from library, or pick a file</div>
+            <img class="import-image-preview" id="import-image-preview" alt="">
+          </div>
+        </div>
+
+        <!-- Riff / editorial notes -->
+        <div>
+          <div class="import-notes-label">Riff Notes (optional)</div>
+          <input class="import-notes-input" type="text" id="import-notes-input"
+            placeholder="e.g. Substitute mezcal for tequila, credit Troy, rename Smoky Version">
+        </div>
+
+        <!-- Status -->
+        <div class="import-status" id="import-status"></div>
+
+        <!-- Extract button -->
+        <button class="import-extract-btn" id="import-extract-btn">Extract Recipe</button>
+      </div>
     </div>
   </div>
 
