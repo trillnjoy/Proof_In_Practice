@@ -1413,13 +1413,20 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-26 23:15 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-27 06:00 UTC</div>
   </footer>
 
 
   <!-- ── SETTINGS DRAWER ── -->
   <div id="settings-overlay">
     <div id="settings-drawer">
+      <div class="settings-title">Claude AI</div>
+      <div class="settings-field">
+        <label class="settings-label" for="anthropic-key">Anthropic API Key</label>
+        <input class="settings-input" type="password" id="anthropic-key" placeholder="sk-ant-xxxxxxxxxxxx" autocomplete="off">
+        <div class="settings-hint">Used for recipe import. Stored in this browser only.</div>
+      </div>
+      <div style="border-top:1px solid var(--rule);margin-top:16px;padding-top:14px;">
       <div class="settings-title">GitHub Sync</div>
       <div class="settings-field">
         <label class="settings-label" for="gh-token">Personal Access Token</label>
@@ -1446,6 +1453,7 @@
       <div class="settings-btn-row">
         <button class="settings-cancel-btn" id="settings-cancel-btn">Cancel</button>
         <button class="settings-save-btn" id="settings-save-btn">Save Settings</button>
+      </div>
       </div>
       <div style="border-top:1px solid var(--rule);margin-top:16px;padding-top:16px;">
         <div style="font-family:var(--sans);font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-light);margin-bottom:10px;">Data Sync</div>
@@ -3084,6 +3092,7 @@ function updateExportBtn() {
 
 function openSettings() {
   const s = ghSettings();
+  $('anthropic-key').value = s.anthropicKey || '';
   $('gh-token').value  = s.token  || '';
   $('gh-owner').value  = s.owner  || 'trillnjoy';
   $('gh-repo').value   = s.repo   || 'Proof_In_Practice';
@@ -3101,6 +3110,7 @@ settingsCancelBtn.addEventListener('click', closeSettings);
 settingsOverlay.addEventListener('click', e => { if(e.target===settingsOverlay) closeSettings(); });
 settingsSaveBtn.addEventListener('click', () => {
   const s = {
+    anthropicKey: $('anthropic-key').value.trim(),
     token:  $('gh-token').value.trim(),
     owner:  $('gh-owner').value.trim(),
     repo:   $('gh-repo').value.trim(),
@@ -3936,9 +3946,19 @@ async function handleExtractClick() {
 
     status.textContent = 'Claude is reading the recipe…';
 
+    const anthropicKey = ghSettings().anthropicKey || '';
+    if (!anthropicKey) {
+      status.textContent = 'Add your Anthropic API key in Settings first.';
+      btn.disabled = false; btn.textContent = 'Extract Recipe'; return;
+    }
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': anthropicKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true',
+      },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 1000,
