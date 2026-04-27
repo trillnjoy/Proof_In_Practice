@@ -1256,6 +1256,7 @@
   <!-- ── SEARCH (list view only) ── -->
   <div id="recipe-list-header" style="display:flex;align-items:center;justify-content:space-between;padding:6px 16px 0;min-height:32px;">
     <span id="inventory-tagline" style="display:none;font-family:var(--serif-body);font-size:0.78rem;color:var(--ink-light);font-style:italic;flex:1;text-align:center;">The house collection — as of the last inventory.</span>
+    <button id="show-hidden-btn" style="display:none;background:none;border:1px solid rgba(193,127,58,0.35);border-radius:3px;color:var(--ink-light);font-family:var(--serif-body);font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;padding:5px 10px;cursor:pointer;margin-left:auto;">👁 Show Hidden</button>
     <button id="add-recipe-btn" style="background:none;border:1px solid rgba(193,127,58,0.45);border-radius:3px;color:var(--amber);font-family:var(--serif-body);font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;padding:5px 12px;cursor:pointer;margin-left:auto;">+ New Recipe</button>
   </div>
   <div id="search-bar">
@@ -1299,7 +1300,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-25 20:11 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-26 18:00 UTC</div>
   </footer>
 
 
@@ -1353,11 +1354,16 @@
       </div>
     </div>
     <div class="editor-fields">
-      <div class="ef-row">
-        <label class="ef-label">Title</label>
-        <input class="ef-input" type="text" id="ef-title" autocomplete="off" autocorrect="off" spellcheck="false">
+      <div style="display:flex;gap:8px;">
+        <div class="ef-row" style="flex:2;">
+          <label class="ef-label">Title</label>
+          <input class="ef-input" type="text" id="ef-title" autocomplete="off" autocorrect="off" spellcheck="false">
+        </div>
+        <div class="ef-row" style="flex:1.4;">
+          <label class="ef-label">Credit</label>
+          <input class="ef-input" type="text" id="ef-credit" placeholder="e.g. Troy" autocomplete="off" autocorrect="off" spellcheck="false">
+        </div>
       </div>
-
     </div>
     <div class="editor-body">
       <div class="editor-preview">
@@ -1415,6 +1421,7 @@ let activeFilter = 'all';
 let searchQuery = '';
 let currentView = 'recipes';   // 'recipes' | 'inventory' | 'detail'
 let detailRecipe = null;
+let showHiddenBottles = false;  // non-owner toggle: reveal hidden bottles
 
 /* ══════════════════════════════════════════════
    GLASS ICONS
@@ -2248,14 +2255,17 @@ async function buildInventory() {
     const bottles = cat.bottles || [];
     const count = bottles.length;
 
-    // Build slots: visible bottles only (filter hidden), + add button
+    // Build slots: respect show-hidden toggle for non-owners
     const slots = [
       ...bottles
-        .map((b, bi) => ({ b, bi }))
-        .filter(({ b }) => !hiddenSet.has(hiddenKey(cat.category, b.name))),
-      { b: '__add__', bi: bottles.length }
+        .map((b, bi) => ({
+          b, bi,
+          isHidden: hiddenSet.has(hiddenKey(cat.category, b.name))
+        }))
+        .filter(({ isHidden }) => !isHidden || showHiddenBottles),
+      { b: '__add__', bi: bottles.length, isHidden: false }
     ];
-    const visibleCount = slots.length - 1;
+    const visibleCount = slots.filter(s => s.b !== '__add__' && !s.isHidden).length;
 
     // Chunk into rows of `cols`
     const rows = [];
@@ -2264,15 +2274,16 @@ async function buildInventory() {
     }
 
     const shelfRows = rows.map(row => {
-      const imgCells = row.map(({ b, bi }) => {
+      const imgCells = row.map(({ b, bi, isHidden }) => {
         if (b === '__add__') {
           return `<div class="bottle-add-cell" data-ci="${ci}" data-action="add" title="Add bottle">+</div>`;
         }
         const hasImg = b.imageUrl && b.imageUrl.trim();
         const ratingStr = b.rating ? '$'.repeat(b.rating) : '';
+        const hiddenStyle = isHidden ? 'opacity:0.32;filter:grayscale(1);' : '';
         return `<div class="bottle-img-cell"
           data-ci="${ci}" data-bi="${bi}" data-action="modal"
-          title="${escHtml(b.name)}">
+          title="${escHtml(b.name)}" style="${hiddenStyle}">
           ${ratingStr ? `<span class="bottle-cost">${ratingStr}</span>` : ''}
           ${b.abv != null ? `<span class="bottle-abv">${Math.round(b.abv)}%</span>` : ''}
           ${hasImg
@@ -2281,9 +2292,17 @@ async function buildInventory() {
         </div>`;
       }).join('');
 
-      const nameCells = row.map(({ b, bi }) => {
+      const nameCells = row.map(({ b, bi, isHidden }) => {
         if (b === '__add__') {
           return `<div class="bottle-name-cell empty"><span class="bottle-name-text"></span></div>`;
+        }
+        // Hidden bottle: show unhide button instead of hide button
+        if (isHidden) {
+          return `<div class="bottle-name-cell" style="opacity:0.55;">
+            <span class="bottle-name-text">${escHtml(b.name)}</span>
+            <button class="bottle-delete-btn" data-ci="${ci}" data-bi="${bi}" data-action="unhide"
+              title="Unhide" style="background:rgba(193,127,58,0.18);border-color:rgba(193,127,58,0.4);color:var(--amber);font-size:0.55rem;letter-spacing:0.04em;">show</button>
+          </div>`;
         }
         return `<div class="bottle-name-cell">
           <span class="bottle-name-text">${escHtml(b.name)}</span>
@@ -2355,6 +2374,16 @@ async function buildInventory() {
           }
         }
       }
+    } else if (action === 'unhide') {
+      // Non-owner: unhide a single bottle while Show Hidden is active
+      const bname = allInventory[ci].bottles[bi]?.name || '';
+      const catName = allInventory[ci].category;
+      try {
+        await idbUnhideBottle(catName, bname);
+        buildInventory();
+      } catch(err) {
+        alert(`Unhide failed: ${err.message}`);
+      }
     }
   };
 }
@@ -2386,6 +2415,8 @@ function showView(view) {
   const tagline = $('inventory-tagline');
   if (addBtn) addBtn.style.display = (isInventory || isDetail) ? 'none' : '';
   if (tagline) tagline.style.display = isInventory ? '' : 'none';
+  const showHiddenBtn = $('show-hidden-btn');
+  if (showHiddenBtn) showHiddenBtn.style.display = (isInventory && !isOwner()) ? '' : 'none';
   backBtn.classList.toggle('visible', isDetail);
   const logoWrap = $('logo-wrap');
   if (logoWrap) logoWrap.style.display = isDetail ? 'none' : '';
@@ -3088,8 +3119,11 @@ function openEditor(recipe) {
   editorRecipe = recipe;
   editorRecipe._originalName = recipe.name;  // key for seed lookup — never changes mid-session
   const p = recipe.presentation || {};
+  // Map seed canonical glass names → DR editor vessel IDs
+  const glassToVessel = { 'mule mug': 'mule', 'mug': 'irish', 'wine': 'snifter' };
+  const rawVessel = p.vessel || recipe.glass || 'rocks';
   ES = {
-    vessel:  p.vessel  || recipe.glass || 'rocks',
+    vessel:  glassToVessel[rawVessel] || rawVessel,
     color:   p.color   || null,
     float:   p.float   || null,
     ice:     p.ice     || null,
@@ -3099,6 +3133,7 @@ function openEditor(recipe) {
   };
   $('editor-recipe-name').textContent = recipe.name;
   $('ef-title').value  = recipe.name || '';
+  $('ef-credit').value = recipe.credit || '';
   editorStatus.textContent = '';
   buildEditorControls();
   edRender();
@@ -3113,6 +3148,7 @@ $('editor-cancel-btn').addEventListener('click', closeEditor);
 async function savePresentation() {
   const saveBtn = $('editor-save-btn');
   const newTitle  = ($('ef-title').value  || '').trim();
+  const newCredit = ($('ef-credit').value || '').trim() || null;
 
   if (!newTitle) {
     editorStatus.textContent = 'Title cannot be empty.';
@@ -3147,7 +3183,7 @@ async function savePresentation() {
     const idx = allRecipes.findIndex(r => r.name === originalName);
     if (idx !== -1) {
       allRecipes[idx].name         = newTitle;
-
+      allRecipes[idx].credit       = newCredit;
       allRecipes[idx].presentation = newPresentation;
       allRecipes[idx].glass        = vesselToGlass[newPresentation.vessel] || newPresentation.vessel;
     }
@@ -3156,7 +3192,7 @@ async function savePresentation() {
     await idbPut('recipes', allRecipes[idx !== -1 ? idx : allRecipes.length - 1]);
 
     editorRecipe.name          = newTitle;
-
+    editorRecipe.credit        = newCredit;
     editorRecipe.presentation  = newPresentation;
     editorRecipe._originalName = newTitle;
 
@@ -3463,38 +3499,20 @@ $('add-recipe-btn').addEventListener('click', addNewRecipe);
 $('export-btn').addEventListener('click', exportToGitHub);
 $('import-btn').addEventListener('click', importFromGitHub);
 
+/* ── Show Hidden toggle (non-owner inventory) ── */
+$('show-hidden-btn').addEventListener('click', () => {
+  showHiddenBottles = !showHiddenBottles;
+  const btn = $('show-hidden-btn');
+  btn.textContent = showHiddenBottles ? '👁 Hide Hidden' : '👁 Show Hidden';
+  btn.style.color = showHiddenBottles ? 'var(--amber)' : 'var(--ink-light)';
+  btn.style.borderColor = showHiddenBottles ? 'rgba(193,127,58,0.6)' : 'rgba(193,127,58,0.35)';
+  buildInventory();
+});
+
 // Remove old GitHub settings check from addNewRecipe
 // (no longer needed — IDB writes are always available)
 
 loadData();
-
-/* ── Service Worker Registration ── */
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./cocktail_sw.js')
-      .then(reg => {
-        console.log('[PiP] SW registered, scope:', reg.scope);
-        // When a new SW is waiting, reload automatically so users
-        // always get the latest version without a manual hard-refresh.
-        reg.addEventListener('updatefound', () => {
-          const newWorker = reg.installing;
-          newWorker.addEventListener('statechange', () => {
-            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              // New version available — tell it to skip waiting, then reload.
-              newWorker.postMessage({ type: 'SKIP_WAITING' });
-            }
-          });
-        });
-      })
-      .catch(err => console.warn('[PiP] SW registration failed:', err));
-
-    // When the SW signals it has taken control, reload once to serve fresh assets.
-    let refreshing = false;
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (!refreshing) { refreshing = true; window.location.reload(); }
-    });
-  });
-}
 
 </script>
   <!-- ── BOTTLE MODAL ── -->
