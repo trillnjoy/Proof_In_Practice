@@ -1304,7 +1304,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-26 20:00 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-26 20:15 UTC</div>
   </footer>
 
 
@@ -3415,13 +3415,16 @@ async function shareRecipe(recipe) {
     const url  = `https://trillnjoy.github.io/Proof_In_Practice/cocktail.html#${encodeURIComponent(recipe.name)}`;
 
     if (navigator.share && navigator.canShare && navigator.canShare({ files: [card] })) {
+      // Share image + URL together — iOS Messages shows the PNG and the
+      // tappable deep link in the same bubble. QR in the image handles print/etc.
       await navigator.share({
         files: [card],
         title: recipe.name,
-        text:  `${recipe.name} — via Proof in Practice`,
+        text:  `${recipe.name} — via Proof in Practice
+${url}`,
       });
     } else if (navigator.share) {
-      // Fallback: share URL only (no file support)
+      // Fallback: URL only (no file share support)
       await navigator.share({ title: recipe.name, url });
     } else {
       // Desktop fallback: download the card
