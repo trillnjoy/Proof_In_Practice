@@ -2271,6 +2271,44 @@
       }
     },
     {
+      "name": "Hot Penicillin",
+      "credit": "Bon Appetit",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Blended Scotch"
+        },
+        {
+          "amount": "1 1/2",
+          "unit": "oz",
+          "item": "Fresh Lemon Juice"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Honey Ginger Syrup"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Single Malt Scotch"
+        }
+      ],
+      "method": "Honey Ginger Syrup: Bring honey, thinly sliced ginger, and water to a bare simmer over medium heat, stirring occasionally, until honey is dissolved, 20-25 minutes. Strain through fine mesh and discard solids. To serve: Combine honey ginger syrup, blended Scotch, lemon juice, and single malt Scotch in a saucepan. Heat over medium-low until hot but not boiling. Pour into an Irish mug. Garnish with candied ginger and a lemon twist.",
+      "glass": "mug",
+      "frozen": false,
+      "presentation": {
+        "vessel": "mug",
+        "color": "#c8902a",
+        "float": null,
+        "ice": null,
+        "citrus": "lemon-twist",
+        "garnish": [],
+        "extras": []
+      }
+    },
+    {
       "name": "Hot Toddy",
       "credit": null,
       "ingredients": [
@@ -2310,6 +2348,46 @@
         "citrus": "lemon-peel",
         "garnish": [],
         "extras": []
+      }
+    },
+    {
+      "name": "Hugo Spritz",
+      "credit": null,
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "St-Germain"
+        },
+        {
+          "amount": "3",
+          "unit": "oz",
+          "item": "Prosecco"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Sparkling Water"
+        },
+        {
+          "amount": "2",
+          "unit": null,
+          "item": "Mint Leaves"
+        }
+      ],
+      "method": "Remove leaves from a mint sprig and slap between your palms to release oils. Add to a wine glass filled with ice. Pour St-Germain, then Prosecco. Top with sparkling water and gently swirl to combine. Garnish with a lime wedge and fresh mint sprig.",
+      "glass": "wine",
+      "frozen": false,
+      "presentation": {
+        "vessel": "wine",
+        "color": "#e8f0c0",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "lime-wedge",
+        "garnish": [],
+        "extras": [
+          "mint-sprig"
+        ]
       }
     },
     {
@@ -2773,6 +2851,69 @@
         "float": null,
         "ice": null,
         "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
+    },
+    {
+      "name": "London Fog Milk Punch",
+      "credit": "Troy",
+      "ingredients": [
+        {
+          "amount": "25",
+          "unit": "oz",
+          "item": "Bacardi White Rum"
+        },
+        {
+          "amount": "2",
+          "unit": "tbsp",
+          "item": "Creme Earl Grey Moonlight Loose Tea"
+        },
+        {
+          "amount": "8",
+          "unit": "oz",
+          "item": "Fresh Lemon Juice"
+        },
+        {
+          "amount": "2",
+          "unit": "cup",
+          "item": "Water"
+        },
+        {
+          "amount": "2",
+          "unit": "cup",
+          "item": "Sugar"
+        },
+        {
+          "amount": "1/4",
+          "unit": "tsp",
+          "item": "Bourbon Vanilla Extract"
+        },
+        {
+          "amount": "2",
+          "unit": "cup",
+          "item": "Whole Milk"
+        },
+        {
+          "amount": "2",
+          "unit": null,
+          "item": "Cinnamon Sticks"
+        },
+        {
+          "amount": "4",
+          "unit": null,
+          "item": "Whole Cloves"
+        }
+      ],
+      "method": "Vanilla Syrup: Combine sugar and water over medium heat until dissolved. Remove from heat, add vanilla extract and set aside 1 hour. Store refrigerated up to 5 days. Earl Grey Rum: Combine loose tea and rum in a glass container. Infuse 4 hours at room temperature, shaking periodically. Strain through fine mesh and discard leaves. Stores in a cool dark cabinet up to 3 months. Assemble: In a large pitcher combine vanilla syrup, infused rum, and lemon juice. Stir well. Milk Mixture: Heat milk, cinnamon sticks, and cloves over medium heat to 180F. Pour hot milk into rum mixture and set aside until curdled, about 30 minutes. Strain through fine mesh lined with cheesecloth. Do not remove curd while straining as it acts as an additional filter. Discard curds. Store refrigerated up to 1 month. Strain again before serving if desired. Serve over a large rock.",
+      "glass": "rocks",
+      "frozen": false,
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#e8d8a0",
+        "float": null,
+        "ice": "huge",
+        "citrus": "lemon-wedge",
         "garnish": [],
         "extras": []
       }
@@ -3270,6 +3411,44 @@
       }
     },
     {
+      "name": "Monk's Familiar",
+      "credit": "Troy",
+      "ingredients": [
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Rhum Agricole"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Benedictine"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Liquore Strega"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Fresh Lime Juice"
+        }
+      ],
+      "method": "Combine all ingredients in a shaker with ice. Shake until well chilled and double-strain through a fine mesh strainer into a chilled Nick and Nora glass.",
+      "glass": "nick-nora",
+      "frozen": false,
+      "presentation": {
+        "vessel": "nick-nora",
+        "color": "#c8b84a",
+        "float": null,
+        "ice": null,
+        "citrus": "lime-twist",
+        "garnish": [],
+        "extras": []
+      }
+    },
+    {
       "name": "Moscow Mule",
       "credit": null,
       "ingredients": [
@@ -3685,6 +3864,127 @@
       }
     },
     {
+      "name": "Pornstar Martini",
+      "credit": "Bon Appetit",
+      "ingredients": [
+        {
+          "amount": "1 1/2",
+          "unit": "oz",
+          "item": "Passion Fruit Puree"
+        },
+        {
+          "amount": "1 1/2",
+          "unit": "oz",
+          "item": "Vodka"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Passion Fruit Liqueur"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Fresh Lime Juice"
+        },
+        {
+          "amount": "1",
+          "unit": "tsp",
+          "item": "Sugar"
+        },
+        {
+          "amount": "1/8",
+          "unit": "tsp",
+          "item": "Vanilla Extract"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Prosecco"
+        }
+      ],
+      "method": "Combine passion fruit puree, vodka, passion fruit liqueur, lime juice, sugar, and vanilla extract in a cocktail shaker. Add ice, cover, and shake until outside of shaker is frosty, about 15 seconds. Strain into a martini glass. Add chilled Prosecco directly to the glass.",
+      "glass": "martini",
+      "frozen": false,
+      "presentation": {
+        "vessel": "martini",
+        "color": "#e8a030",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      }
+    },
+    {
+      "name": "Rebujito",
+      "credit": "Food & Wine",
+      "ingredients": [
+        {
+          "amount": "3",
+          "unit": "oz",
+          "item": "Fino Sherry"
+        },
+        {
+          "amount": "4",
+          "unit": "oz",
+          "item": "Lemon-Lime Soda"
+        },
+        {
+          "amount": "6",
+          "unit": null,
+          "item": "Mint Leaves"
+        }
+      ],
+      "method": "Add large ice cubes and mint leaves to a highball glass. Pour the sherry over the ice. Pour the lemon-lime soda slowly over the mixture. Insert a long-handled spoon to the bottom of the glass and gently give a half stir. Garnish with a lemon wedge and mint sprig.",
+      "glass": "highball",
+      "frozen": false,
+      "presentation": {
+        "vessel": "highball",
+        "color": "#d4c88a",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "lemon-wedge",
+        "garnish": [],
+        "extras": [
+          "mint-sprig"
+        ]
+      }
+    },
+    {
+      "name": "Rosemary Gimlet",
+      "credit": "Food & Wine",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Bombay Sapphire Gin"
+        },
+        {
+          "amount": "2",
+          "unit": "tbsp",
+          "item": "Fresh Lime Juice"
+        },
+        {
+          "amount": "1 1/2",
+          "unit": "tbsp",
+          "item": "Rosemary Honey Syrup"
+        }
+      ],
+      "method": "Place gin, lime juice, and Rosemary Honey Syrup in a cocktail shaker filled with ice. Shake vigorously and strain into a chilled coupe glass. Garnish with a rosemary sprig tapped lightly against the hand first to release its essential oils. Syrup: steep 5 rosemary sprigs in 1/2 cup near-boiling water for 20 minutes. Add 1/2 cup honey and stir until dissolved. Steep covered for at least 2 hours, up to 12. Strain before using. Keeps refrigerated up to 2 weeks.",
+      "glass": "coupe",
+      "frozen": false,
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#c8e0a0",
+        "float": null,
+        "ice": null,
+        "citrus": "lime-twist",
+        "garnish": [],
+        "extras": []
+      }
+    },
+    {
       "name": "Royal Bermuda Yacht Club",
       "credit": null,
       "ingredients": [
@@ -3891,32 +4191,32 @@
     },
     {
       "name": "Sea Breeze",
-      "credit": null,
+      "credit": "Gourmet",
       "ingredients": [
         {
-          "amount": "2",
+          "amount": "1 1/2",
           "unit": "oz",
           "item": "Vodka"
         },
         {
           "amount": "2",
           "unit": "oz",
-          "item": "Cranberry Juice"
+          "item": "Grapefruit Juice"
         },
         {
-          "amount": "3",
+          "amount": "2",
           "unit": "oz",
-          "item": "Grapefruit Juice"
+          "item": "Cranberry Juice"
         }
       ],
-      "method": "Build all ingredients in a rocks glass filled with ice. Garnish with lime wedge.",
+      "method": "In a highball glass filled with ice cubes, stir together vodka, grapefruit juice, and cranberry juice. Garnish with a grapefruit wedge. First published in Gourmet, August 1989.",
       "glass": "rocks",
       "presentation": {
         "vessel": "rocks",
-        "color": "#8B1a3a",
+        "color": "#c83858",
         "float": null,
         "ice": "cubes",
-        "citrus": "lime-wedge",
+        "citrus": "orange-wedge",
         "garnish": [],
         "extras": []
       }
@@ -4032,6 +4332,91 @@
           "olive"
         ],
         "extras": []
+      }
+    },
+    {
+      "name": "Smoky Paloma",
+      "credit": null,
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Mezcal"
+        },
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Fresh Grapefruit Juice"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Fresh Lime Juice"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Simple Syrup"
+        },
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Club Soda"
+        }
+      ],
+      "method": "Combine grapefruit juice, lime juice, and simple syrup in a Tajín-rimmed highball glass. Add mezcal and fill with ice. Stir until chilled, about 30 seconds. Top with club soda and stir gently to combine.",
+      "glass": "highball",
+      "frozen": false,
+      "presentation": {
+        "vessel": "highball",
+        "color": "#e05830",
+        "float": null,
+        "ice": "cubes",
+        "citrus": null,
+        "garnish": [],
+        "extras": [
+          "tajin-rim"
+        ]
+      }
+    },
+    {
+      "name": "Spicy Mezcal Margarita",
+      "credit": "Troy",
+      "ingredients": [
+        {
+          "amount": "1 1/2",
+          "unit": "oz",
+          "item": "Mezcal"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Cointreau"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Fresh Lime Juice"
+        },
+        {
+          "amount": "4",
+          "unit": null,
+          "item": "Jalapeno Coins"
+        }
+      ],
+      "method": "Rim a rocks glass with Tajin. Add jalapeno coins to a cocktail shaker and muddle. Add mezcal, Cointreau, lime juice, and ice. Shake well and strain into the prepared glass over a large rock. Top with two jalapeno coins.",
+      "glass": "rocks",
+      "frozen": false,
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#d4601a",
+        "float": null,
+        "ice": "huge",
+        "citrus": "lime-wedge",
+        "garnish": [],
+        "extras": [
+          "tajin-rim"
+        ]
       }
     },
     {
