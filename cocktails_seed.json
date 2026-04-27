@@ -3302,6 +3302,45 @@
       }
     },
     {
+      "name": "Naked & (Almost) Famous",
+      "credit": null,
+      "ingredients": [
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Mezcal"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Liquore Strega"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Aperol"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Lime Juice"
+        }
+      ],
+      "method": "Mix equal parts of all ingredients in a cocktail shaker with ice. Shake vigerously. Strain into coupe and garnish with dessicated lime slice.",
+      "glass": "coupe",
+      "frozen": false,
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#ff8648",
+        "float": null,
+        "ice": null,
+        "citrus": "lime-peel",
+        "garnish": [],
+        "extras": []
+      },
+      "_originalName": "Naked & (Almost) Famous"
+    },
+    {
       "name": "New York Sour",
       "credit": null,
       "ingredients": [
