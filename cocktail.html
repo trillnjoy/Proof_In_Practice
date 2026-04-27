@@ -1413,7 +1413,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-27 06:30 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-27 07:00 UTC</div>
   </footer>
 
 
@@ -3812,7 +3812,7 @@ function generateQRImage(url, size) {
 ══════════════════════════════════════════════ */
 
 // Schema prompt sent to Claude with every extraction call
-const IMPORT_SCHEMA_PROMPT = `You are a cocktail recipe extraction engine. Your response must be a single valid JSON object and nothing else — no preamble, no explanation, no markdown fences, no "I" statements. Start your response with { and end with }.
+const IMPORT_SCHEMA_PROMPT = `You are a cocktail recipe extraction engine. Your response must be a single valid JSON object and nothing else — no preamble, no explanation, no markdown fences, no I statements. Start your response with { and end with }.
 
 Extract the recipe and return ONLY this JSON schema:
 
@@ -3827,7 +3827,7 @@ Extract the recipe and return ONLY this JSON schema:
   "frozen": false,
   "presentation": {
     "vessel": "rocks|cocktail|coupe|highball|collins|mule|irish|flute|snifter|tropical|julep|nick-nora",
-    "color": "#rrggbb hex string — pick a color that matches the drink's appearance",
+    "color": "#rrggbb hex string — pick a color that matches the drink appearance",
     "float": null,
     "ice": "huge|cubes|crushed|null",
     "citrus": "lemon-twist|lemon-wedge|lime-twist|lime-wedge|orange-twist|orange-wedge|null",
@@ -3836,9 +3836,20 @@ Extract the recipe and return ONLY this JSON schema:
   }
 }
 
-Vessel mapping (glass → vessel): rocks→rocks, martini→cocktail, mule mug→mule, mug→irish, wine→snifter.
-Unit rules: convert tablespoons to tbsp, teaspoons to tsp, use null for countable items with no volume unit.
-If riff notes are provided, apply them — they override the source material.
+CRITICAL RULES — follow exactly:
+
+AMOUNTS: Preserve exact fractions without rounding. 1/3 stays 1/3, 1/6 stays 1/6, 1/8 stays 1/8. A recipe calling for 1/3 oz is very different from 1 oz — precision is essential. Never approximate a small amount upward.
+
+CREDIT: Infer from any visible source — website name, publication, byline, watermark, or URL. Difford Guide, Bon Appetit, Food and Wine, NYT Cooking, Epicurious etc should all be captured. Only null if truly no source is identifiable.
+
+INGREDIENT NAMES: Use Title Case. Dry Vermouth not dry vermouth. Angostura Bitters not angostura bitters.
+
+GARNISH: Scan both ingredient list AND method text for garnish. Populate citrus or garnish array accordingly. Valid garnish values: cherry, olive, strawberry, celery, cucumber-slice, pineapple-wedge. Valid citrus: lemon-twist, lemon-wedge, lime-twist, lime-wedge, orange-twist, orange-wedge.
+
+VESSEL MAPPING: rocks to rocks, martini to cocktail, mule mug to mule, mug to irish, wine to snifter.
+UNIT RULES: tablespoons to tbsp, teaspoons to tsp, null unit for countable items like leaves, coins, sprigs.
+RIFF NOTES: If provided, apply them — they override the source material.
+
 Return ONLY the JSON object.`;
 
 let importImageDataUrl = null;
