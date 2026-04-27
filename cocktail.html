@@ -14,6 +14,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
   <style>
     /* ═══════════════════════════════════════
@@ -560,10 +561,13 @@
       margin-bottom: 20px;
     }
 
-    /* ─── EDIT VISUAL BUTTON ─── */
-    .edit-visual-btn {
-      position: absolute;
-      top: 14px; left: 14px;
+    /* ─── DETAIL HEADER BUTTON ROW (Edit Visual + Share) ─── */
+    .detail-header-btns {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .edit-visual-btn, .share-recipe-btn {
       background: rgba(193,127,58,0.15);
       border: 1px solid rgba(193,127,58,0.4);
       border-radius: 4px;
@@ -575,9 +579,9 @@
       padding: 5px 10px;
       cursor: pointer;
       transition: all var(--transition);
-      z-index: 10;
     }
-    .edit-visual-btn:hover { background: rgba(193,127,58,0.28); border-color: var(--amber); }
+    .edit-visual-btn:hover, .share-recipe-btn:hover { background: rgba(193,127,58,0.28); border-color: var(--amber); }
+    .share-recipe-btn:active { opacity: 0.7; }
 
     /* ABV pill — detail header upper right */
     .recipe-abv-pill {
@@ -1300,7 +1304,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-26 18:00 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-26 20:00 UTC</div>
   </footer>
 
 
@@ -2052,7 +2056,10 @@ function showDetail(recipe) {
       })()}
       <h1 class="detail-name">${escHtml(recipe.name)}</h1>
       ${credit}
-      <button class="edit-visual-btn" id="edit-visual-btn">Edit Visual</button>
+      <div class="detail-header-btns">
+        <button class="edit-visual-btn" id="edit-visual-btn">Edit Visual</button>
+        <button class="share-recipe-btn" id="share-recipe-btn">⬆︎ Share</button>
+      </div>
     </div>
     <div class="detail-body">
       <div class="detail-section-title" style="display:flex;align-items:center;justify-content:space-between;">
@@ -2097,6 +2104,8 @@ function showDetail(recipe) {
   if(eib) eib.addEventListener('click', () => openIngEditor(recipe));
   const emb = document.getElementById('edit-method-btn');
   if(emb) emb.addEventListener('click', () => openMethodEditor(recipe));
+  const srb = document.getElementById('share-recipe-btn');
+  if(srb) srb.addEventListener('click', () => shareRecipe(recipe));
   initNinjaPanel(recipe);
 }
 
@@ -3343,6 +3352,337 @@ async function idbSeedFromJSON(data) {
   for (const c of data.bar_inventory) await idbPut('bar_inventory', c);
 }
 
+/* ══════════════════════════════════════════════
+   DEEP LINK — open recipe from URL fragment
+══════════════════════════════════════════════ */
+function checkDeepLink() {
+  const hash = decodeURIComponent(window.location.hash.slice(1));
+  if (!hash) return;
+  const recipe = allRecipes.find(r => r.name === hash);
+  if (recipe) {
+    showDetail(recipe);
+  }
+}
+
+/* ══════════════════════════════════════════════
+   SHARE RECIPE — generate card PNG + native share
+══════════════════════════════════════════════ */
+
+// Ninja calculation (mirrors app engine, 12% default for share card)
+const SHARE_UNIT_TO_OZ = { oz:1, tbsp:0.5, tsp:0.1667, dash:0.021, drop:0.0017, pinch:0, null:0 };
+const SHARE_SPIRIT_DEFAULTS = [
+  { words:['bourbon','rye'],                  abv:0.45 },
+  { words:['scotch','whisky'],                abv:0.40 },
+  { words:['irish'],                          abv:0.40 },
+  { words:['vodka'],                          abv:0.40 },
+  { words:['rum'],                            abv:0.40 },
+  { words:['gin'],                            abv:0.42 },
+  { words:['tequila','mezcal'],               abv:0.40 },
+  { words:['cognac','brandy'],                abv:0.40 },
+  { words:['whiskey'],                        abv:0.45 },
+  { words:['liqueur','schnapps','triple sec','curacao','curaçao','amaro',
+            'vermouth','aperol','campari','cointreau','chartreuse'], abv:0.20 },
+  { words:['champagne','prosecco','wine','beer'], abv:0.12 },
+  { words:['syrup','juice','water','soda','cream','bitters','grenadine','orgeat'], abv:0 },
+];
+function shareCalcNinja(ings, targetPct = 12) {
+  let etoh = 0, vol = 0;
+  for (const ing of ings) {
+    const unit = (ing.unit || 'null').toLowerCase();
+    const oz   = (parseFloat(ing.amount) || 0) * (SHARE_UNIT_TO_OZ[unit] ?? 0);
+    if (!oz) continue;
+    const lower = (ing.item || '').toLowerCase();
+    let abv = 0;
+    for (const e of SHARE_SPIRIT_DEFAULTS) {
+      if (e.words.some(w => lower.includes(w))) { abv = e.abv; break; }
+    }
+    etoh += oz * abv;
+    vol  += oz;
+  }
+  if (!etoh || !vol) return null;
+  const t    = targetPct / 100;
+  const tVol = etoh / t;
+  const nVol = tVol - vol;
+  return { nonAlcVol: nVol, currentABV: (etoh / vol) * 100, totalVol: vol };
+}
+
+async function shareRecipe(recipe) {
+  const btn = document.getElementById('share-recipe-btn');
+  if (btn) { btn.textContent = '⏳ Preparing…'; btn.disabled = true; }
+
+  try {
+    const card = await buildShareCard(recipe);
+    const url  = `https://trillnjoy.github.io/Proof_In_Practice/cocktail.html#${encodeURIComponent(recipe.name)}`;
+
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [card] })) {
+      await navigator.share({
+        files: [card],
+        title: recipe.name,
+        text:  `${recipe.name} — via Proof in Practice`,
+      });
+    } else if (navigator.share) {
+      // Fallback: share URL only (no file support)
+      await navigator.share({ title: recipe.name, url });
+    } else {
+      // Desktop fallback: download the card
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(card);
+      a.download = `${recipe.name.replace(/[^a-z0-9]/gi,'_')}_PiP.png`;
+      a.click();
+    }
+  } catch(err) {
+    if (err.name !== 'AbortError') console.warn('Share failed:', err);
+  } finally {
+    if (btn) { btn.innerHTML = '⬆︎ Share'; btn.disabled = false; }
+  }
+}
+
+async function buildShareCard(recipe) {
+  const CARD_W  = 720;   // 2× for retina — renders at 360 CSS px
+  const BAND_H  = 296;   // dark band height
+  const BODY_H  = 520;   // parchment body height (scales with content)
+  const CARD_H  = BAND_H + BODY_H;
+  const RADIUS  = 32;
+
+  const canvas = document.createElement('canvas');
+  canvas.width  = CARD_W;
+  canvas.height = CARD_H;
+  const ctx = canvas.getContext('2d');
+
+  // ── Rounded clip ──
+  roundRect(ctx, 0, 0, CARD_W, CARD_H, RADIUS);
+  ctx.clip();
+
+  // ── Dark band background ──
+  ctx.fillStyle = '#1a1008';
+  ctx.fillRect(0, 0, CARD_W, BAND_H);
+
+  // ── Subtle amber glow ──
+  const glow = ctx.createRadialGradient(252, BAND_H, 0, 252, BAND_H, 320);
+  glow.addColorStop(0, 'rgba(193,127,58,0.09)');
+  glow.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = glow;
+  ctx.fillRect(0, 0, CARD_W, BAND_H);
+
+  // ── DR glass visual (SVG → Image) ──
+  const drSvg  = DR.render(recipe.presentation || {}, 240, 296);
+  const drImg  = await svgToImage(drSvg, 240, 296);
+  ctx.drawImage(drImg, 0, 0, 240, 296);
+
+  // ── PiP wordmark ──
+  ctx.font      = 'bold 22px "Playfair Display", Georgia, serif';
+  ctx.fillStyle = 'rgba(193,127,58,0.62)';
+  ctx.letterSpacing = '3px';
+  ctx.fillText('PROOF IN PRACTICE', 28, 42);
+  ctx.letterSpacing = '0px';
+
+  // ── ABV pill ──
+  const abvResult = calculateRecipeABV(recipe);
+  if (abvResult) {
+    const abvText = `${abvResult.usedDefault ? '≈' : '~'}${abvResult.abv.toFixed(1)}% ABV`;
+    const pw = ctx.measureText(abvText).width + 36;
+    const px = CARD_W - pw - 28;
+    ctx.fillStyle = 'rgba(193,127,58,0.13)';
+    roundRect(ctx, px, 16, pw, 40, 8);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(193,127,58,0.35)';
+    ctx.lineWidth = 2;
+    roundRect(ctx, px, 16, pw, 40, 8);
+    ctx.stroke();
+    ctx.font      = '26px "Lora", Georgia, serif';
+    ctx.fillStyle = '#c17f3a';
+    ctx.fillText(abvText, px + 18, 43);
+  }
+
+  // ── QR code ──
+  const url    = `https://trillnjoy.github.io/Proof_In_Practice/cocktail.html#${encodeURIComponent(recipe.name)}`;
+  const qrSize = 176;
+  const qrX    = CARD_W - qrSize - 32;
+  const qrY    = BAND_H - qrSize - 22;
+  const qrImg  = await generateQRImage(url, qrSize);
+  // Parchment background behind QR
+  ctx.fillStyle = '#f5efe0';
+  roundRect(ctx, qrX - 10, qrY - 10, qrSize + 20, qrSize + 20, 12);
+  ctx.fill();
+  ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
+  // "Open in app" label
+  ctx.font      = '18px "Lora", Georgia, serif';
+  ctx.fillStyle = 'rgba(193,127,58,0.55)';
+  ctx.textAlign = 'center';
+  ctx.fillText('Open in app', qrX + qrSize/2, qrY + qrSize + 28);
+  ctx.textAlign = 'left';
+
+  // ── Parchment body ──
+  ctx.fillStyle = '#f5efe0';
+  ctx.fillRect(0, BAND_H, CARD_W, BODY_H);
+
+  // Text rendering in body
+  const BX = 56;  // body left margin
+  const BW = CARD_W - BX * 2;
+  let y = BAND_H + 44;
+
+  // Recipe name
+  ctx.font      = 'bold 52px "Playfair Display", Georgia, serif';
+  ctx.fillStyle = '#2c1f0e';
+  const nameLines = wrapText(ctx, recipe.name, BW);
+  for (const line of nameLines) { ctx.fillText(line, BX, y); y += 62; }
+
+  // Credit
+  if (recipe.credit) {
+    ctx.font      = '24px "Lora", Georgia, serif';
+    ctx.fillStyle = '#b85c38';
+    const creditText = recipe.credit.toLowerCase().includes('troy') ? '✦ House Recipe' : `✦ ${recipe.credit}`;
+    ctx.fillText(creditText, BX, y); y += 36;
+  }
+
+  // Rule
+  y += 8;
+  ctx.strokeStyle = '#ddd0b0';
+  ctx.lineWidth   = 1.5;
+  ctx.beginPath(); ctx.moveTo(BX, y); ctx.lineTo(CARD_W - BX, y); ctx.stroke();
+  y += 26;
+
+  // Ingredients
+  ctx.font      = '24px "Lora", Georgia, serif';
+  for (const ing of (recipe.ingredients || [])) {
+    const amt = [ing.amount, ing.unit].filter(Boolean).join(' ');
+    ctx.fillStyle = '#7a5c3a';
+    ctx.fillText(amt, BX, y);
+    ctx.fillStyle = '#2c1f0e';
+    ctx.fillText(ing.item, BX + 144, y);
+    y += 38;
+    // light rule between ingredients
+    ctx.strokeStyle = 'rgba(201,180,138,0.22)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(BX, y - 10); ctx.lineTo(CARD_W - BX, y - 10); ctx.stroke();
+  }
+  y += 8;
+
+  // Method label
+  ctx.font      = 'bold 20px "Lora", Georgia, serif';
+  ctx.fillStyle = '#7a5c3a';
+  ctx.fillText('METHOD', BX, y); y += 32;
+
+  // Method text
+  ctx.font      = 'italic 22px "Lora", Georgia, serif';
+  ctx.fillStyle = '#5a3e28';
+  if (recipe.method) {
+    const methodLines = wrapText(ctx, recipe.method, BW);
+    for (const line of methodLines) { ctx.fillText(line, BX, y); y += 32; }
+  }
+  y += 12;
+
+  // Ninja panel
+  const ninja = shareCalcNinja(recipe.ingredients || [], 12);
+  if (ninja && ninja.nonAlcVol > 0) {
+    // Panel background
+    ctx.fillStyle = 'rgba(44,31,14,0.06)';
+    const panelH = 88;
+    roundRect(ctx, BX - 4, y, BW + 8, panelH, 12);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(193,127,58,0.18)';
+    ctx.lineWidth = 1.5;
+    roundRect(ctx, BX - 4, y, BW + 8, panelH, 12);
+    ctx.stroke();
+
+    ctx.font      = '18px "Lora", Georgia, serif';
+    ctx.fillStyle = '#7a5c3a';
+    ctx.fillText('🧊 NINJA SLUSHIE · 12% ABV TARGET', BX + 8, y + 28);
+
+    ctx.font      = 'bold 26px "Playfair Display", Georgia, serif';
+    ctx.fillStyle = '#2c1f0e';
+    const ninjaText = `Add ${ninja.nonAlcVol.toFixed(1)} oz (${(ninja.nonAlcVol * 29.57).toFixed(0)} mL) water before freezing`;
+    ctx.fillText(ninjaText, BX + 8, y + 62);
+  }
+
+  return new Promise(resolve => {
+    canvas.toBlob(blob => {
+      resolve(new File([blob], `${recipe.name.replace(/[^a-z0-9]/gi,'_')}_PiP.png`, { type: 'image/png' }));
+    }, 'image/png');
+  });
+}
+
+// ── Canvas helpers ──
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+function wrapText(ctx, text, maxWidth) {
+  const words = text.split(' ');
+  const lines = [];
+  let current = '';
+  for (const word of words) {
+    const test = current ? `${current} ${word}` : word;
+    if (ctx.measureText(test).width > maxWidth && current) {
+      lines.push(current);
+      current = word;
+    } else {
+      current = test;
+    }
+  }
+  if (current) lines.push(current);
+  return lines;
+}
+
+function svgToImage(svgString, w, h) {
+  return new Promise((resolve, reject) => {
+    const blob = new Blob([svgString], { type: 'image/svg+xml' });
+    const url  = URL.createObjectURL(blob);
+    const img  = new Image();
+    img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
+    img.onerror = reject;
+    img.src = url;
+  });
+}
+
+function generateQRImage(url, size) {
+  return new Promise(resolve => {
+    const div = document.createElement('div');
+    div.style.cssText = 'position:absolute;left:-9999px;visibility:hidden;';
+    document.body.appendChild(div);
+    new QRCode(div, {
+      text: url, width: size, height: size,
+      colorDark: '#2c1f0e', colorLight: '#f5efe0',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+    // QRCode.js appends a canvas or img — grab whichever
+    setTimeout(() => {
+      const canvas = div.querySelector('canvas');
+      const img    = div.querySelector('img');
+      document.body.removeChild(div);
+      if (canvas) {
+        const out = new Image();
+        out.onload = () => resolve(out);
+        out.src = canvas.toDataURL();
+      } else if (img) {
+        const out = new Image();
+        out.onload = () => resolve(out);
+        out.src = img.src;
+      } else {
+        // Fallback: blank image
+        const fallback = document.createElement('canvas');
+        fallback.width = fallback.height = size;
+        const fctx = fallback.getContext('2d');
+        fctx.fillStyle = '#f5efe0';
+        fctx.fillRect(0, 0, size, size);
+        const out = new Image();
+        out.onload = () => resolve(out);
+        out.src = fallback.toDataURL();
+      }
+    }, 120);
+  });
+}
+
 /* ── Load app data: IDB first, fallback to seed JSON, fallback to inline ── */
 function init() {
   loadingEl.style.display = 'none';
@@ -3362,6 +3702,7 @@ async function loadData() {
       allInventory = await idbGetAll('bar_inventory');
       console.log(`Loaded ${allRecipes.length} recipes from IndexedDB`);
       init();
+      checkDeepLink();
       return;
     }
   } catch(e) {
@@ -3389,6 +3730,7 @@ async function loadData() {
     }
   }
   init();
+  checkDeepLink();
 }
 
 /* ── GitHub Export / Import ── */
