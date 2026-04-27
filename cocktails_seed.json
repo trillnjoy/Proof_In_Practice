@@ -761,8 +761,7 @@
         "citrus": "lime-twist",
         "garnish": [],
         "extras": []
-      },
-      "frozen": false
+      }
     },
     {
       "name": "Alexander",
@@ -806,8 +805,7 @@
         "extras": [
           "whipped-cream"
         ]
-      },
-      "frozen": true
+      }
     },
     {
       "name": "Anejo Highball",
@@ -1502,31 +1500,10 @@
     },
     {
       "name": "Cameron's Kick",
-      "credit": "Troy",
-      "ingredients": [
-        {
-          "amount": "1",
-          "unit": "oz",
-          "item": "Johnnie Walker Black Label"
-        },
-        {
-          "amount": "1",
-          "unit": "oz",
-          "item": "Jameson's Irish Whiskey"
-        },
-        {
-          "amount": "0.5",
-          "unit": "oz",
-          "item": "Orgeat"
-        },
-        {
-          "amount": "0.5",
-          "unit": "oz",
-          "item": "Lemon Juice"
-        }
-      ],
-      "method": "Mix all ingredients in a shaker. Shake vigorously with ice. Strain into coupe. Garnish with lemon peel.",
-      "glass": "coupe",
+      "credit": null,
+      "ingredients": [],
+      "method": "Mix 1oz Scotch, 1 ox Irish Whisky, 1/2 oz orgeat and 1/2 oz lemon juice in a shaker. Shake vigorously with ice. Strain into coupe. Garnish with lemon peel.",
+      "glass": "rocks",
       "presentation": {
         "vessel": "coupe",
         "color": "#f2f7b7",
@@ -1535,9 +1512,7 @@
         "citrus": "lemon-peel",
         "garnish": [],
         "extras": []
-      },
-      "frozen": true,
-      "_originalName": "Cameron's Kick"
+      }
     },
     {
       "name": "Campfire Cocktail",
@@ -1979,7 +1954,7 @@
     },
     {
       "name": "Fleming's Raspberry Cooler",
-      "credit": "Troy",
+      "credit": null,
       "ingredients": [
         {
           "amount": "2",
@@ -2005,15 +1980,14 @@
       "method": "Mix all ingredients except Perrier in stemless wine glass. Add ice and stir to chill. Pour Perrier into glass and garnish with lime wedge.",
       "glass": "wine",
       "presentation": {
-        "vessel": "snifter",
+        "vessel": "wine",
         "color": "#e09080",
         "float": null,
         "ice": "cubes",
         "citrus": "lime-wedge",
         "garnish": [],
         "extras": []
-      },
-      "_originalName": "Fleming's Raspberry Cooler"
+      }
     },
     {
       "name": "French 75",
@@ -3215,7 +3189,7 @@
     },
     {
       "name": "Mistletoe Martini",
-      "credit": "Troy",
+      "credit": null,
       "ingredients": [
         {
           "amount": "1 1/2",
@@ -3248,8 +3222,7 @@
         "citrus": null,
         "garnish": [],
         "extras": []
-      },
-      "_originalName": "Mistletoe Martini"
+      }
     },
     {
       "name": "Mojito",
@@ -3330,32 +3303,32 @@
     },
     {
       "name": "Naked & (Almost) Famous",
-      "credit": "Troy",
+      "credit": null,
       "ingredients": [
         {
-          "amount": "1.5",
+          "amount": "1",
           "unit": "oz",
-          "item": "Del Maguey Vida Clásico mezcal"
+          "item": "Mezcal"
         },
         {
-          "amount": "1.5",
-          "unit": "oz",
-          "item": "Aperol"
-        },
-        {
-          "amount": "1.5",
+          "amount": "1",
           "unit": "oz",
           "item": "Liquore Strega"
         },
         {
-          "amount": "1.5",
+          "amount": "1",
+          "unit": "oz",
+          "item": "Aperol"
+        },
+        {
+          "amount": "1",
           "unit": "oz",
           "item": "Lime Juice"
         }
       ],
-      "method": "Equal parts; shake with ice in cocktail shaker vigorously. Strain into a coupe and serve with freeze dried lime sloce floating on surface.",
+      "method": "Mix equal parts of all ingredients in a cocktail shaker with ice. Shake vigerously. Strain into coupe and garnish with dessicated lime slice.",
       "glass": "coupe",
-      "frozen": true,
+      "frozen": false,
       "presentation": {
         "vessel": "coupe",
         "color": "#ff8648",
@@ -3455,7 +3428,7 @@
     },
     {
       "name": "Old Fashioned Death Star",
-      "credit": "Troy",
+      "credit": null,
       "ingredients": [
         {
           "amount": "2",
@@ -3483,8 +3456,7 @@
         "citrus": "orange-peel",
         "garnish": [],
         "extras": []
-      },
-      "_originalName": "Old Fashioned Death Star"
+      }
     },
     {
       "name": "Perfect Manhattan",
@@ -3532,7 +3504,7 @@
     },
     {
       "name": "Petit Trois Gimlet",
-      "credit": "Troy",
+      "credit": null,
       "ingredients": [
         {
           "amount": "3/4",
@@ -3570,8 +3542,7 @@
         "citrus": null,
         "garnish": [],
         "extras": []
-      },
-      "_originalName": "Petit Trois Gimlet"
+      }
     },
     {
       "name": "Pimm's Cup",
@@ -4021,7 +3992,7 @@
     },
     {
       "name": "Smashing, Baby (Yoda)",
-      "credit": "Troy",
+      "credit": null,
       "ingredients": [
         {
           "amount": "2",
@@ -4061,8 +4032,7 @@
           "olive"
         ],
         "extras": []
-      },
-      "_originalName": "Smashing, Baby (Yoda)"
+      }
     },
     {
       "name": "Spritz Veneziano",
@@ -4098,7 +4068,7 @@
     },
     {
       "name": "Sweet Lordy Vader",
-      "credit": "Troy",
+      "credit": null,
       "ingredients": [
         {
           "amount": "2",
@@ -4131,12 +4101,11 @@
         "citrus": null,
         "garnish": [],
         "extras": []
-      },
-      "_originalName": "Sweet Lordy Vader"
+      }
     },
     {
       "name": "Tatooine Sunrise",
-      "credit": "Troy",
+      "credit": null,
       "ingredients": [
         {
           "amount": "2",
@@ -4169,12 +4138,11 @@
         "citrus": null,
         "garnish": [],
         "extras": []
-      },
-      "_originalName": "Tatooine Sunrise"
+      }
     },
     {
       "name": "The Lightsaber",
-      "credit": "Troy",
+      "credit": null,
       "ingredients": [
         {
           "amount": "3/4",
@@ -4202,8 +4170,7 @@
         "citrus": null,
         "garnish": [],
         "extras": []
-      },
-      "_originalName": "The Lightsaber"
+      }
     },
     {
       "name": "The Penicillin",
@@ -4325,7 +4292,7 @@
     },
     {
       "name": "United Nations",
-      "credit": "Troy",
+      "credit": null,
       "ingredients": [
         {
           "amount": "2",
