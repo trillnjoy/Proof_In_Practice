@@ -1256,7 +1256,7 @@
     },
     {
       "name": "Blue Margarita",
-      "credit": null,
+      "credit": "El Torito Grill",
       "ingredients": [
         {
           "amount": null,
@@ -1290,18 +1290,19 @@
         }
       ],
       "method": "Rim a chilled margarita glass with the lime wedge and salt. Combine the tequila, curaçao, triple sec, and lime juice in a cocktail shaker with ice. Shake well and strain into glass.",
-      "glass": "coupe",
+      "glass": "rocks",
       "presentation": {
-        "vessel": "coupe",
+        "vessel": "rocks",
         "color": "#1a7ab0",
         "float": null,
-        "ice": null,
+        "ice": "cubes",
         "citrus": "lime-wedge",
         "garnish": [],
         "extras": [
           "salted-rim"
         ]
-      }
+      },
+      "_originalName": "Blue Margarita"
     },
     {
       "name": "Bobby Burns",
@@ -1500,10 +1501,10 @@
     },
     {
       "name": "Cameron's Kick",
-      "credit": null,
+      "credit": "Troy",
       "ingredients": [],
       "method": "Mix 1oz Scotch, 1 ox Irish Whisky, 1/2 oz orgeat and 1/2 oz lemon juice in a shaker. Shake vigorously with ice. Strain into coupe. Garnish with lemon peel.",
-      "glass": "rocks",
+      "glass": "coupe",
       "presentation": {
         "vessel": "coupe",
         "color": "#f2f7b7",
@@ -1512,7 +1513,8 @@
         "citrus": "lemon-peel",
         "garnish": [],
         "extras": []
-      }
+      },
+      "_originalName": "Cameron's Kick"
     },
     {
       "name": "Campfire Cocktail",
@@ -1954,7 +1956,7 @@
     },
     {
       "name": "Fleming's Raspberry Cooler",
-      "credit": null,
+      "credit": "Troy",
       "ingredients": [
         {
           "amount": "2",
@@ -1980,14 +1982,15 @@
       "method": "Mix all ingredients except Perrier in stemless wine glass. Add ice and stir to chill. Pour Perrier into glass and garnish with lime wedge.",
       "glass": "wine",
       "presentation": {
-        "vessel": "wine",
+        "vessel": "snifter",
         "color": "#e09080",
         "float": null,
         "ice": "cubes",
         "citrus": "lime-wedge",
         "garnish": [],
         "extras": []
-      }
+      },
+      "_originalName": "Fleming's Raspberry Cooler"
     },
     {
       "name": "French 75",
@@ -3330,7 +3333,7 @@
     },
     {
       "name": "Mistletoe Martini",
-      "credit": null,
+      "credit": "Troy",
       "ingredients": [
         {
           "amount": "1 1/2",
@@ -3362,8 +3365,11 @@
         "ice": null,
         "citrus": null,
         "garnish": [],
-        "extras": []
-      }
+        "extras": [
+          "mint-sprig"
+        ]
+      },
+      "_originalName": "Mistletoe Martini"
     },
     {
       "name": "Mojito",
@@ -3482,7 +3488,7 @@
     },
     {
       "name": "Naked & (Almost) Famous",
-      "credit": null,
+      "credit": "Troy",
       "ingredients": [
         {
           "amount": "1",
@@ -3607,7 +3613,7 @@
     },
     {
       "name": "Old Fashioned Death Star",
-      "credit": null,
+      "credit": "Troy",
       "ingredients": [
         {
           "amount": "2",
@@ -3635,7 +3641,8 @@
         "citrus": "orange-peel",
         "garnish": [],
         "extras": []
-      }
+      },
+      "_originalName": "Old Fashioned Death Star"
     },
     {
       "name": "Perfect Manhattan",
@@ -4292,7 +4299,7 @@
     },
     {
       "name": "Smashing, Baby (Yoda)",
-      "credit": null,
+      "credit": "Troy",
       "ingredients": [
         {
           "amount": "2",
@@ -4332,11 +4339,12 @@
           "olive"
         ],
         "extras": []
-      }
+      },
+      "_originalName": "Smashing, Baby (Yoda)"
     },
     {
       "name": "Smoky Paloma",
-      "credit": null,
+      "credit": "Troy",
       "ingredients": [
         {
           "amount": "2",
@@ -4365,10 +4373,10 @@
         }
       ],
       "method": "Combine grapefruit juice, lime juice, and simple syrup in a Tajín-rimmed highball glass. Add mezcal and fill with ice. Stir until chilled, about 30 seconds. Top with club soda and stir gently to combine.",
-      "glass": "highball",
+      "glass": "rocks",
       "frozen": false,
       "presentation": {
-        "vessel": "highball",
+        "vessel": "rocks",
         "color": "#e05830",
         "float": null,
         "ice": "cubes",
@@ -4377,7 +4385,8 @@
         "extras": [
           "tajin-rim"
         ]
-      }
+      },
+      "_originalName": "Smoky Paloma"
     },
     {
       "name": "Spicy Mezcal Margarita",
@@ -4453,7 +4462,7 @@
     },
     {
       "name": "Sweet Lordy Vader",
-      "credit": null,
+      "credit": "Troy",
       "ingredients": [
         {
           "amount": "2",
@@ -4486,11 +4495,12 @@
         "citrus": null,
         "garnish": [],
         "extras": []
-      }
+      },
+      "_originalName": "Sweet Lordy Vader"
     },
     {
       "name": "Tatooine Sunrise",
-      "credit": null,
+      "credit": "Troy",
       "ingredients": [
         {
           "amount": "2",
@@ -4523,11 +4533,12 @@
         "citrus": null,
         "garnish": [],
         "extras": []
-      }
+      },
+      "_originalName": "Tatooine Sunrise"
     },
     {
       "name": "The Lightsaber",
-      "credit": null,
+      "credit": "Troy",
       "ingredients": [
         {
           "amount": "3/4",
@@ -4555,7 +4566,8 @@
         "citrus": null,
         "garnish": [],
         "extras": []
-      }
+      },
+      "_originalName": "The Lightsaber"
     },
     {
       "name": "The Penicillin",
@@ -4677,7 +4689,7 @@
     },
     {
       "name": "United Nations",
-      "credit": null,
+      "credit": "Troy",
       "ingredients": [
         {
           "amount": "2",
