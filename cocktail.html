@@ -1413,7 +1413,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-28 12:00 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-28 13:00 UTC</div>
   </footer>
 
 
@@ -1933,6 +1933,20 @@ function lookupIngredientABV(itemName) {
 
   // 3. Unknown — treat as non-alcoholic
   return { abv: 0, usedDefault: false };
+}
+
+function getDilutionFactor(recipe) {
+  if (recipe.frozen) return 0;
+  const ice    = recipe.presentation?.ice || null;
+  const method = (recipe.method || '').toLowerCase();
+  const shaken  = method.includes('shake') || method.includes('shaken');
+  const stirred = method.includes('stir')  || method.includes('stirred');
+  if (ice === 'crushed') return 0.15;
+  if (ice === 'cubes')   return shaken ? 0.40 : 0.10;
+  if (ice === 'huge')    return 0.05;
+  if (shaken)            return 0.30;
+  if (stirred)           return 0.20;
+  return 0;
 }
 
 function calculateRecipeABV(recipe) {
