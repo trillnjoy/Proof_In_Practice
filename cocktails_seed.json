@@ -881,9 +881,9 @@
         }
       ],
       "method": "Place Aperol and lemon juice in glass with several ice cubes. Stir. Remove ice cubes. Add Prosecco. Add club soda. Garnish with lemon twist.",
-      "glass": "wine",
+      "glass": "nick-nora",
       "presentation": {
-        "vessel": "snifter",
+        "vessel": "nick-nora",
         "color": "#e05830",
         "float": null,
         "ice": "crushed",
@@ -920,9 +920,9 @@
         }
       ],
       "method": "Add all your ingredients to a mixing glass filled with ice. Stir and strain into a chilled cocktail glass. Garnish with a lemon twist.",
-      "glass": "martini",
+      "glass": "coupe",
       "presentation": {
-        "vessel": "martini",
+        "vessel": "coupe",
         "color": "#e05830",
         "float": null,
         "ice": null,
@@ -1022,16 +1022,19 @@
         }
       ],
       "method": "Pour all ingredients into a shaker with ice cubes, shake well, strain into chilled cocktail glass.",
-      "glass": "martini",
+      "glass": "coupe",
       "presentation": {
-        "vessel": "martini",
-        "color": "#d0ecd4",
+        "vessel": "coupe",
+        "color": "#ff412a",
         "float": null,
         "ice": null,
         "citrus": null,
-        "garnish": [],
+        "garnish": [
+          "cherry"
+        ],
         "extras": []
-      }
+      },
+      "_originalName": "Bacardi"
     },
     {
       "name": "Bee Sting",
@@ -1175,10 +1178,11 @@
         "color": "#c8a060",
         "float": null,
         "ice": null,
-        "citrus": null,
+        "citrus": "lemon-twist",
         "garnish": [],
         "extras": []
-      }
+      },
+      "_originalName": "Between the Sheets"
     },
     {
       "name": "Blood & Sand",
@@ -1303,18 +1307,19 @@
         }
       ],
       "method": "Rim a chilled margarita glass with the lime wedge and salt. Combine the tequila, curaçao, triple sec, and lime juice in a cocktail shaker with ice. Shake well and strain into glass.",
-      "glass": "coupe",
+      "glass": "rocks",
       "presentation": {
-        "vessel": "coupe",
+        "vessel": "rocks",
         "color": "#1a7ab0",
         "float": null,
-        "ice": null,
+        "ice": "cubes",
         "citrus": "lime-wedge",
         "garnish": [],
         "extras": [
           "salted-rim"
         ]
-      }
+      },
+      "_originalName": "Blue Margarita"
     },
     {
       "name": "Bobby Burns",
@@ -1951,7 +1956,7 @@
       ],
       "method": "Select and pre-chill a coupe glass. Prepare garnish of skewered cucumber roll. Shake all ingredients with ice. Fine strain into chilled glass. Garnish with skewered cucumber roll.",
       "glass": "coupe",
-      "frozen": false,
+      "frozen": true,
       "presentation": {
         "vessel": "coupe",
         "color": "#f5f2d0",
@@ -3262,9 +3267,9 @@
         }
       ],
       "method": "Rim a glass with salt then fill with ice. Add your hot sauce and lime and top with beer. Garnish with a lime wedge.",
-      "glass": "mug",
+      "glass": "highball",
       "presentation": {
-        "vessel": "irish",
+        "vessel": "highball",
         "color": "#c8a820",
         "float": null,
         "ice": null,
