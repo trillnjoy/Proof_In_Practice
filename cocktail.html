@@ -421,6 +421,7 @@
       background: var(--ink);
       overflow: hidden;
       border-left: 1px solid rgba(193,127,58,0.18);
+      position: relative;
     }
 
     /* Chevron */
@@ -1413,7 +1414,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-28 14:00 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-28 15:00 UTC</div>
   </footer>
 
 
@@ -1736,7 +1737,7 @@ function renderRecipeList() {
 
   const html = recipes.map(r => `
     <div class="recipe-card" data-name="${escHtml(r.name)}" role="button" tabindex="0" aria-label="${escHtml(r.name)}">
-      <div class="card-thumb">${r.presentation ? DR.thumb(r.presentation) : glassIcon(r.glass)}</div>
+      <div class="card-thumb">${r.presentation ? DR.thumb(r.presentation) : glassIcon(r.glass)}${r.frozen && r.presentation?.slushie !== false ? '<span style="position:absolute;bottom:2px;right:3px;font-size:9px;line-height:1;pointer-events:none;opacity:0.85;">❄️</span>' : ''}</div>
       <div class="card-body">
         <div class="card-name">${escHtml(r.name)}</div>
         <div class="card-meta">${r.glass || ''}${r.credit && r.credit.toLowerCase().includes('troy') ? ' &nbsp;·&nbsp; <span style="color:var(--terracotta);font-style:normal">✦ House</span>' : ''}</div>
@@ -1936,7 +1937,6 @@ function lookupIngredientABV(itemName) {
 }
 
 function getDilutionFactor(recipe) {
-  if (recipe.frozen) return 0;
   const ice    = recipe.presentation?.ice || null;
   const method = (recipe.method || '').toLowerCase();
   const shaken  = method.includes('shake') || method.includes('shaken');
@@ -2227,6 +2227,16 @@ function initNinjaPanel(recipe) {
       await idbPut('recipes', recipe);
       const idx = allRecipes.findIndex(r => r.name === recipe.name);
       if (idx !== -1) allRecipes[idx].frozen = recipe.frozen;
+      // Re-render the ABV pill — frozen no longer affects it but re-render
+      // ensures the pill always reflects current recipe state immediately
+      const pillEl = document.querySelector('.recipe-abv-pill');
+      if (pillEl) {
+        const result = calculateRecipeABV(recipe);
+        if (result) {
+          const sym = result.usedDefault ? '≈' : '~';
+          pillEl.textContent = `${sym}${result.abv.toFixed(1)}% ABV`;
+        }
+      }
     } catch(e) { console.warn('Could not save frozen state', e); }
   });
 
