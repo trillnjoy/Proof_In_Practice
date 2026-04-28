@@ -1413,7 +1413,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-27 10:00 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-27 14:00 UTC</div>
   </footer>
 
 
@@ -2846,7 +2846,7 @@ const DR = (() => {
     flute:      {top:16,  bot:111, lf:0.42, ihw:18, ohw:22, clipId:'cp-flute'},
     snifter:    {top:48,  bot:150, lf:0.28, ihw:40, ohw:50, clipId:'cp-snifter'},
     port:       {top:52,  bot:128, lf:0.16, ihw:30, ohw:36, clipId:'cp-port'},
-    irish:      {top:22,  bot:164, lf:0.42, ihw:19, ohw:23, clipId:'cp-irish'},
+    irish:      {top:24,  bot:140, lf:0.38, ihw:25, ohw:28, clipId:'cp-irish'},
     tropical:   {top:40,  bot:154, lf:0.38, ihw:28, ohw:34, clipId:'cp-tropical'},
     julep:      {top:34,  bot:166, lf:0.38, ihw:40, ohw:46, clipId:'cp-julep'},
     mule:       {top:32,  bot:164, lf:0.38, ihw:44, ohw:52, clipId:'cp-mule'},
@@ -2884,6 +2884,22 @@ const DR = (() => {
       <stop offset="0%"   stop-color="rgba(200,228,255,0.48)"/>
       <stop offset="100%" stop-color="rgba(155,198,230,0.16)"/>
     </linearGradient>
+    <radialGradient id="dr-gl-knop" cx="36%" cy="32%" r="62%">
+      <stop offset="0%"   stop-color="rgba(235,248,255,0.72)"/>
+      <stop offset="45%"  stop-color="rgba(175,215,240,0.30)"/>
+      <stop offset="100%" stop-color="rgba(90,140,185,0.08)"/>
+    </radialGradient>
+    <radialGradient id="dr-gl-foot" cx="35%" cy="28%" r="68%">
+      <stop offset="0%"   stop-color="rgba(225,242,255,0.58)"/>
+      <stop offset="60%"  stop-color="rgba(175,210,235,0.25)"/>
+      <stop offset="100%" stop-color="rgba(130,178,215,0.08)"/>
+    </radialGradient>
+    <linearGradient id="dr-gl-handle" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="rgba(215,238,255,0.60)"/>
+      <stop offset="25%"  stop-color="rgba(200,228,255,0.18)"/>
+      <stop offset="65%"  stop-color="rgba(190,220,250,0.32)"/>
+      <stop offset="100%" stop-color="rgba(170,210,240,0.58)"/>
+    </linearGradient>
     <linearGradient id="dr-copper" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%"   stop-color="#7a3a10"/>
       <stop offset="22%"  stop-color="#c86820"/>
@@ -2900,7 +2916,7 @@ const DR = (() => {
     <clipPath id="dr-cp-flute">    <path d="M74,18 L72,111 L108,111 L106,18 Z"/></clipPath>
     <clipPath id="dr-cp-snifter">  <path d="M50,50 Q47,122 68,148 Q90,158 112,148 Q133,122 130,50 Z"/></clipPath>
     <clipPath id="dr-cp-port">     <path d="M60,56 Q58,122 90,128 Q122,122 120,56 Z"/></clipPath>
-    <clipPath id="dr-cp-irish">    <path d="M71,24 L71,164 L109,164 L109,24 Z"/></clipPath>
+    <clipPath id="dr-cp-irish">    <path d="M64,26 C64,72 71,138 79,140 L101,140 C109,138 116,72 116,26 Z"/></clipPath>
     <clipPath id="dr-cp-tropical"> <path d="M65,42 Q60,106 65,152 Q90,163 115,152 Q120,106 115,42 Q90,34 65,42 Z"/></clipPath>
     <clipPath id="dr-cp-julep">    <path d="M49,36 L53,166 L127,166 L131,36 Z"/></clipPath>
     <clipPath id="dr-cp-mule">     <path d="M46,26 Q38,96 42,166 L138,166 Q142,96 134,26 Z"/></clipPath>
@@ -2919,7 +2935,7 @@ const DR = (() => {
       'nick-nora':`<path d="M52,50 Q48,118 90,124 Q132,118 128,50 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/><path d="M52,50 Q90,44 128,50" stroke="${R}" stroke-width="3"/><path d="M52,50 Q62,116 90,124" fill="${H}" opacity="0.38"/><rect x="87.5" y="124" width="5" height="52" fill="${ST}" stroke="${E}" stroke-width="0.8"/><ellipse cx="90" cy="181" rx="26" ry="5.5" fill="${BA}"/><ellipse cx="90" cy="178" rx="18" ry="4" fill="${G}" stroke="${E}" stroke-width="1"/>`,
       flute:`<path d="M70,16 L68,111 L112,111 L110,16 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/><line x1="70" y1="16" x2="110" y2="16" stroke="${E}" stroke-width="2.2"/><rect x="70" y="16" width="40" height="4" fill="${R}"/><rect x="73" y="20" width="10" height="88" rx="2" fill="${H}" opacity="0.58"/><rect x="88" y="111" width="4" height="68" fill="${ST}" stroke="${E}" stroke-width="0.7"/><ellipse cx="90" cy="184" rx="22" ry="5" fill="${BA}"/><ellipse cx="90" cy="181" rx="12" ry="3" fill="${G}" stroke="${E}" stroke-width="1"/>`,
       snifter:`<path d="M40,48 Q36,124 66,150 Q90,162 114,150 Q144,124 140,48 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/><line x1="40" y1="48" x2="140" y2="48" stroke="${E}" stroke-width="2.2"/><rect x="40" y="48" width="100" height="4" fill="${R}"/><path d="M40,48 Q56,130 66,150" fill="${H}" opacity="0.36"/><path d="M66,150 Q80,162 90,162 Q100,162 114,150" fill="none" stroke="${ST}" stroke-width="5"/><rect x="87" y="162" width="6" height="14" fill="${ST}" stroke="${E}" stroke-width="0.8"/><ellipse cx="90" cy="180" rx="28" ry="6" fill="${BA}"/><ellipse cx="90" cy="176" rx="16" ry="3.5" fill="${G}" stroke="${E}" stroke-width="1"/>`,
-      irish:`<path d="M66,22 L66,168 Q66,174 72,174 L108,174 Q114,174 114,168 L114,22 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/><path d="M110,52 Q126,62 124,94 Q122,126 110,132" fill="none" stroke="${E}" stroke-width="6.5" stroke-linecap="round"/><path d="M110,56 Q122,65 120,94 Q118,123 110,128" fill="none" stroke="${H}" stroke-width="3.5" stroke-linecap="round" opacity="0.42"/><rect x="66" y="22" width="48" height="4" fill="${R}"/><rect x="70" y="28" width="9" height="140" rx="2" fill="${H}" opacity="0.56"/><ellipse cx="90" cy="178" rx="22" ry="5" fill="${G}" stroke="${E}" stroke-width="1.2"/><ellipse cx="90" cy="174" rx="10" ry="7" fill="${G}" stroke="${E}" stroke-width="1.2"/><ellipse cx="90" cy="183" rx="28" ry="5" fill="${BA}"/>`,
+      irish:`<path d="M62,24 C62,70 70,138 78,140 L102,140 C110,138 118,70 118,24 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/><rect x="62" y="24" width="56" height="4" fill="${R}"/><path d="M67,28 C67,74 74,134 80,139" fill="none" stroke="rgba(255,255,255,0.30)" stroke-width="7" stroke-linecap="round"/><path d="M78,140 C78,146 85,149 86,150 L94,150 C95,149 102,146 102,140" fill="${G}" stroke="${E}" stroke-width="1.2"/><ellipse cx="90" cy="162" rx="12" ry="11.5" fill="url(#dr-gl-knop)" stroke="${E}" stroke-width="1.2"/><path d="M84,173 C84,177 86,179 88,179 L92,179 C94,179 96,177 96,173" fill="${G}" stroke="${E}" stroke-width="1"/><ellipse cx="90" cy="181" rx="25" ry="6.5" fill="url(#dr-gl-foot)" stroke="${E}" stroke-width="1.3"/><ellipse cx="90" cy="185" rx="26" ry="4.5" fill="${BA}" opacity="0.6"/><path d="M117,62 Q151,64 151,92 Q151,124 110,124 L110,118 Q143,118 143,92 Q143,68 117,68 Z" fill="url(#dr-gl-handle)" stroke="${E}" stroke-width="1"/><path d="M117,65 Q148,67 148,92 Q148,121 110,121" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1.5" stroke-linecap="round"/>`,
       tropical:`<path d="M56,40 Q50,108 56,156 Q90,170 124,156 Q130,108 124,40 Q90,30 56,40 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/><path d="M56,40 Q90,30 124,40" stroke="${R}" stroke-width="3"/><path d="M56,40 Q58,110 62,156" fill="${H}" opacity="0.46"/><ellipse cx="90" cy="168" rx="36" ry="7" fill="${BA}"/>`,
       julep:`<path d="M44,34 L48,170 L132,170 L136,34 Z" fill="${G}" stroke="${E}" stroke-width="1.5"/><line x1="44" y1="34" x2="136" y2="34" stroke="${E}" stroke-width="2.8"/><rect x="45" y="34" width="90" height="4" fill="${R}"/><path d="M44,34 L50,76 L52,170" fill="${H}" opacity="0.48"/><ellipse cx="90" cy="172" rx="46" ry="7" fill="${BA}"/>`,
       mule:`<path d="M38,24 Q30,96 36,170 L144,170 Q150,96 142,24 Z" fill="#7a3a10" stroke="#6a3010" stroke-width="1.5"/><path d="M38,24 Q30,96 36,170 L144,170 Q150,96 142,24 Z" fill="url(#dr-copper)" stroke="#6a3010" stroke-width="1.5"/><path d="M38,24 Q90,18 142,24 Q142,30 138,32 Q90,26 42,32 Q38,30 38,24 Z" fill="#d07020" stroke="#8a4010" stroke-width="1"/><ellipse cx="58" cy="60"  rx="5" ry="3.5" fill="rgba(0,0,0,0.10)" transform="rotate(20,58,60)"/><ellipse cx="80" cy="50"  rx="4" ry="3"   fill="rgba(0,0,0,0.08)" transform="rotate(-10,80,50)"/><ellipse cx="110" cy="55" rx="5" ry="3"   fill="rgba(0,0,0,0.09)" transform="rotate(30,110,55)"/><ellipse cx="68" cy="90"  rx="5" ry="4"   fill="rgba(0,0,0,0.08)" transform="rotate(-15,68,90)"/><ellipse cx="100" cy="85" rx="4" ry="3.5" fill="rgba(0,0,0,0.10)" transform="rotate(10,100,85)"/><path d="M38,24 Q32,96 36,170" fill="none" stroke="rgba(220,140,60,0.55)" stroke-width="6" stroke-linecap="round"/><path d="M142,60 Q164,60 166,96 Q164,132 142,132" fill="none" stroke="#b85e18" stroke-width="7" stroke-linecap="round"/><path d="M142,64 Q160,64 162,96 Q160,128 142,128" fill="none" stroke="#e08030" stroke-width="3.5" stroke-linecap="round" opacity="0.6"/>`,
@@ -2952,10 +2968,10 @@ const DR = (() => {
       highball:`<rect x="${90-hw}" y="${fillY}" width="${hw*2}" height="${g.bot-fillY}" fill="${color}" opacity="${op}" clip-path="${cp}"/>`,
       coupe:`<path d="M${90-hw},${fillY} Q90,${fillY+4} ${90+hw},${fillY} Q142,115 90,120 Q38,115 ${90-hw},${fillY} Z" fill="${color}" opacity="${op}" clip-path="${cp}"/>`,
       cocktail:`<path d="M${90-(hw*(1-(fillY-26)/84))},${fillY} L${90+(hw*(1-(fillY-26)/84))},${fillY} L90,108 Z" fill="${color}" opacity="0.86" clip-path="${cp}"/>`,
-      'nick-nora':`<path d="M${90-hw},${fillY} Q90,${fillY+2} ${90+hw},${fillY} Q126,68 90,73 Q54,68 ${90-hw},${fillY} Z" fill="${color}" opacity="${op}" clip-path="${cp}"/>`,
+      'nick-nora':`<path d="M${90-hw},${fillY} Q90,${fillY+2} ${90+hw},${fillY} Q132,118 90,124 Q48,118 ${90-hw},${fillY} Z" fill="${color}" opacity="${op}" clip-path="${cp}"/>`,
       flute:`<rect x="${90-hw}" y="${fillY}" width="${hw*2}" height="${g.bot-fillY}" fill="${color}" opacity="${op}" clip-path="${cp}"/>`,
       snifter:`<path d="M${90-hw},${fillY} L${90+hw},${fillY} Q140,124 114,150 Q90,162 66,150 Q40,124 ${90-hw},${fillY} Z" fill="${color}" opacity="0.86" clip-path="${cp}"/>`,
-      irish:`<rect x="${90-hw}" y="${fillY}" width="${hw*2}" height="${g.bot-fillY}" fill="${color}" opacity="${op}" clip-path="${cp}"/>`,
+      irish:`<path d="M${90-hw},${fillY} Q90,${fillY-1} ${90+hw},${fillY} C${90+hw+2},${fillY+37} ${90+11},138 ${90+11},${g.bot} L${90-11},${g.bot} C${90-11},138 ${90-hw-2},${fillY+37} ${90-hw},${fillY} Z" fill="${color}" opacity="${op}" clip-path="${cp}"/>`,
       tropical:`<path d="M${90-hw+((fillY-40)*0.15)},${fillY} Q90,${fillY-4} ${90+hw-((fillY-40)*0.15)},${fillY} Q124,108 124,156 Q90,170 56,156 Q50,108 ${90-hw+((fillY-40)*0.15)},${fillY} Z" fill="${color}" opacity="0.86" clip-path="${cp}"/>`,
       julep:`<path d="M${90-hw+((fillY-34)*0.05)},${fillY} L${90+hw-((fillY-34)*0.05)},${fillY} L132,170 L48,170 Z" fill="${color}" opacity="0.86" clip-path="${cp}"/>`,
       mule:`<rect x="${90-hw}" y="${fillY}" width="${hw*2}" height="${g.bot-fillY}" fill="${color}" opacity="${op}" clip-path="${cp}"/>`,
@@ -3176,7 +3192,7 @@ const EVI = { /* vessel icons (32px) */
   'nick-nora':`<svg viewBox="0 0 32 32"><path d="M6,7 L26,7 C26,7 28,20 16,24 C4,20 6,7 6,7 Z" fill="none" stroke="#c8a870" stroke-width="1.8"/><line x1="16" y1="24" x2="16" y2="29" stroke="#c8a870" stroke-width="1.8"/><line x1="10" y1="29" x2="22" y2="29" stroke="#c8a870" stroke-width="1.8"/></svg>`,
   flute:`<svg viewBox="0 0 32 32"><path d="M8,2 L7,18 L25,18 L24,2 Z" fill="none" stroke="#c8a870" stroke-width="1.8"/><line x1="16" y1="18" x2="16" y2="30" stroke="#c8a870" stroke-width="1.8"/><line x1="10" y1="30" x2="22" y2="30" stroke="#c8a870" stroke-width="1.8"/></svg>`,
   snifter:`<svg viewBox="0 0 32 32"><path d="M4,8 Q2,21 9,26 Q16,30 23,26 Q30,21 28,8 Z" fill="none" stroke="#c8a870" stroke-width="1.8"/><line x1="16" y1="26" x2="16" y2="31" stroke="#c8a870" stroke-width="2.2"/><ellipse cx="16" cy="32" rx="4" ry="1.2" fill="#c8a870" opacity="0.38"/></svg>`,
-  irish:`<svg viewBox="0 0 32 32"><rect x="9" y="4" width="14" height="24" rx="3" fill="none" stroke="#c8a870" stroke-width="1.8"/><path d="M23,10 Q29,13 29,18 Q29,23 23,25" fill="none" stroke="#c8a870" stroke-width="1.6"/></svg>`,
+  irish:`<svg viewBox="0 0 32 32"><path d="M8,4 C8,4 7,16 10,24 L22,24 C25,16 24,4 24,4 Z" fill="none" stroke="#c8a870" stroke-width="1.8"/><line x1="8" y1="4" x2="24" y2="4" stroke="#c8a870" stroke-width="1.8"/><rect x="10" y="24" width="12" height="2" rx="0.5" fill="none" stroke="#c8a870" stroke-width="1.2"/><line x1="15" y1="26" x2="15" y2="28" stroke="#c8a870" stroke-width="1.4"/><ellipse cx="15" cy="28" rx="2.5" ry="1" fill="none" stroke="#c8a870" stroke-width="1.2"/><ellipse cx="15" cy="30" rx="5" ry="1.2" fill="none" stroke="#c8a870" stroke-width="1.2"/><path d="M24,9 Q29,11 29,15 Q29,19 24,21" fill="none" stroke="#c8a870" stroke-width="1.6"/></svg>`,
   tropical:`<svg viewBox="0 0 32 32"><path d="M8,8 Q6,18 8,27 Q16,31 24,27 Q26,18 24,8 Q16,5 8,8 Z" fill="none" stroke="#c8a870" stroke-width="1.8"/></svg>`,
   julep:`<svg viewBox="0 0 32 32"><path d="M6,6 L7,27 L25,27 L26,6 Z" fill="none" stroke="#c8a870" stroke-width="1.8"/><line x1="6" y1="6" x2="26" y2="6" stroke="#c8a870" stroke-width="2.2"/></svg>`,
   mule:`<svg viewBox="0 0 32 32"><path d="M6,5 Q3,18 5,27 L27,27 Q29,18 26,5 Z" fill="#c86820" stroke="#7a3a10" stroke-width="1.5"/><path d="M6,5 Q16,3 26,5 Q26,8 24,9 Q16,7 8,9 Q6,8 6,5 Z" fill="#d07020"/><path d="M27,10 Q33,13 33,16 Q33,20 27,23" fill="none" stroke="#8a4010" stroke-width="1.8"/></svg>`,
