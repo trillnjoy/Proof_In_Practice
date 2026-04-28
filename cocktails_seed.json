@@ -760,9 +760,11 @@
         "ice": null,
         "citrus": "lime-twist",
         "garnish": [],
-        "extras": []
+        "extras": [],
+        "slushie": false
       },
-      "frozen": false
+      "frozen": false,
+      "_originalName": "Airmail"
     },
     {
       "name": "Alexander",
@@ -848,8 +850,10 @@
         "ice": "cubes",
         "citrus": "orange-wedge",
         "garnish": [],
-        "extras": []
-      }
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "Anejo Highball"
     },
     {
       "name": "Aperol Spritz",
@@ -879,14 +883,16 @@
       "method": "Place Aperol and lemon juice in glass with several ice cubes. Stir. Remove ice cubes. Add Prosecco. Add club soda. Garnish with lemon twist.",
       "glass": "wine",
       "presentation": {
-        "vessel": "wine",
+        "vessel": "snifter",
         "color": "#e05830",
         "float": null,
         "ice": "crushed",
         "citrus": "orange-wedge",
         "garnish": [],
-        "extras": []
-      }
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "Aperol Spritz"
     },
     {
       "name": "Archangel",
@@ -1066,8 +1072,10 @@
         "ice": "cubes",
         "citrus": null,
         "garnish": [],
-        "extras": []
-      }
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "Bee Sting"
     },
     {
       "name": "Bee's Knees",
@@ -1130,8 +1138,10 @@
         "ice": null,
         "citrus": null,
         "garnish": [],
-        "extras": []
-      }
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "Bellini (Phoney Bologna)"
     },
     {
       "name": "Between the Sheets",
@@ -1451,8 +1461,10 @@
         "ice": null,
         "citrus": "lemon-peel",
         "garnish": [],
-        "extras": []
-      }
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "Brandy Crusta"
     },
     {
       "name": "Call Ron Cooper",
@@ -1640,8 +1652,10 @@
         "garnish": [
           "cherry"
         ],
-        "extras": []
-      }
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "Champagne Cocktail"
     },
     {
       "name": "Corpse Reviver",
@@ -1771,8 +1785,10 @@
         "ice": null,
         "citrus": null,
         "garnish": [],
-        "extras": []
-      }
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "Cran-Rosemary Sparkler"
     },
     {
       "name": "Cuba Libre",
@@ -1862,8 +1878,10 @@
         "ice": "cubes",
         "citrus": "lime-wedge",
         "garnish": [],
-        "extras": []
-      }
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "Dark 'N' Stormy"
     },
     {
       "name": "Dirty Martini",
@@ -1896,8 +1914,10 @@
         "garnish": [
           "olive"
         ],
-        "extras": []
-      }
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "Dirty Martini"
     },
     {
       "name": "Dragon Smoke & Fire",
@@ -1984,8 +2004,10 @@
         "ice": "cubes",
         "citrus": "lemon-wedge",
         "garnish": [],
-        "extras": []
-      }
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "Electric Lemonade"
     },
     {
       "name": "Espresso Martini",
@@ -2021,8 +2043,10 @@
         "ice": null,
         "citrus": null,
         "garnish": [],
-        "extras": []
-      }
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "Espresso Martini"
     },
     {
       "name": "Fleming's Raspberry Cooler",
@@ -2058,7 +2082,8 @@
         "ice": "cubes",
         "citrus": "lime-wedge",
         "garnish": [],
-        "extras": []
+        "extras": [],
+        "slushie": false
       },
       "_originalName": "Fleming's Raspberry Cooler"
     },
@@ -2096,8 +2121,10 @@
         "ice": null,
         "citrus": "lemon-twist",
         "garnish": [],
-        "extras": []
-      }
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "French 75"
     },
     {
       "name": "French Connection",
@@ -2187,8 +2214,10 @@
         "ice": "cubes",
         "citrus": "lime-wedge",
         "garnish": [],
-        "extras": []
-      }
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "Ginger Irishman"
     },
     {
       "name": "God Father",
@@ -2334,14 +2363,16 @@
       "method": "Muddle butter and spices. Add rum then hot water. Stir and serve with cinnamon stick garnish.",
       "glass": "mug",
       "presentation": {
-        "vessel": "mug",
+        "vessel": "irish",
         "color": "#c87840",
         "float": null,
         "ice": null,
         "citrus": null,
         "garnish": [],
-        "extras": []
-      }
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "Hot Buttered Rum"
     },
     {
       "name": "Hot Toddy",
@@ -2376,14 +2407,16 @@
       "method": "Stir bourbon, simple syrup, lemon juice and allspice dram in a mixing glass. Transfer to warmed mug and add boiling water. Garnish with lemon peel. You can forgo the allspice dram if you don't have any on hand.",
       "glass": "mug",
       "presentation": {
-        "vessel": "mug",
+        "vessel": "irish",
         "color": "#8B4513",
         "float": null,
         "ice": null,
         "citrus": "lemon-peel",
         "garnish": [],
-        "extras": []
-      }
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "Hot Toddy"
     },
     {
       "name": "Hurricane",
@@ -2472,7 +2505,7 @@
       "method": "Heat the glass you are serving the drink in with warm water. Once the glass has warmed, remove the water and add the whiskey and brown sugar simple syrup. Stir in the coffee. Top with whipped cream and serve.",
       "glass": "mug",
       "presentation": {
-        "vessel": "mug",
+        "vessel": "irish",
         "color": "#2a0e04",
         "float": null,
         "ice": null,
@@ -2480,8 +2513,10 @@
         "garnish": [],
         "extras": [
           "whipped-cream"
-        ]
-      }
+        ],
+        "slushie": false
+      },
+      "_originalName": "Irish Coffee"
     },
     {
       "name": "Jasmine",
@@ -2566,8 +2601,10 @@
         "garnish": [
           "olive"
         ],
-        "extras": []
-      }
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "Jill's Filthy Martini"
     },
     {
       "name": "John Collins",
@@ -2605,8 +2642,10 @@
         "garnish": [
           "cherry"
         ],
-        "extras": []
-      }
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "John Collins"
     },
     {
       "name": "Kamikaze",
@@ -2664,8 +2703,10 @@
         "ice": null,
         "citrus": "lemon-twist",
         "garnish": [],
-        "extras": []
-      }
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "Kir Royale"
     },
     {
       "name": "La Otra Palabra",
@@ -2758,8 +2799,10 @@
         "ice": "cubes",
         "citrus": null,
         "garnish": [],
-        "extras": []
-      }
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "Lake Como Christmas"
     },
     {
       "name": "Lemon Drop",
@@ -3058,8 +3101,10 @@
         "garnish": [
           "olive"
         ],
-        "extras": []
-      }
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "Martini"
     },
     {
       "name": "Mary Pickford",
@@ -3181,8 +3226,10 @@
         "garnish": [
           "cherry"
         ],
-        "extras": []
-      }
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "Michael Collins"
     },
     {
       "name": "Michelada",
@@ -3217,7 +3264,7 @@
       "method": "Rim a glass with salt then fill with ice. Add your hot sauce and lime and top with beer. Garnish with a lime wedge.",
       "glass": "mug",
       "presentation": {
-        "vessel": "mug",
+        "vessel": "irish",
         "color": "#c8a820",
         "float": null,
         "ice": null,
@@ -3225,8 +3272,10 @@
         "garnish": [],
         "extras": [
           "salted-rim"
-        ]
-      }
+        ],
+        "slushie": false
+      },
+      "_originalName": "Michelada"
     },
     {
       "name": "Mimosa",
@@ -3257,8 +3306,10 @@
         "ice": null,
         "citrus": null,
         "garnish": [],
-        "extras": []
-      }
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "Mimosa"
     },
     {
       "name": "Mistletoe Martini",
@@ -3340,8 +3391,10 @@
         "extras": [
           "straw",
           "mint-sprig"
-        ]
-      }
+        ],
+        "slushie": false
+      },
+      "_originalName": "Mojito"
     },
     {
       "name": "Moscow Mule",
@@ -3366,14 +3419,18 @@
       "method": "Combine the vodka and ginger beer. Add lime juice. Garnish with lime slice.",
       "glass": "mule mug",
       "presentation": {
-        "vessel": "mule mug",
+        "vessel": "mule",
         "color": "#d4e8c0",
         "float": null,
         "ice": "cubes",
         "citrus": "lime-wedge",
         "garnish": [],
-        "extras": []
-      }
+        "extras": [
+          "straw"
+        ],
+        "slushie": false
+      },
+      "_originalName": "Moscow Mule"
     },
     {
       "name": "Musso & Frank's Martini",
@@ -3407,7 +3464,8 @@
         "garnish": [
           "olive"
         ],
-        "extras": []
+        "extras": [],
+        "slushie": false
       },
       "_originalName": "Musso & Frank's Martini"
     },
@@ -3524,7 +3582,8 @@
         "garnish": [
           "olive"
         ],
-        "extras": []
+        "extras": [],
+        "slushie": false
       },
       "_originalName": "Obituary"
     },
@@ -3647,7 +3706,8 @@
         "garnish": [
           "cucumber-slice"
         ],
-        "extras": []
+        "extras": [],
+        "slushie": false
       },
       "_originalName": "Old Sport"
     },
@@ -3788,8 +3848,10 @@
         "extras": [
           "straw",
           "mint-sprig"
-        ]
-      }
+        ],
+        "slushie": false
+      },
+      "_originalName": "Pimm's Cup"
     },
     {
       "name": "Pisco Sour",
@@ -4258,8 +4320,10 @@
         "ice": "cubes",
         "citrus": "orange-wedge",
         "garnish": [],
-        "extras": []
-      }
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "Spritz Veneziano"
     },
     {
       "name": "Sweet Lordy Vader",
@@ -4454,12 +4518,13 @@
       "presentation": {
         "vessel": "rocks",
         "color": "#a06030",
-        "float": "rum",
+        "float": null,
         "ice": "cubes",
-        "citrus": null,
+        "citrus": "lemon-peel",
         "garnish": [],
         "extras": []
-      }
+      },
+      "_originalName": "The Penicillin"
     },
     {
       "name": "The Sherpa",
@@ -4534,8 +4599,10 @@
         "garnish": [],
         "extras": [
           "straw"
-        ]
-      }
+        ],
+        "slushie": false
+      },
+      "_originalName": "Tom Collins"
     },
     {
       "name": "United Nations",
