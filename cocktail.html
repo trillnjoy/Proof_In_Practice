@@ -1335,33 +1335,26 @@
 <div id="app">
 
   <!-- ── HEADER ── -->
-  <header id="header">
-    <div class="header-inner">
-      <button id="back-btn" aria-label="Back">←</button>
-      <div id="app-title"></div>
-      <div id="app-subtitle"></div>
-      <div class="logo-wrap" id="logo-wrap">
-        <span class="logo-glass">🍸</span>
-        <div class="logo-text">
-          <span class="logo-proof">Proof</span>
-          <div class="logo-in-row">
-            <span class="logo-in-rule"></span>
-            <span class="logo-in">in</span>
-            <span class="logo-in-rule"></span>
-          </div>
-          <span class="logo-practice">Practice</span>
-        </div>
-      </div>
-      <nav class="header-nav">
-        <button class="header-nav-btn active" data-view="recipes" aria-label="Recipes">
-          <span class="hnav-icon">📖</span>Recipes
-        </button>
-        <button class="header-nav-btn" data-view="inventory" aria-label="Top Shelf">
-          <span class="hnav-icon">🍾</span>Top Shelf
-        </button>
-        <button id="settings-btn" aria-label="Settings" style="background:none;border:none;color:var(--amber);font-size:1rem;padding:4px 8px;cursor:pointer;flex-shrink:0;">⚙</button>
-      </nav>
+  <header id="header" style="padding:0;position:relative;border-bottom:3px solid var(--amber);">
+    <button id="back-btn" aria-label="Back" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);z-index:10;display:none;background:none;border:none;color:var(--amber);font-size:22px;cursor:pointer;padding:2px 6px;">←</button>
+    <div style="position:relative;width:100%;line-height:0;">
+      <img src="https://trillnjoy.github.io/Proof_In_Practice/Images/CocktailHeader.png"
+           alt="Proof In Practice"
+           style="width:100%;height:auto;display:block;">
+      <!-- Click zones as positioned overlays — percentages work here -->
+      <div onclick="document.querySelector('[data-view=recipes]').click();"
+           style="position:absolute;top:0;left:33%;width:23%;height:100%;cursor:pointer;" aria-label="Recipes"></div>
+      <div onclick="document.querySelector('[data-view=inventory]').click();"
+           style="position:absolute;top:0;left:56%;width:30%;height:100%;cursor:pointer;" aria-label="Top Shelf"></div>
+      <div onclick="document.getElementById('settings-btn').click();"
+           style="position:absolute;top:0;left:86%;width:14%;height:100%;cursor:pointer;" aria-label="Settings"></div>
     </div>
+    <!-- Hidden nav and settings button retain JS wiring -->
+    <nav class="header-nav" style="display:none;">
+      <button class="header-nav-btn active" data-view="recipes" aria-label="Recipes">Recipes</button>
+      <button class="header-nav-btn" data-view="inventory" aria-label="Top Shelf">Top Shelf</button>
+    </nav>
+    <button id="settings-btn" aria-label="Settings" style="display:none;"></button>
   </header>
 
   <!-- ── SEARCH (list view only) ── -->
@@ -1414,7 +1407,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-28 15:00 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-28 16:00 UTC</div>
   </footer>
 
 
@@ -2892,8 +2885,8 @@ function showView(view) {
 
   // Header title
   if (isDetail && detailRecipe) {
-    appTitle.textContent    = detailRecipe.name;
-    appSubtitle.textContent = '';
+    if (appTitle)    appTitle.textContent    = detailRecipe.name;
+    if (appSubtitle) appSubtitle.textContent = '';
   }
 
   // Show active view
