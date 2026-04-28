@@ -1413,7 +1413,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-28 10:00 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-28 12:00 UTC</div>
   </footer>
 
 
@@ -1771,61 +1771,167 @@ const UNIT_TO_OZ = {
   'pinch': 0, 'null': 0
 };
 
-const SPIRIT_DEFAULTS = [
-  { words: ['bourbon','rye'],                     abv: 0.45 },
-  { words: ['scotch'],                             abv: 0.40 },
-  { words: ['irish'],                              abv: 0.40 },
-  { words: ['vodka'],                              abv: 0.40 },
-  { words: ['rum'],                                abv: 0.40 },
-  { words: ['gin'],                                abv: 0.42 },
-  { words: ['tequila','mezcal'],                   abv: 0.40 },
-  { words: ['cognac','brandy'],                    abv: 0.40 },
-  { words: ['whiskey','whisky'],                   abv: 0.45 },
-  { words: ['liqueur','schnapps','triple sec',
-            'curaçao','curacao','amaro','vermouth',
-            'aperol','campari','falernum','strega',
-            'benedictine','frangelico','amaretto',
-            'kahlua','kahlúa','cointreau','chartreuse'], abv: 0.20 },
-  { words: ['champagne','prosecco','wine','beer','cider'], abv: 0.12 },
-  { words: ['syrup','juice','water','soda','cream',
-            'milk','egg','bitters','grenadine',
-            'orgeat','honey','sugar'],             abv: 0 },
-];
+/* ══════════════════════════════════════════════
+   INGREDIENT ABV TABLE
+   Named products at actual ABV, ordered specific → general.
+   Zero-ABV items checked first since many names contain spirit words.
+   Inventory lookup is a precision override layer on top.
+══════════════════════════════════════════════ */
+const INGREDIENT_ABV = [
+  // ── ZERO-ABV ──────────────────────────────────────────────────────────────
+  { match: ['juice','water','soda','tonic','cola','ginger beer','ginger ale',
+            'syrup','honey','sugar','agave','grenadine','orgeat','falernum syrup',
+            'coconut cream','coconut milk','pineapple cream','coconut water',
+            'cream','milk','egg white','egg','aquafaba','foam','whipped',
+            'bitters',
+            'salt','pepper','nutmeg','spice','cinnamon','cardamom',
+            'coffee','espresso','cold brew',
+            'shrub','vinegar','verjuice','kombucha',
+            'tea','matcha','hibiscus','rose water',
+            'lime juice','lemon juice','orange juice','grapefruit juice',
+            'simple syrup','demerara syrup','rich syrup','honey syrup',
+            'passion fruit','pineapple juice'],   abv: 0 },
 
-function getDilutionFactor(recipe) {
-  if (recipe.frozen) return 0;
-  const ice    = recipe.presentation?.ice || null;
-  const method = (recipe.method || '').toLowerCase();
-  const shaken  = method.includes('shake') || method.includes('shaken');
-  const stirred = method.includes('stir')  || method.includes('stirred');
-  if (ice === 'crushed') return 0.15;
-  if (ice === 'cubes')   return shaken ? 0.40 : 0.10;
-  if (ice === 'huge')    return 0.05;
-  if (shaken)            return 0.30;
-  if (stirred)           return 0.20;
-  return 0;
-}
+  // ── SPECIFIC NAMED SPIRITS AND MODIFIERS ─────────────────────────────────
+  // Chartreuse
+  { match: ['chartreuse vep'],                    abv: 0.54 },
+  { match: ['green chartreuse'],                  abv: 0.55 },
+  { match: ['yellow chartreuse'],                 abv: 0.40 },
+  { match: ['chartreuse'],                        abv: 0.55 },
+  // Orange liqueurs
+  { match: ['grand marnier'],                     abv: 0.40 },
+  { match: ['cointreau'],                         abv: 0.40 },
+  { match: ['triple sec'],                        abv: 0.30 },
+  { match: ['blue curacao','blue curaçao'],       abv: 0.21 },
+  { match: ['curacao','curaçao'],                 abv: 0.30 },
+  // Coffee liqueurs
+  { match: ['kahlua','kahlúa'],                   abv: 0.20 },
+  { match: ['tia maria'],                         abv: 0.20 },
+  // Cream liqueurs
+  { match: ["baileys","bailey's",'irish cream'],  abv: 0.17 },
+  // Nut / herbal liqueurs
+  { match: ['amaretto','disaronno'],              abv: 0.28 },
+  { match: ['frangelico'],                        abv: 0.20 },
+  { match: ['benedictine'],                       abv: 0.40 },
+  { match: ['b&b','b & b'],                       abv: 0.40 },
+  { match: ['drambuie'],                          abv: 0.40 },
+  { match: ['strega'],                            abv: 0.40 },
+  { match: ['galliano'],                          abv: 0.42 },
+  { match: ['sambuca'],                           abv: 0.38 },
+  { match: ['jagermeister','jägermeister'],       abv: 0.35 },
+  { match: ['midori'],                            abv: 0.20 },
+  { match: ['chambord'],                          abv: 0.165 },
+  { match: ['st. germain','st germain','elderflower liqueur'], abv: 0.20 },
+  { match: ['maraschino','luxardo'],              abv: 0.32 },
+  { match: ['malibu'],                            abv: 0.21 },
+  { match: ['passoa'],                            abv: 0.17 },
+  { match: ['peach schnapps'],                    abv: 0.20 },
+  { match: ['schnapps'],                          abv: 0.20 },
+  { match: ['batavia arrack','batavia-arrack'],   abv: 0.48 },
+  // Bitter aperitivi
+  { match: ['aperol'],                            abv: 0.11 },
+  { match: ['campari'],                           abv: 0.25 },
+  { match: ['cynar'],                             abv: 0.165 },
+  { match: ['averna'],                            abv: 0.29 },
+  { match: ['ramazzotti'],                        abv: 0.30 },
+  { match: ['fernet branca','fernet-branca'],     abv: 0.39 },
+  { match: ['fernet'],                            abv: 0.40 },
+  { match: ['amaro nonino'],                      abv: 0.35 },
+  { match: ['amaro montenegro'],                  abv: 0.23 },
+  { match: ['amaro'],                             abv: 0.30 },
+  { match: ['aperitivo'],                         abv: 0.11 },
+  // Vermouths & aromatised wines
+  { match: ['lillet blanc','lillet rose','lillet rouge'], abv: 0.17 },
+  { match: ['lillet'],                            abv: 0.17 },
+  { match: ['cocchi americano'],                  abv: 0.165 },
+  { match: ['cocchi torino'],                     abv: 0.16 },
+  { match: ['cocchi'],                            abv: 0.165 },
+  { match: ['carpano antica'],                    abv: 0.165 },
+  { match: ['punt e mes'],                        abv: 0.16 },
+  { match: ['dolin'],                             abv: 0.175 },
+  { match: ['noilly prat'],                       abv: 0.18 },
+  { match: ['dubonnet'],                          abv: 0.185 },
+  { match: ['dry vermouth','french vermouth'],    abv: 0.18 },
+  { match: ['sweet vermouth','italian vermouth'], abv: 0.16 },
+  { match: ['vermouth'],                          abv: 0.17 },
+  { match: ['pineau des charentes'],              abv: 0.17 },
+  { match: ['suze','salers','gentiane'],          abv: 0.15 },
+  // Crème de * (after specific named products above)
+  { match: ['creme de','crème de'],               abv: 0.20 },
+  // Wine and beer
+  { match: ['champagne','prosecco','cava','crémant','sparkling wine'], abv: 0.12 },
+  { match: ['port'],                              abv: 0.20 },
+  { match: ['sherry','fino','manzanilla','oloroso','amontillado','palo cortado'], abv: 0.17 },
+  { match: ['madeira'],                           abv: 0.19 },
+  { match: ['marsala'],                           abv: 0.175 },
+  { match: ['sake'],                              abv: 0.15 },
+  { match: ['wine'],                              abv: 0.13 },
+  { match: ['beer','lager','ale','stout'],        abv: 0.05 },
+  { match: ['cider'],                             abv: 0.05 },
+  // Rum
+  { match: ['overproof rum','151'],               abv: 0.68 },
+  { match: ['rhum agricole','agricole'],          abv: 0.50 },
+  { match: ['rhum'],                              abv: 0.50 },
+  { match: ['rum'],                               abv: 0.40 },
+  // Whiskey / Whisky
+  { match: ['bourbon'],                           abv: 0.45 },
+  { match: ['rye whiskey','rye whisky'],          abv: 0.45 },
+  { match: ['rye'],                               abv: 0.45 },
+  { match: ['scotch','single malt'],              abv: 0.43 },
+  { match: ['irish whiskey'],                     abv: 0.40 },
+  { match: ['japanese whisky','japanese whiskey'], abv: 0.43 },
+  { match: ['canadian whisky','canadian whiskey'], abv: 0.40 },
+  { match: ['tennessee whiskey'],                 abv: 0.40 },
+  { match: ['whiskey','whisky'],                  abv: 0.43 },
+  // Gin
+  { match: ['navy strength gin'],                 abv: 0.57 },
+  { match: ['gin'],                               abv: 0.43 },
+  // Vodka
+  { match: ['vodka'],                             abv: 0.40 },
+  // Tequila / Mezcal
+  { match: ['mezcal'],                            abv: 0.46 },
+  { match: ['tequila'],                           abv: 0.40 },
+  // Brandy / Cognac / Armagnac
+  { match: ['cognac','armagnac'],                 abv: 0.40 },
+  { match: ['calvados','applejack','apple brandy'], abv: 0.40 },
+  { match: ['pisco'],                             abv: 0.42 },
+  { match: ['grappa'],                            abv: 0.42 },
+  { match: ['brandy'],                            abv: 0.40 },
+  // High-proof & other base spirits
+  { match: ['absinthe'],                          abv: 0.68 },
+  { match: ['pastis'],                            abv: 0.45 },
+  { match: ['aquavit','akvavit'],                 abv: 0.42 },
+  { match: ['cachaca','cachaça'],                 abv: 0.40 },
+  { match: ['shochu'],                            abv: 0.25 },
+  { match: ['soju'],                              abv: 0.25 },
+  { match: ['baijiu'],                            abv: 0.55 },
+  { match: ['poitin','poteen','poitín','moonshine'], abv: 0.50 },
+  // Generic liqueur catch-all (after all named products above)
+  { match: ['liqueur'],                           abv: 0.25 },
+];
 
 function lookupIngredientABV(itemName) {
   if (!itemName) return { abv: 0, usedDefault: false };
   const lower = itemName.toLowerCase();
+
+  // 1. User inventory — exact ABV for bottles they own and have catalogued
   for (const cat of allInventory) {
     for (const bottle of cat.bottles) {
-      if (bottle.abv != null) {
-        const bname = bottle.name.toLowerCase();
-        const firstWord = lower.split(' ')[0];
-        if (bname === lower || lower.includes(bname) ||
-            (firstWord.length > 3 && bname.includes(firstWord))) {
-          return { abv: bottle.abv / 100, usedDefault: false };
-        }
-      }
+      if (bottle.abv == null) continue;
+      const bname = bottle.name.toLowerCase();
+      if (bname === lower) return { abv: bottle.abv / 100, usedDefault: false };
+      if (bname.length >= 6 && lower.includes(bname)) return { abv: bottle.abv / 100, usedDefault: false };
     }
   }
-  for (const entry of SPIRIT_DEFAULTS) {
-    if (entry.words.some(w => lower.includes(w))) {
+
+  // 2. Named ingredient table
+  for (const entry of INGREDIENT_ABV) {
+    if (entry.match.some(w => lower.includes(w))) {
       return { abv: entry.abv, usedDefault: true };
     }
   }
+
+  // 3. Unknown — treat as non-alcoholic
   return { abv: 0, usedDefault: false };
 }
 
@@ -3770,32 +3876,14 @@ function checkDeepLink() {
 
 // Ninja calculation (mirrors app engine, 12% default for share card)
 const SHARE_UNIT_TO_OZ = { oz:1, tbsp:0.5, tsp:0.1667, dash:0.021, drop:0.0017, pinch:0, null:0 };
-const SHARE_SPIRIT_DEFAULTS = [
-  { words:['bourbon','rye'],                  abv:0.45 },
-  { words:['scotch','whisky'],                abv:0.40 },
-  { words:['irish'],                          abv:0.40 },
-  { words:['vodka'],                          abv:0.40 },
-  { words:['rum'],                            abv:0.40 },
-  { words:['gin'],                            abv:0.42 },
-  { words:['tequila','mezcal'],               abv:0.40 },
-  { words:['cognac','brandy'],                abv:0.40 },
-  { words:['whiskey'],                        abv:0.45 },
-  { words:['liqueur','schnapps','triple sec','curacao','curaçao','amaro',
-            'vermouth','aperol','campari','cointreau','chartreuse'], abv:0.20 },
-  { words:['champagne','prosecco','wine','beer'], abv:0.12 },
-  { words:['syrup','juice','water','soda','cream','bitters','grenadine','orgeat'], abv:0 },
-];
+// shareCalcNinja now uses the same INGREDIENT_ABV table and inventory as the main engine
 function shareCalcNinja(ings, targetPct = 12) {
   let etoh = 0, vol = 0;
   for (const ing of ings) {
     const unit = (ing.unit || 'null').toLowerCase();
     const oz   = (parseFloat(ing.amount) || 0) * (SHARE_UNIT_TO_OZ[unit] ?? 0);
     if (!oz) continue;
-    const lower = (ing.item || '').toLowerCase();
-    let abv = 0;
-    for (const e of SHARE_SPIRIT_DEFAULTS) {
-      if (e.words.some(w => lower.includes(w))) { abv = e.abv; break; }
-    }
+    const { abv } = lookupIngredientABV(ing.item);
     etoh += oz * abv;
     vol  += oz;
   }
