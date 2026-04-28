@@ -1413,7 +1413,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-27 14:00 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-28 09:00 UTC</div>
   </footer>
 
 
@@ -1526,10 +1526,10 @@
           <div class="ec-row" id="ec-extras-row"></div>
         </div>
         <div class="ec-section" style="border-top:1px solid rgba(255,255,255,0.07);padding-top:8px;margin-top:2px;">
-          <div class="ec-label">Ninja Slushie</div>
+          <div class="ec-label">Ninja SLUSHi</div>
           <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px 0;">
             <input type="checkbox" id="ec-slushie-opt-out" style="width:14px;height:14px;accent-color:var(--amber);">
-            <span style="font-size:0.5rem;letter-spacing:0.06em;color:#a08060;line-height:1.3;">Hide Ninja panel for this recipe</span>
+            <span style="font-size:0.5rem;letter-spacing:0.06em;color:#a08060;line-height:1.3;">Hide Ninja SLUSHi panel for this recipe</span>
           </label>
         </div>
       </div>
@@ -1550,6 +1550,7 @@ let activeFilter = 'all';
 let searchQuery = '';
 let currentView = 'recipes';   // 'recipes' | 'inventory' | 'detail'
 let detailRecipe = null;
+let lastListScrollTop = null;  // restored when back-btn returns to recipe list
 let showHiddenBottles = false;  // non-owner toggle: reveal hidden bottles
 
 /* ══════════════════════════════════════════════
@@ -1857,9 +1858,9 @@ function calculateRecipeABV(recipe) {
 // oz range is min–max fill; abvCeil is the machine's maximum ABV limit.
 // Target ABV slider runs 6–ceiling in even integers; default 12%.
 const NINJA_MACHINES = [
-  { id: 'slushi',    label: 'Slushi',    ozMin: 16, ozMax: 64,  abvCeil: 16 },
-  { id: 'slushixl',  label: 'SlushiXL',  ozMin: 24, ozMax: 96,  abvCeil: 20 },
-  { id: 'slushimax', label: 'SlushiMax', ozMin: 24, ozMax: 112, abvCeil: 20 },
+  { id: 'slushi',    label: 'SLUSHi',     ozMin: 16, ozMax: 64,  abvCeil: 16 },
+  { id: 'slushixl',  label: 'SLUSHi XL',  ozMin: 24, ozMax: 96,  abvCeil: 20 },
+  { id: 'slushimax', label: 'SLUSHi Max', ozMin: 24, ozMax: 112, abvCeil: 20 },
 ];
 
 // Per-detail-view state — which machine is selected
@@ -1989,8 +1990,8 @@ function renderNinjaResult(recipe) {
   } else {
     const ozStr = nonAlcVol.toFixed(1);
     const mlStr = (nonAlcVol * 29.57).toFixed(0);
-    result.innerHTML = `Add <strong>${ozStr} oz (${mlStr} mL)</strong> non-alcoholic liquid to reach <strong>${targetPct}% ABV</strong><br>
-      <em>Current spirit mix: ${currentABV.toFixed(1)}% ABV over ${totalVol.toFixed(1)} oz</em>`;
+    result.innerHTML = `<em>Current spirit mix: ${currentABV.toFixed(1)}% ABV over ${totalVol.toFixed(1)} oz</em><br>
+      To reach <strong>${targetPct}% ABV</strong> in slush, add <strong>${ozStr} oz (${mlStr} mL)</strong> non-alcoholic liquid per serving.`;
 
     // Scale for machine section — use ozMax
     if (scaleEl) {
@@ -1998,9 +1999,9 @@ function renderNinjaResult(recipe) {
       if (mc) {
         const scaleBody = document.getElementById('ninja-scale-body');
         if (scaleBody) {
-          let html = `<div style="font-size:0.72rem;color:var(--ink-light);margin-bottom:6px;">
-            Scaled to fill <strong style="color:var(--amber)">${machine.label} max (${machine.ozMax} oz)</strong>
-            — ×${mc.multiplier.toFixed(2)}
+          const servings = mc.multiplier.toFixed(1);
+          let html = `<div style="font-size:0.78rem;color:var(--ink-mid);margin-bottom:8px;font-style:italic;">
+            To prepare <strong style="color:var(--ink);font-style:normal;">${servings} servings</strong>
           </div>`;
           html += `<ul style="list-style:none;margin:0;padding:0;">`;
           for (const ing of mc.scaledIngs) {
@@ -2027,25 +2028,46 @@ function renderNinjaResult(recipe) {
   }
 }
 
+function updateMachineButtons() {
+  document.querySelectorAll('.ninja-machine-btn').forEach(b => {
+    const isActive = b.dataset.machine === ninjaSelectedMachine;
+    b.style.background = isActive ? 'var(--amber)' : 'rgba(193,127,58,0.08)';
+    b.style.borderColor = isActive ? 'var(--amber)' : 'rgba(193,127,58,0.3)';
+    b.style.color = isActive ? '#fff' : 'var(--ink-mid)';
+    b.style.fontWeight = isActive ? '700' : '400';
+  });
+}
+
+function updateScaleToggleLabel() {
+  const scaleToggle = document.getElementById('ninja-scale-toggle');
+  if (!scaleToggle) return;
+  const machine = NINJA_MACHINES.find(m => m.id === ninjaSelectedMachine) || NINJA_MACHINES[0];
+  const open = document.getElementById('ninja-scale-section')?.dataset.open === '1';
+  const arrow = open ? '▾' : '▸';
+  scaleToggle.textContent = `${arrow} Scale for ${machine.label} (to ${machine.ozMax} oz fill line)`;
+}
+
 function initNinjaPanel(recipe) {
   const toggle   = document.getElementById('ninja-toggle');
   const controls = document.getElementById('ninja-controls');
   const slider   = document.getElementById('ninja-slider');
   if (!toggle) return;
 
+  // Set initial button and label states
+  updateMachineButtons();
+  updateScaleToggleLabel();
+
   // Wire machine selector buttons
   document.querySelectorAll('.ninja-machine-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       ninjaSelectedMachine = btn.dataset.machine;
-      document.querySelectorAll('.ninja-machine-btn').forEach(b =>
-        b.classList.toggle('active', b.dataset.machine === ninjaSelectedMachine)
-      );
-      // Update slider max to new machine's ABV ceiling, clamp value if needed
+      updateMachineButtons();
       const m = NINJA_MACHINES.find(x => x.id === ninjaSelectedMachine);
       if (m && slider) {
         slider.max = m.abvCeil;
         if (parseInt(slider.value) > m.abvCeil) slider.value = m.abvCeil;
       }
+      updateScaleToggleLabel();
       renderNinjaResult(recipe);
     });
   });
@@ -2058,7 +2080,7 @@ function initNinjaPanel(recipe) {
       const open = scaleEl.dataset.open === '1';
       scaleEl.dataset.open = open ? '0' : '1';
       scaleEl.querySelector('#ninja-scale-body').style.display = open ? 'none' : 'block';
-      scaleToggle.textContent = open ? '▸ Scale for Slushie' : '▾ Scale for Slushie';
+      updateScaleToggleLabel();
     });
   }
 
@@ -2296,6 +2318,8 @@ function initIngEditor() {
 }
 
 function showDetail(recipe) {
+  // Capture list scroll position so back-btn can restore it
+  if (currentView === 'recipes') lastListScrollTop = $('content').scrollTop;
   detailRecipe = recipe;
 
   const fmtAmount = ing => {
@@ -2352,7 +2376,7 @@ function showDetail(recipe) {
       ${recipe.presentation?.slushie === false ? '' : `
       <div class="ninja-panel" id="ninja-panel">
         <div class="ninja-header">
-          <span class="ninja-label">🧊 Ninja Slushie</span>
+          <span class="ninja-label">🧊 Ninja SLUSHi</span>
           <label class="ninja-toggle-wrap">
             <input type="checkbox" id="ninja-toggle" ${recipe.frozen ? 'checked' : ''}>
             <span class="ninja-toggle-track"></span>
@@ -2376,7 +2400,7 @@ function showDetail(recipe) {
           </div>
           <div class="ninja-result" id="ninja-result"></div>
           <div id="ninja-scale-section" style="display:none;margin-top:8px;">
-            <button id="ninja-scale-toggle" style="width:100%;text-align:left;background:none;border:none;color:var(--amber);font-family:var(--serif-body);font-size:0.72rem;letter-spacing:0.04em;padding:4px 0;cursor:pointer;">▸ Scale for Slushie</button>
+            <button id="ninja-scale-toggle" style="width:100%;text-align:left;background:none;border:none;color:var(--amber);font-family:var(--serif-body);font-size:0.72rem;letter-spacing:0.04em;padding:4px 0;cursor:pointer;">▸ Scale for ${(NINJA_MACHINES.find(m=>m.id===ninjaSelectedMachine)||NINJA_MACHINES[0]).label} (to ${(NINJA_MACHINES.find(m=>m.id===ninjaSelectedMachine)||NINJA_MACHINES[0]).ozMax} oz fill line)</button>
             <div id="ninja-scale-body" style="display:none;padding:8px 0 4px;"></div>
           </div>
         </div>
@@ -2742,8 +2766,13 @@ function showView(view) {
     );
   });
 
-  // Scroll to top
-  $('content').scrollTop = 0;
+  // Scroll to top — but restore list scroll position when returning from detail
+  if (isListView && typeof lastListScrollTop === 'number') {
+    // Defer so the view is visible before setting scroll
+    requestAnimationFrame(() => { $('content').scrollTop = lastListScrollTop; lastListScrollTop = null; });
+  } else {
+    $('content').scrollTop = 0;
+  }
 }
 
 /* ══════════════════════════════════════════════

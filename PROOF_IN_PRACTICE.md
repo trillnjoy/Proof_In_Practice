@@ -12,10 +12,11 @@ A personal cocktail recipe PWA migrated from the abandoned Highball/Studio Neat 
 - **Bottle images:** `/Images/` subfolder, named `BottleName_216.png`, 216px tall transparent PNGs
 
 ## Current Build
-- **Timestamp:** `2026-04-27 09:00 UTC` (visible in footer — always update on each build)
-- **Recipes:** 106 (as of handoff)
+- **Timestamp:** `2026-04-27 14:00 UTC` (visible in footer — always update on each build)
+- **SW cache version:** `2026-04-27-h` (must match footer timestamp — bump both together)
+- **Recipes:** 102 (as of last session)
 - **Inventory:** 81 bottles across 12 spirit categories
-- **File size:** ~175KB
+- **File size:** ~185KB
 
 ---
 
@@ -37,7 +38,7 @@ A personal cocktail recipe PWA migrated from the abandoned Highball/Studio Neat 
 
 ### Owner vs Friend Detection
 - `isOwner()` returns true if PAT is configured in localStorage
-- **Owner (you):** × button on bottles does true delete from IDB
+- **Owner (you):** × button on bottles does true delete from IDB; Delete button visible in Visual Editor
 - **Non-owner (friends):** × button hides the bottle locally in `hidden_bottles` store with confirm dialog. Never touches the canonical seed
 - Friends can Import to refresh from your latest export. They cannot Export
 
@@ -69,7 +70,8 @@ A personal cocktail recipe PWA migrated from the abandoned Highball/Studio Neat 
     "ice": "huge | cubes | crushed | null",
     "citrus": "lemon-twist | lemon-wedge | lime-wedge | orange-wedge | etc | null",
     "garnish": ["cherry", "strawberry", "olive", "celery", "pineapple-wedge", "cucumber-slice"],
-    "extras": ["umbrella", "salted-rim", "tajin-rim", "straw", "whipped-cream", "mint-sprig"]
+    "extras": ["umbrella", "salted-rim", "tajin-rim", "straw", "whipped-cream", "mint-sprig"],
+    "slushie": false
   }
 }
 ```
@@ -81,6 +83,8 @@ A personal cocktail recipe PWA migrated from the abandoned Highball/Studio Neat 
 **Glass types:** `rocks, martini, coupe, highball, collins, mule mug, mug, flute, wine, snifter, tropical, nick-nora`
 
 **Credit convention:** House recipes use `"Troy"` (first name only) — this is what the My Recipes filter and the ✦ House recipe display both key off of.
+
+**`presentation.slushie`:** Set to `false` to hide the Ninja Slushie panel for that recipe. Omit the key (or any truthy value) to show it normally. Controlled via the "Hide Ninja panel for this recipe" checkbox in Visual Editor.
 
 ### Bar inventory record
 ```json
@@ -126,15 +130,10 @@ idbGetHidden()         // Returns Set of hidden keys ("Cat::Name")
 ```
 - ABV slider runs 6–ceiling in step=2 (even integers), **default 12%**. Slider max updates live when machine changes.
 - Scale section scales to `ozMax` (full machine fill).
-- Share card always uses 12% ABV target (standardized) scaled to `ozMax` of selected machine.
+- Share card always uses **12% ABV target** (standardized) scaled to `ozMax` of selected machine.
 - Selected machine stored in `ninjaSelectedMachine` (module-level state, resets to Slushi on app load).
-- `calcNinjaMachine(recipe, machine, targetPct)` — returns scaled ingredients + water for `machine.ozMax` capacity.
-- `scaleIngredients(ingredients, multiplier)` — scales amounts (handles fractions like `1/3`).
-
-### Seed schema — `presentation.slushie`
-`presentation.slushie = false` hides the Ninja panel on the detail view for that recipe.
-Set via the "Hide Ninja panel for this recipe" checkbox in Visual Editor.
-Omit the key (or set to any truthy value) to show the panel normally.
+- `calcNinjaMachine(recipe, machine, targetPct)` — returns `{ scaledIngs, scaledWater, multiplier, ... }` for `machine.ozMax` capacity.
+- `scaleIngredients(ingredients, multiplier)` — scales amounts, handles fractions like `1/3` correctly.
 
 ### ABV Calculation Engine
 ```js
@@ -179,6 +178,8 @@ Embedded IIFE — `DR.thumb(presentation)` 54×72px, `DR.hero(presentation)` 160
 Vessel normalization (seed → DR internal):
 - `martini → cocktail`, `mule mug → mule`, `mug → irish`, `wine → snifter`
 
+**Compositor canvas:** 180×230px, centered at x=90. All vessel geometry is defined in this coordinate space. A scale+translate transform fits the composition to the requested output size.
+
 ---
 
 ## UI Features
@@ -195,13 +196,15 @@ Vessel normalization (seed → DR internal):
 - ABV pill top right: `~X.X% ABV` = inventory-matched with estimated dilution. `≈X.X% ABV` = category default used
 - Edit buttons inline next to Ingredients and Method section headers
 - Glass/serve tag with complete vessel map
-- Ninja Slushie panel (always visible, off by default) — toggle + slider (6/8/10/12/14%) + real-time water calculation
+- Ninja Slushie panel (visible unless `presentation.slushie === false`) — toggle to activate; machine selector (Slushi/XL/Max); ABV slider 6–ceiling default 12%; water calculation; "Scale for Slushie" expand section
 
 ### Visual Editor
 - Opens as full overlay on Edit Visual tap
+- **Delete button** (owner only, red) — confirm dialog → `idbDelete` + splice `allRecipes` + nav to list
 - **Glass selector** — vessel buttons correctly initialized from seed canonical glass names via `glassToVessel` map (`mule mug→mule`, `mug→irish`, `wine→snifter`). Saves back to `recipe.glass` via `vesselToGlass` reverse map
 - **Title and Credit fields** side by side — both save to IDB and the seed on Export
 - Color picker, ice, citrus, garnish, extras all persist correctly
+- **Ninja opt-out checkbox** at bottom — sets `presentation.slushie = false`
 
 ### Ingredient Editor (bottom sheet)
 - Amount field + unit dropdown (oz/tsp/tbsp/dash/drop/pinch/—) + item text field
@@ -230,7 +233,7 @@ Vessel normalization (seed → DR internal):
 
 ### Share Recipe
 - **⬆︎ Share button** on every recipe detail view
-- Generates a 720px retina-quality PNG card: DR glass visual, PiP wordmark, ABV pill, QR code, ingredient list, method, Ninja Slushie guidance at 12% ABV target
+- Generates a 720px retina-quality PNG card: DR glass visual, PiP wordmark, ABV pill, QR code, ingredient list, method, Ninja Slushie panel (12% ABV, scaled to selected machine's `ozMax`, with scaled ingredient list)
 - Calls `navigator.share()` with both the PNG file and the deep link URL as text
 - iOS Messages receives: image attachment + tappable deep link URL in the same bubble
 - QR in the image encodes the deep link — useful for print/non-iMessage contexts
@@ -246,6 +249,8 @@ Vessel normalization (seed → DR internal):
 - Calls Claude API (`claude-sonnet-4-20250514`) with structured schema prompt
 - Output pre-fills the Visual Editor for review before IDB write — never writes directly without user confirmation
 - Requires Anthropic API key in Settings
+- After successful extraction: sheet closes, button resets to "Extract Recipe" (enabled). Re-opening always finds a clean ready state.
+- File input value is cleared after FileReader load — allows re-selecting the same photo on iOS.
 
 #### Import extraction prompt rules (important for quality)
 - **Amounts:** Preserve exact fractions — 1/3 stays 1/3, never rounded
@@ -307,32 +312,26 @@ Real-world propagation after commit can be **significantly longer than 30 minute
 
 ## Known Issues / Next Session
 
-### Resolved this session
-- ✅ Glass selector in Visual Editor (vessel normalization on open)
-- ✅ Credit field in Visual Editor
-- ✅ Show Hidden / Unhide for non-owner inventory
-- ✅ Service worker — network-first shell, version-keyed cache invalidation, registered
-- ✅ No-cache meta tags removed
-- ✅ Share recipe — PNG card + deep link via native share sheet
-- ✅ Deep link routing via URL fragment
-- ✅ Import Recipe sheet — text/URL/image tabs, Claude extraction, pre-fill editor
+### Resolved (2026-04-27)
 - ✅ Delete Recipe — owner-only Delete button in Visual Editor with confirm dialog; IDB delete + allRecipes splice + nav back to list
-- ✅ Ninja machine selector — Slushi / SlushiXL / SlushiMax buttons (16/24/24 oz min, 64/96/112 oz max, 16%/20%/20% ABV ceiling) in Ninja panel; slider 6–ceiling step 2 default 12%; Scale for Slushie expand section with scaled ingredient amounts to ozMax
-- ✅ Ninja slushie opt-out — `presentation.slushie = false` flag set in Visual Editor; hides Ninja panel on detail view
-- ✅ Share card Ninja section — now uses selected machine (label + ozMax), scaled ingredient amounts, standardized 12% ABV target
-- ✅ Import photo reset bug — `closeImportSheet()` now always resets Extract button text/disabled state; file input value cleared after FileReader load so same photo can be re-selected on iOS
+- ✅ Ninja machine selector — Slushi/SlushiXL/SlushiMax (16–64/24–96/24–112 oz, 16%/20%/20% ABV ceiling); slider 6–ceiling step 2 default 12%; slider max updates live on machine switch
+- ✅ Scale for Slushie — expand section shows ingredients scaled to ozMax + water amount
+- ✅ Ninja slushie opt-out — `presentation.slushie = false` hides Ninja panel; set via Visual Editor checkbox
+- ✅ Share card Ninja section — machine-aware (label + ozMax), scaled ingredients, standardized 12% ABV target
+- ✅ Import photo reset bug — `closeImportSheet()` resets Extract button; file input cleared after FileReader so same photo can be re-selected on iOS
+- ✅ Nick & Nora liquid fill — was rendering black/invisible due to hardcoded inner-dome control points. Fixed to follow vessel wall bezier to y=124
+- ✅ Irish coffee glass — complete redesign: proper tulip/bell body, smooth bezier waist→knop→foot, handle as filled D-ring tube with glass-tube gradient, three new DR gradients (`dr-gl-knop`, `dr-gl-foot`, `dr-gl-handle`)
 
 ### Pending
 
 **Medium Priority**
-1. **"Save to my collection" for shared recipes** — when a friend taps a deep link and lands on a recipe detail, a one-tap `idbPut` button to save it locally without going through Import. Simple follow-on to the share/deep link work.
-2. **Manage Hidden improvements** — the Show Hidden toggle is now built. A future enhancement: count of hidden bottles shown somewhere, or a dedicated management view.
-3. **Recipe sharing — URL fragment only path** — deep link is wired but the "Add to my collection" experience for recipients is still just Import. The one-tap save path above completes this loop.
+1. **"Save to my collection" for shared recipes** — when a friend taps a deep link, a one-tap `idbPut` button to save it locally without going through Import.
+2. **Manage Hidden improvements** — count of hidden bottles, or a dedicated management view.
+3. **Recipe sharing — URL fragment only path** — the "Add to my collection" experience for deep-link recipients completes the share loop.
 
 **Low Priority**
 4. **Build timestamp automation** — manual bump is fine for solo curator workflow.
-5. **Bottle image floating** — resolved. If recurs, check PNG bottom padding.
-6. **Encoding guard** — future seed edits via GitHub web UI risk UTF-8 corruption (`Crème → CrÃ¨me`). Import path decodes correctly going forward.
+5. **Encoding guard** — future seed edits via GitHub web UI risk UTF-8 corruption. Import path decodes correctly going forward.
 
 ---
 
@@ -352,7 +351,7 @@ Upload current `cocktails_seed.json` (downloads as `.txt` from GitHub — rename
 Open app → ⊕ Import → choose tab (Text/URL/Photo) → add Riff Notes if needed → Extract Recipe → review pre-filled Visual Editor → save. Then Export to push to GitHub seed.
 
 ### Fixing Text Corruption
-Pattern: `CrÃ¨me` instead of `Crème`. Cause: UTF-8 bytes interpreted as Latin-1 in a prior encode/decode cycle. Fix: regex replacement targeting the corruption pattern, then re-encode correctly. The current import path (`decodeURIComponent(escape(atob(...)))`) handles UTF-8 correctly going forward.
+Pattern: `CrÃ¨me` instead of `Crème`. Cause: UTF-8 bytes interpreted as Latin-1 in a prior encode/decode cycle. The current import path (`decodeURIComponent(escape(atob(...)))`) handles UTF-8 correctly going forward.
 
 ### Session Starting Prompt
 ```
@@ -372,14 +371,49 @@ Then read the attached cocktail.html and cocktail_sw.js.
 Works well for single deliberate writes (Export). Fails reliably for rapid sequential writes due to SHA conflicts (409). Do not use for per-edit write-back. IndexedDB-first with explicit Export is the correct architecture for a PWA with no backend.
 
 ### On GitHub Pages CDN
-Propagation after commit is unpredictable — observed up to several hours, not just 10–30 minutes. The green Actions circle only means GitHub processed the commit. Use `?r=N` cache busts during development. Build timestamp in footer is the only reliable version indicator.
+Propagation after commit is unpredictable — observed up to several hours. The green Actions circle only means GitHub processed the commit. Use `?r=N` cache busts during development. Build timestamp in footer is the only reliable version indicator.
 
-### On SVG Bottle Rendering (DR Engine)
-The DR engine renders cocktail visualizations as inline SVG. Key architecture notes:
-- Vessel normalization: seed canonical names → DR internal GEO keys
-- Martini liquid path must be a clean triangle (left→right→apex→close). Self-intersecting paths render as zero fill area
-- Highlight layer must render above liquid layer or it gets buried
-- `overflow:visible` on SVG can cause z-index issues with absolutely-positioned buttons
+### On SVG Vessel Rendering (DR Engine)
+
+**General principles:**
+- Compositor draws at 180×230, centered x=90. All coordinates are in this space.
+- Render order: liquid fill → vessel body → vessel highlight → float → ice → vessel mask → garnish → citrus → extras → rim cover. Liquid is drawn before the vessel — correct and intentional.
+- `overflow:visible` on SVG can cause z-index issues with absolutely-positioned buttons.
+
+**GEO table** — each vessel has `{top, bot, lf, ihw, ohw, clipId}`:
+- `top`/`bot`: y-coordinates of rim and liquid bottom
+- `lf`: liquid fill fraction — `fillY = top + (bot-top)*lf`
+- `ihw`: inner half-width at `fillY` — the liquid meniscus spans `90±ihw`. Must match the actual inner wall x at that y level. Verify numerically for curved vessels.
+- `ohw`: outer half-width — used for garnish/citrus placement
+- `clipId`: references a `<clipPath>` defining the vessel interior
+
+**Clip paths** should be inset slightly from the vessel wall outer stroke. For curved vessels, clip bezier control points should sit inside the vessel bezier control points.
+
+**Liquid fill shapes by type:**
+- Straight-sided (rocks, collins, highball, flute, irish): rect or simple path from `fillY` to `bot`
+- Flat-rimmed bowls (coupe, nick-nora): `M(90-ihw,fillY) Q90,fillY+2 (90+ihw,fillY) Q[right-wall-bottom] [bottom-center] Q[left-wall-bottom] (90-ihw,fillY) Z` — gentle meniscus bow, follows wall curves to bottom
+- Tapered triangle (cocktail/martini): narrows toward apex at y=108
+- Curved body (snifter, irish): cubic beziers following vessel wall profile
+
+**Nick & Nora fix:** Old liquid used `Q126,68 90,73 Q54,68` — a tiny inward dome near the rim that missed the bowl entirely. Fixed to `Q132,118 90,124 Q48,118` — follows vessel wall beziers to bottom at y=124.
+
+**Irish coffee glass geometry (current):**
+- Body: `M62,24 C62,70 70,138 78,140 L102,140 C110,138 118,70 118,24 Z`
+- GEO: `{top:24, bot:140, lf:0.38, ihw:25, ohw:28}`
+- Clip: `M64,26 C64,72 71,138 79,140 L101,140 C109,138 116,72 116,26 Z`
+- Waist: `M78,140 C78,146 85,149 86,150 L94,150 C95,149 102,146 102,140`
+- Knop: `ellipse cx=90 cy=162 rx=12 ry=11.5` with `url(#dr-gl-knop)`
+- Lower neck: `M84,173 C84,177 86,179 88,179 L92,179 C94,179 96,177 96,173`
+- Foot disc: `ellipse cx=90 cy=181 rx=25 ry=6.5` with `url(#dr-gl-foot)`
+- Foot shadow: `ellipse cx=90 cy=185 rx=26 ry=4.5`
+- Handle: `M117,62 Q151,64 151,92 Q151,124 110,124 L110,118 Q143,118 143,92 Q143,68 117,68 Z` with `url(#dr-gl-handle)`. Attachment x-coords verified numerically from body bezier.
+- Liquid fill: `M(90-ihw,fillY) Q90,fillY-1 (90+ihw,fillY) C(90+ihw+2,fillY+37) (90+11,138) (90+11,bot) L(90-11,bot) C(90-11,138) (90-ihw-2,fillY+37) (90-ihw,fillY) Z`
+
+**Key lessons on stems:** Never use rectangles for stem assembly — they produce visible joints and intrude into adjacent shapes. Use bezier paths for every transition (body-to-waist, waist-to-knop, knop-to-lower-neck, lower-neck-to-foot). Each transition should share an endpoint with its neighbor.
+
+**Key lessons on handles:** Verify attachment x-coordinates numerically by evaluating the body bezier at attachment y-values (`node -e` in bash). Draw handles as closed filled paths (outer bezier + inner bezier reversed = D-ring tube) rather than stroked lines. `stroke-linecap="butt"` shows open ends; filled paths don't.
+
+**Key lesson on iteration:** Build and test vessel redesigns in a standalone SVG file first. Use `node -e` to evaluate bezier x-positions at specific y-values before committing to `cocktail.html`.
 
 ### On iOS Safari Caching
 Hard reload insufficient for GitHub Pages CDN cache. Query string cache bust is reliable. `no-cache` meta tags are ignored by GitHub's CDN layer. PWA install caches aggressively — always test in Safari browser before installing as PWA.
@@ -391,7 +425,7 @@ Always use the symmetric pair:
 Bare `atob()` treats output as Latin-1 and corrupts accented characters.
 
 ### On DOM-Ready Event Wiring
-All `addEventListener` calls that target HTML elements defined after the `<script>` block must be inside functions called after `init()` — not at the top level of the script. Top-level `$()` calls on elements that don't yet exist in the DOM throw null reference errors silently on iOS Safari (reported as generic "Script error" with no line number). Use Chrome DevTools for debugging — it reports actual line numbers. Pattern: wrap in `initXxx()` function, call after `init()` in both `loadData()` paths.
+All `addEventListener` calls that target HTML elements defined after the `<script>` block must be inside functions called after `init()`. Top-level `$()` calls on elements that don't yet exist throw null reference errors silently on iOS Safari. Use Chrome DevTools for debugging. Pattern: wrap in `initXxx()` function, call after `init()` in both `loadData()` paths.
 
 ### On Direct Anthropic API Calls from Browser
 Requires three headers beyond `Content-Type`:
@@ -400,11 +434,11 @@ Requires three headers beyond `Content-Type`:
 'anthropic-version': '2023-06-01',
 'anthropic-dangerous-direct-browser-access': 'true'
 ```
-The third header is mandatory — without it the request is rejected regardless of key validity. Key is stored in `localStorage` under `cellar_gh_settings.anthropicKey`, retrieved via `ghSettings().anthropicKey`.
+The third header is mandatory. Key stored in `localStorage` under `cellar_gh_settings.anthropicKey`, retrieved via `ghSettings().anthropicKey`.
 
 ### On Claude JSON Extraction Prompts
 - Open with: "Start your response with { and end with }" — prevents preamble
-- Use regex `/{[\s\S]*}/` to extract JSON from response as a defensive fallback
+- Use regex `/{[\s\S]*}/` to extract JSON as a defensive fallback
 - Be explicit about fractions — Claude will round 1/3 oz to 1 oz without instruction
 - Credit inference requires explicit instruction to infer from watermarks, site names, URLs
 - Garnish requires explicit instruction to scan method text, not just ingredient list
