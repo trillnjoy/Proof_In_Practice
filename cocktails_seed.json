@@ -796,7 +796,7 @@
           "item": "Nutmeg"
         }
       ],
-      "method": "Combine all ingredients including whipped cream into shaker. Shake well and strain into a chilled cocktail glass. Sprinkle with fresh ground nutmeg.",
+      "method": "Pour all ingredients including whipped cream into a shaker with ice cubes, shake well, strain into a chilled cocktail glass. Sprinkle with fresh ground nutmeg.",
       "glass": "martini",
       "presentation": {
         "vessel": "martini",
@@ -809,7 +809,8 @@
           "whipped-cream"
         ]
       },
-      "frozen": true
+      "frozen": true,
+      "_originalName": "Alexander"
     },
     {
       "name": "Anejo Highball",
@@ -1034,7 +1035,8 @@
         ],
         "extras": []
       },
-      "_originalName": "Bacardi"
+      "_originalName": "Bacardi",
+      "frozen": true
     },
     {
       "name": "Bee Sting",
@@ -1269,7 +1271,8 @@
           "pineapple-wedge"
         ],
         "extras": []
-      }
+      },
+      "frozen": true
     },
     {
       "name": "Blue Margarita",
@@ -1857,7 +1860,8 @@
         "citrus": "lime-wedge",
         "garnish": [],
         "extras": []
-      }
+      },
+      "frozen": true
     },
     {
       "name": "Dark 'N' Stormy",
@@ -2188,7 +2192,8 @@
         "citrus": null,
         "garnish": [],
         "extras": []
-      }
+      },
+      "frozen": true
     },
     {
       "name": "Ginger Irishman",
@@ -2286,7 +2291,8 @@
         "citrus": null,
         "garnish": [],
         "extras": []
-      }
+      },
+      "frozen": true
     },
     {
       "name": "Honey Bee",
@@ -2758,7 +2764,8 @@
         "citrus": "orange-wedge",
         "garnish": [],
         "extras": []
-      }
+      },
+      "frozen": true
     },
     {
       "name": "Lake Como Christmas",
@@ -2987,7 +2994,8 @@
         "citrus": null,
         "garnish": [],
         "extras": []
-      }
+      },
+      "frozen": true
     },
     {
       "name": "Mai-Tai",
@@ -3034,7 +3042,8 @@
           "straw",
           "mint-sprig"
         ]
-      }
+      },
+      "frozen": true
     },
     {
       "name": "Margarita",
@@ -3078,7 +3087,8 @@
         "extras": [
           "salted-rim"
         ]
-      }
+      },
+      "frozen": true
     },
     {
       "name": "Martini",
@@ -3146,7 +3156,8 @@
         "citrus": null,
         "garnish": [],
         "extras": []
-      }
+      },
+      "frozen": true
     },
     {
       "name": "Menage a Quatre",
@@ -3758,7 +3769,8 @@
           "cherry"
         ],
         "extras": []
-      }
+      },
+      "frozen": true
     },
     {
       "name": "Petit Trois Gimlet",
@@ -3980,7 +3992,8 @@
         "citrus": null,
         "garnish": [],
         "extras": []
-      }
+      },
+      "frozen": true
     },
     {
       "name": "Ruby Slipper",
@@ -4084,7 +4097,8 @@
         "extras": [
           "umbrella"
         ]
-      }
+      },
+      "frozen": true
     },
     {
       "name": "Rusty Nail",
@@ -4317,12 +4331,12 @@
         }
       ],
       "method": "Build into an old-fashioned glass filled with ice. Top with a splash of soda water. Garnish with half an orange slice.",
-      "glass": "rocks",
+      "glass": "nick-nora",
       "presentation": {
-        "vessel": "rocks",
+        "vessel": "nick-nora",
         "color": "#e05830",
         "float": null,
-        "ice": "cubes",
+        "ice": "crushed",
         "citrus": "orange-wedge",
         "garnish": [],
         "extras": [],
@@ -4443,7 +4457,7 @@
       ],
       "method": "Combine ingredients in mixing glass filled with ice. Stir and strain into old fashioned glass. Garnish with half orange wheels.",
       "glass": "rocks",
-      "frozen": false,
+      "frozen": true,
       "presentation": {
         "vessel": "rocks",
         "color": "#DAA520",
@@ -4566,7 +4580,8 @@
         "citrus": "lemon-twist",
         "garnish": [],
         "extras": []
-      }
+      },
+      "frozen": true
     },
     {
       "name": "Tom Collins",
@@ -4650,7 +4665,8 @@
         "garnish": [],
         "extras": []
       },
-      "_originalName": "United Nations"
+      "_originalName": "United Nations",
+      "frozen": true
     },
     {
       "name": "Val's Porch Cocktail",
@@ -4763,7 +4779,8 @@
         "citrus": null,
         "garnish": [],
         "extras": []
-      }
+      },
+      "frozen": true
     },
     {
       "name": "Yellow Bird",
