@@ -1413,7 +1413,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-28 09:00 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-28 10:00 UTC</div>
   </footer>
 
 
@@ -1985,45 +1985,45 @@ function renderNinjaResult(recipe) {
   const { nonAlcVol, currentABV, totalVol } = calc;
 
   if (nonAlcVol <= 0) {
-    result.innerHTML = `Current mix is <strong>${currentABV.toFixed(1)}% ABV</strong> — already at or below ${targetPct}% target. Recipe is ready.`;
-    if (scaleEl) scaleEl.style.display = 'none';
+    result.innerHTML = `<em>Current spirit mix: ${currentABV.toFixed(1)}% ABV over ${totalVol.toFixed(1)} oz</em><br>
+      Already at or below ${targetPct}% target — no dilution needed. Scale up and freeze as-is.`;
   } else {
     const ozStr = nonAlcVol.toFixed(1);
     const mlStr = (nonAlcVol * 29.57).toFixed(0);
     result.innerHTML = `<em>Current spirit mix: ${currentABV.toFixed(1)}% ABV over ${totalVol.toFixed(1)} oz</em><br>
       To reach <strong>${targetPct}% ABV</strong> in slush, add <strong>${ozStr} oz (${mlStr} mL)</strong> non-alcoholic liquid per serving.`;
+  }
 
-    // Scale for machine section — use ozMax
-    if (scaleEl) {
-      const mc = calcNinjaMachine(recipe, machine, targetPct);
-      if (mc) {
-        const scaleBody = document.getElementById('ninja-scale-body');
-        if (scaleBody) {
-          const servings = mc.multiplier.toFixed(1);
-          let html = `<div style="font-size:0.78rem;color:var(--ink-mid);margin-bottom:8px;font-style:italic;">
-            To prepare <strong style="color:var(--ink);font-style:normal;">${servings} servings</strong>
-          </div>`;
-          html += `<ul style="list-style:none;margin:0;padding:0;">`;
-          for (const ing of mc.scaledIngs) {
-            if (!ing.item) continue;
-            const amt = [ing.amount, ing.unit].filter(Boolean).join(' ');
-            html += `<li style="display:flex;gap:8px;padding:3px 0;border-bottom:1px solid rgba(193,127,58,0.1);font-size:0.78rem;">
-              <span style="min-width:54px;text-align:right;color:var(--terracotta);font-family:var(--serif-display);font-weight:600;">${amt || '—'}</span>
-              <span>${ing.item}</span>
-            </li>`;
-          }
-          html += `</ul>`;
-          if (mc.scaledWater > 0) {
-            html += `<div style="margin-top:8px;padding:6px 10px;background:rgba(100,160,220,0.08);border-radius:4px;font-size:0.78rem;color:var(--ink-mid);">
-              + add <strong>${mc.scaledWater.toFixed(1)} oz (${(mc.scaledWater*29.57).toFixed(0)} mL)</strong> water
-            </div>`;
-          }
-          scaleBody.innerHTML = html;
+  // Scale for machine — always render when we have a valid calc
+  if (scaleEl) {
+    const mc = calcNinjaMachine(recipe, machine, targetPct);
+    if (mc) {
+      const scaleBody = document.getElementById('ninja-scale-body');
+      if (scaleBody) {
+        const servings = mc.multiplier.toFixed(1);
+        let html = `<div style="font-size:0.78rem;color:var(--ink-mid);margin-bottom:8px;font-style:italic;">
+          To prepare <strong style="color:var(--ink);font-style:normal;">${servings} servings</strong>
+        </div>`;
+        html += `<ul style="list-style:none;margin:0;padding:0;">`;
+        for (const ing of mc.scaledIngs) {
+          if (!ing.item) continue;
+          const amt = [ing.amount, ing.unit].filter(Boolean).join(' ');
+          html += `<li style="display:flex;gap:8px;padding:3px 0;border-bottom:1px solid rgba(193,127,58,0.1);font-size:0.78rem;">
+            <span style="min-width:54px;text-align:right;color:var(--terracotta);font-family:var(--serif-display);font-weight:600;">${amt || '—'}</span>
+            <span>${ing.item}</span>
+          </li>`;
         }
-        scaleEl.style.display = 'block';
-      } else {
-        scaleEl.style.display = 'none';
+        html += `</ul>`;
+        if (mc.scaledWater > 0) {
+          html += `<div style="margin-top:8px;padding:6px 10px;background:rgba(100,160,220,0.08);border-radius:4px;font-size:0.78rem;color:var(--ink-mid);">
+            + add <strong>${mc.scaledWater.toFixed(1)} oz (${(mc.scaledWater*29.57).toFixed(0)} mL)</strong> water
+          </div>`;
+        }
+        scaleBody.innerHTML = html;
       }
+      scaleEl.style.display = 'block';
+    } else {
+      scaleEl.style.display = 'none';
     }
   }
 }
