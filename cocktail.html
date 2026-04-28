@@ -1413,7 +1413,7 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-28 13:00 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-28 14:00 UTC</div>
   </footer>
 
 
@@ -1949,6 +1949,19 @@ function getDilutionFactor(recipe) {
   return 0;
 }
 
+// Parse ingredient amounts that may be fractions like "3/4", "1 1/2", or plain numbers
+function parseAmount(raw) {
+  if (!raw) return 0;
+  const s = String(raw).trim();
+  // Mixed number: "1 1/2"
+  const mixed = s.match(/^(\d+)\s+(\d+)\/(\d+)$/);
+  if (mixed) return parseInt(mixed[1]) + parseInt(mixed[2]) / parseInt(mixed[3]);
+  // Simple fraction: "3/4"
+  const frac = s.match(/^(\d+)\/(\d+)$/);
+  if (frac) return parseInt(frac[1]) / parseInt(frac[2]);
+  return parseFloat(s) || 0;
+}
+
 function calculateRecipeABV(recipe) {
   const ings = recipe.ingredients || [];
   if (!ings.length) return null;
@@ -1956,7 +1969,7 @@ function calculateRecipeABV(recipe) {
   let usedDefault = false, hasAlcohol = false;
   for (const ing of ings) {
     const unit = (ing.unit || 'null').toLowerCase();
-    const oz   = (parseFloat(ing.amount) || 0) * (UNIT_TO_OZ[unit] ?? 0);
+    const oz   = parseAmount(ing.amount) * (UNIT_TO_OZ[unit] ?? 0);
     if (oz === 0) continue;
     const { abv, usedDefault: ud } = lookupIngredientABV(ing.item);
     if (abv > 0) hasAlcohol = true;
@@ -1992,7 +2005,7 @@ function calcNinjaWater(recipe, targetPct) {
 
   for (const ing of ings) {
     const unit = (ing.unit || 'null').toLowerCase();
-    const oz   = (parseFloat(ing.amount) || 0) * (UNIT_TO_OZ[unit] ?? 0);
+    const oz   = parseAmount(ing.amount) * (UNIT_TO_OZ[unit] ?? 0);
     if (oz === 0) continue;
     const { abv } = lookupIngredientABV(ing.item);
     totalEtOH += oz * abv;
@@ -3895,7 +3908,7 @@ function shareCalcNinja(ings, targetPct = 12) {
   let etoh = 0, vol = 0;
   for (const ing of ings) {
     const unit = (ing.unit || 'null').toLowerCase();
-    const oz   = (parseFloat(ing.amount) || 0) * (SHARE_UNIT_TO_OZ[unit] ?? 0);
+    const oz   = parseAmount(ing.amount) * (SHARE_UNIT_TO_OZ[unit] ?? 0);
     if (!oz) continue;
     const { abv } = lookupIngredientABV(ing.item);
     etoh += oz * abv;
