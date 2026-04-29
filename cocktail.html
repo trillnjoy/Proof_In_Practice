@@ -113,17 +113,8 @@
 
     #back-btn {
       display: none;
-      background: none;
-      border: none;
-      color: var(--amber);
-      cursor: pointer;
-      font-size: 22px;
-      line-height: 1;
-      padding: 2px 6px 2px 0;
-      font-family: var(--serif-display);
-      flex-shrink: 0;
     }
-    #back-btn.visible { display: block; }
+    #back-btn.visible { display: flex; }
 
     .header-title-wrap { flex: 1; min-width: 0; }
 
@@ -327,18 +318,13 @@
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
     }
-    /* Pad content when PWA nav bar is showing so last content isn't hidden */
-    @media (display-mode: standalone) {
-      body.pwa-detail-active #content {
-        padding-bottom: calc(60px + max(16px, env(safe-area-inset-bottom)));
-      }
-    }
 
     /* ═══════════════════════════════════════
        VIEWS
     ═══════════════════════════════════════ */
     .view { display: none; min-height: 100%; }
     .view.active { display: block; }
+    #detail-view { background: var(--ink); min-height: 100%; }
 
     /* ─── RECIPE LIST ─── */
     #recipe-list-view { padding: 8px 0 calc(var(--safe-bottom) + 12px); }
@@ -452,16 +438,14 @@
     .detail-header {
       background: var(--ink);
       color: var(--parchment);
-      padding: 24px 20px 20px;
+      padding: 8px 12px 12px;
       position: relative;
       border-bottom: 2px solid var(--amber);
     }
 
     .detail-glass-icon {
-      margin-bottom: 10px;
       display: flex;
-      align-items: center;
-      justify-content: flex-start;
+      align-items: flex-start;
       opacity: 0.92;
     }
 
@@ -471,7 +455,7 @@
       font-weight: 700;
       line-height: 1.15;
       color: var(--parchment);
-      margin-bottom: 6px;
+      margin: 4px 0 4px;
     }
 
     .detail-credit {
@@ -482,7 +466,7 @@
     }
 
     .detail-body {
-      padding: 20px 20px 0;
+      padding: 10px 20px 0;
     }
 
     .detail-section-title {
@@ -491,7 +475,7 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--terracotta);
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -677,8 +661,9 @@
     /* ─── DETAIL HEADER BUTTON ROW (Edit Visual + Share) ─── */
     .detail-header-btns {
       display: flex;
-      gap: 8px;
-      margin-bottom: 12px;
+      flex-direction: column;
+      gap: 6px;
+      align-items: flex-end;
     }
     .edit-visual-btn, .share-recipe-btn {
       background: rgba(193,127,58,0.15);
@@ -696,10 +681,8 @@
     .edit-visual-btn:hover, .share-recipe-btn:hover { background: rgba(193,127,58,0.28); border-color: var(--amber); }
     .share-recipe-btn:active { opacity: 0.7; }
 
-    /* ABV pill — detail header upper right */
+    /* ABV pill — sits at top of right column in detail header */
     .recipe-abv-pill {
-      position: absolute;
-      top: 14px; right: 14px;
       background: rgba(193,127,58,0.18);
       border: 1px solid rgba(193,127,58,0.4);
       border-radius: 4px;
@@ -709,6 +692,8 @@
       letter-spacing: 0.06em;
       padding: 3px 8px;
       pointer-events: none;
+      white-space: nowrap;
+      align-self: flex-end;
     }
 
     /* ─── SETTINGS DRAWER ─── */
@@ -1247,45 +1232,6 @@
     /* ═══════════════════════════════════════
        FOOTER
     ═══════════════════════════════════════ */
-    /* ── PWA prev/next nav ── */
-    #pwa-nav {
-      display: none;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 200;
-      box-sizing: content-box;
-      height: 44px;
-      padding-bottom: max(16px, env(safe-area-inset-bottom));
-      background: var(--ink);
-      border-top: 1px solid rgba(193,127,58,0.25);
-      justify-content: space-between;
-      align-items: center;
-    }
-    #pwa-nav.visible {
-      display: flex;
-      pointer-events: all;
-    }
-    #pwa-prev, #pwa-next {
-      background: none;
-      border: 1px solid rgba(193,127,58,0.45);
-      border-radius: 8px;
-      color: var(--amber);
-      font-size: 1.4rem;
-      font-family: var(--serif-display);
-      padding: 6px 20px;
-      margin: 0 12px;
-      cursor: pointer;
-      min-width: 64px;
-      min-height: 36px;
-      line-height: 1;
-    }
-    #pwa-prev:active, #pwa-next:active {
-      background: rgba(193,127,58,0.15);
-    }
-    @media not all and (display-mode: standalone) {
-      #pwa-nav { display: none !important; }
     }
 
     #bottom-nav {
@@ -1383,7 +1329,11 @@
 
   <!-- ── HEADER ── -->
   <header id="header" style="padding:0;position:relative;border-bottom:3px solid var(--amber);background:var(--ink);padding-top:env(safe-area-inset-top,0px);">
-    <button id="back-btn" aria-label="Back" style="position:absolute;left:8px;bottom:8px;z-index:10;background:none;border:none;color:var(--amber);font-size:22px;cursor:pointer;padding:2px 6px;">←</button>
+    <div id="back-btn" style="position:absolute;left:0;right:0;bottom:0;z-index:10;display:none;align-items:center;justify-content:space-between;padding:0 8px 6px;">
+      <button id="nav-prev" aria-label="Previous recipe" style="background:none;border:none;color:var(--amber);font-size:22px;cursor:pointer;padding:4px 8px;line-height:1;font-family:var(--serif-display);">←</button>
+      <button id="nav-back" aria-label="Back to list" style="background:none;border:none;color:var(--amber);font-family:var(--serif-display);font-size:0.62rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;padding:4px 12px;line-height:1;">Back to List</button>
+      <button id="nav-next" aria-label="Next recipe" style="background:none;border:none;color:var(--amber);font-size:22px;cursor:pointer;padding:4px 8px;line-height:1;font-family:var(--serif-display);">→</button>
+    </div>
     <div style="position:relative;width:100%;line-height:0;">
       <img src="https://trillnjoy.github.io/Proof_In_Practice/Images/CocktailHeader.png"
            alt="Proof In Practice"
@@ -1454,14 +1404,9 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-29 11:00 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-29 14:00 UTC</div>
   </footer>
 
-  <!-- PWA prev/next nav — shown only in standalone mode when viewing a recipe detail -->
-  <div id="pwa-nav">
-    <button id="pwa-prev" aria-label="Previous recipe">←</button>
-    <button id="pwa-next" aria-label="Next recipe">→</button>
-  </div>
 
 
   <!-- ── SETTINGS DRAWER ── -->
@@ -2532,19 +2477,21 @@ function showDetail(recipe) {
 
   detailView.innerHTML = `
     <div class="detail-header" style="position:relative">
-      <div class="detail-glass-icon">${recipe.presentation ? DR.hero(recipe.presentation) : `<span style="font-size:2.8rem;display:block;text-align:center;padding:8px 0">${glassIcon(recipe.glass)}</span>`}</div>
-      ${(() => {
-        const result = calculateRecipeABV(recipe);
-        if (!result) return '';
-        const sym = result.usedDefault ? '≈' : '~';
-        return `<div class="recipe-abv-pill">${sym}${result.abv.toFixed(1)}% ABV</div>`;
-      })()}
+      <div style="display:flex;align-items:flex-start;gap:8px;">
+        <div class="detail-glass-icon" style="flex-shrink:0;">${recipe.presentation ? DR.hero(recipe.presentation) : `<span style="font-size:2.8rem;display:block;text-align:center;padding:8px 0">${glassIcon(recipe.glass)}</span>`}</div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;padding-top:4px;flex:1;">
+          ${(() => {
+            const result = calculateRecipeABV(recipe);
+            if (!result) return '';
+            const sym = result.usedDefault ? '≈' : '~';
+            return `<div class="recipe-abv-pill">${sym}${result.abv.toFixed(1)}% ABV</div>`;
+          })()}
+          <button class="edit-visual-btn" id="edit-visual-btn">Edit Visual</button>
+          <button class="share-recipe-btn" id="share-recipe-btn">⬆︎ Share</button>
+        </div>
+      </div>
       <h1 class="detail-name">${escHtml(recipe.name)}</h1>
       ${credit}
-      <div class="detail-header-btns">
-        <button class="edit-visual-btn" id="edit-visual-btn">Edit Visual</button>
-        <button class="share-recipe-btn" id="share-recipe-btn">⬆︎ Share</button>
-      </div>
     </div>
     <div class="detail-body">
       <div class="detail-section-title" style="display:flex;align-items:center;justify-content:space-between;">
@@ -2922,6 +2869,8 @@ function showView(view) {
   filterBar.style.display   = isListView ? '' : 'none';
   const addBtn = $('add-recipe-btn');
   const tagline = $('inventory-tagline');
+  const recipeListHeader = $('recipe-list-header');
+  if (recipeListHeader) recipeListHeader.style.display = (isDetail || isInventory) ? 'none' : 'flex';
   if (addBtn) addBtn.style.display = (isInventory || isDetail) ? 'none' : '';
   const importRecipeBtn = $('import-recipe-btn');
   if (importRecipeBtn) importRecipeBtn.style.display = (isInventory || isDetail) ? 'none' : '';
@@ -2931,10 +2880,6 @@ function showView(view) {
   backBtn.classList.toggle('visible', isDetail);
   const logoWrap = $('logo-wrap');
   if (logoWrap) logoWrap.style.display = isDetail ? 'none' : '';
-  // PWA prev/next nav — visible only on detail view
-  const pwaNav = $('pwa-nav');
-  if (pwaNav) pwaNav.classList.toggle('visible', isDetail);
-  document.body.classList.toggle('pwa-detail-active', isDetail);
   // Close editor when leaving detail view
   if (!isDetail) closeEditor();
 
@@ -2986,23 +2931,21 @@ searchClear.addEventListener('click', () => {
 /* ══════════════════════════════════════════════
    BACK BUTTON
 ══════════════════════════════════════════════ */
-backBtn.addEventListener('click', () => {
-  showView('recipes');
-  renderRecipeList();
-});
-
-/* ── PWA prev/next navigation ── */
 function navigateRecipe(direction) {
   const filtered = getFilteredRecipes();
   if (!filtered.length || !detailRecipe) return;
   const idx = filtered.findIndex(r => r.name === detailRecipe.name);
   if (idx === -1) return;
-  const next = filtered[(idx + direction + filtered.length) % filtered.length];
-  if (next) showDetail(next);
+  showDetail(filtered[(idx + direction + filtered.length) % filtered.length]);
 }
 
-$('pwa-prev').addEventListener('click', () => navigateRecipe(-1));
-$('pwa-next').addEventListener('click', () => navigateRecipe(1));
+$('nav-back').addEventListener('click', () => {
+  showView('recipes');
+  renderRecipeList();
+});
+$('nav-prev').addEventListener('click', () => navigateRecipe(-1));
+$('nav-next').addEventListener('click', () => navigateRecipe(1));
+
 
 /* ══════════════════════════════════════════════
    BOTTOM NAV EVENTS

@@ -18,7 +18,7 @@
 ═══════════════════════════════════════════════ */
 
 // ── BUMP THIS TO MATCH THE FOOTER TIMESTAMP ON EVERY BUILD ──
-const CACHE_VERSION = '2026-04-29-c';
+const CACHE_VERSION = '2026-04-29-f';
 
 const SHELL_CACHE  = `pip-shell-${CACHE_VERSION}`;
 const FONT_CACHE   = `pip-fonts-${CACHE_VERSION}`;
