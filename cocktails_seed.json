@@ -1516,10 +1516,16 @@
         "color": "#b8b860",
         "float": null,
         "ice": "crushed",
-        "citrus": null,
-        "garnish": [],
-        "extras": []
-      }
+        "citrus": "orange-wedge",
+        "garnish": [
+          "cherry"
+        ],
+        "extras": [
+          "mint-sprig",
+          "straw"
+        ]
+      },
+      "_originalName": "Call Ron Cooper"
     },
     {
       "name": "Cameron's Kick",
@@ -1973,6 +1979,95 @@
         "extras": []
       },
       "_originalName": "Dragon Smoke & Fire"
+    },
+    {
+      "name": "El Fuego Dentro",
+      "credit": "Monica Berg of Himkok",
+      "ingredients": [
+        {
+          "amount": "1 1/2",
+          "unit": "oz",
+          "item": "Del Maguey Vida Single Village Mezcal"
+        },
+        {
+          "amount": "1/3",
+          "unit": "oz",
+          "item": "Linie Aquavit"
+        },
+        {
+          "amount": "1/3",
+          "unit": "oz",
+          "item": "Freshly Squeezed Lime Juice"
+        },
+        {
+          "amount": "1/3",
+          "unit": "oz",
+          "item": "Red Bell Pepper Syrup"
+        }
+      ],
+      "method": "Combine all the ingredients, except the garnish, in a cocktail shaker with ice and shake until well chilled. Double strain into a chilled coupe and garnish with the cilantro.",
+      "glass": "coupe",
+      "frozen": false,
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#ff8648",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [
+          "cilantro"
+        ],
+        "extras": [
+          "mint-sprig"
+        ]
+      },
+      "_originalName": "El Fuego Dentro"
+    },
+    {
+      "name": "El Último Guerrero Azteca",
+      "credit": "Carlos Soto",
+      "ingredients": [
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Del Maguey Vida Single Village Mezcal"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Crème De Cacao White Liqueur"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Liquore Strega"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Freshly Squeezed Lemon Juice"
+        },
+        {
+          "amount": "1",
+          "unit": null,
+          "item": "Brandied Cherry"
+        }
+      ],
+      "method": "Combine all the ingredients, except the garnish, in a cocktail shaker filled with ice. Shake until well chilled and fine-strain into a chilled coupe or Nick & Nora glass. Garnish with the brandied cherry and serve.",
+      "glass": "nick-nora",
+      "frozen": false,
+      "presentation": {
+        "vessel": "nick-nora",
+        "color": "#cde8b5",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [
+          "cherry"
+        ],
+        "extras": []
+      },
+      "_originalName": "El Último Guerrero Azteca"
     },
     {
       "name": "Electric Lemonade",
@@ -2768,6 +2863,46 @@
       "frozen": true
     },
     {
+      "name": "La Vida Buena",
+      "credit": "Steve Olson",
+      "ingredients": [
+        {
+          "amount": "1 1/2",
+          "unit": "oz",
+          "item": "Del Maguey Vida Single Village Mezcal"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Carpano Antica"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Aperol"
+        },
+        {
+          "amount": "3",
+          "unit": "dash",
+          "item": "Regan's Orange Bitters"
+        }
+      ],
+      "method": "Combine all the ingredients, except the garnish, in a mixing glass filled with ice and stir until well chilled. Strain into a rocks glass over one large ice cube. Garnish with the orange peel.",
+      "glass": "rocks",
+      "frozen": false,
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#d2691e",
+        "float": null,
+        "ice": "huge",
+        "citrus": "orange-peel",
+        "garnish": [],
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "La Vida Buena"
+    },
+    {
       "name": "Lake Como Christmas",
       "credit": null,
       "ingredients": [
@@ -3160,6 +3295,45 @@
       "frozen": true
     },
     {
+      "name": "Maximilian Affair",
+      "credit": "Misty Kalkofen",
+      "ingredients": [
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Del Maguey Chichicapa Single Village Mezcal"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "St-Germain Elderflower Liqueur"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Punt e Mes"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Freshly Squeezed Lemon Juice"
+        }
+      ],
+      "method": "Combine all the ingredients, except the garnish, in a cocktail shaker filled with ice. Shake vigorously until well chilled, then let the shaker rest until condensation forms on the outside. Strain into an old-fashioned glass over one large ice cube. Garnish with the lemon peel.",
+      "glass": "rocks",
+      "frozen": false,
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#D4AC7D",
+        "float": null,
+        "ice": "huge",
+        "citrus": "lemon-peel",
+        "garnish": [],
+        "extras": []
+      },
+      "_originalName": "Maximilian Affair"
+    },
+    {
       "name": "Menage a Quatre",
       "credit": null,
       "ingredients": [
@@ -3195,6 +3369,50 @@
         "garnish": [],
         "extras": []
       }
+    },
+    {
+      "name": "Mezcal Cider Rickey",
+      "credit": "Chris Bostick",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Del Maguey Vida Single Village Mezcal"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Honey Syrup"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Freshly Squeezed Lime Juice"
+        },
+        {
+          "amount": "2 1/2 to 3",
+          "unit": "oz",
+          "item": "Apple Cider"
+        },
+        {
+          "amount": "1",
+          "unit": null,
+          "item": "Lime Wheel"
+        }
+      ],
+      "method": "Combine the mezcal, honey syrup, and lime juice in a cocktail shaker filled with ice and give it a short shake to keep from dilute the drink too much. Strain into a collins glass over ice and top with cider. Give it a nice stir and garnish with the lime wheel.",
+      "glass": "collins",
+      "frozen": false,
+      "presentation": {
+        "vessel": "collins",
+        "color": "#d4a574",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "lime-wedge",
+        "garnish": [],
+        "extras": []
+      },
+      "_originalName": "Mezcal Cider Rickey"
     },
     {
       "name": "Michael Collins",
@@ -3326,6 +3544,62 @@
         "slushie": false
       },
       "_originalName": "Mimosa"
+    },
+    {
+      "name": "Minero Milk Punch",
+      "credit": "John Gertsen",
+      "ingredients": [
+        {
+          "amount": "750",
+          "unit": "ml",
+          "item": "Del Maguey Minero Single Village Mezcal"
+        },
+        {
+          "amount": "1",
+          "unit": null,
+          "item": "medium to large pineapple, peeled, cored and diced"
+        },
+        {
+          "amount": "1",
+          "unit": null,
+          "item": "3-inch cinnamon stick, cracked"
+        },
+        {
+          "amount": "1/2",
+          "unit": null,
+          "item": "Madagascar vanilla bean, sliced lengthwise and scraped"
+        },
+        {
+          "amount": "1",
+          "unit": null,
+          "item": "quart milk (preferably raw cow or goat)"
+        },
+        {
+          "amount": "4",
+          "unit": "oz",
+          "item": "agave nectar"
+        },
+        {
+          "amount": "8",
+          "unit": "oz",
+          "item": "freshly squeezed lime juice"
+        }
+      ],
+      "method": "Combine the mezcal, pineapple, cinnamon stick, and vanilla bean in a large airtight container. Let it infuse for two weeks. Strain and reserve the liquid. Heat the milk to 180°F in a very large pot. Add the agave nectar and stir. Add the lime juice and reserved infusion, and stir. Cover the pot and allow it to cool for approximately 2 hours. Slowly pour the mixture through a large fine-mesh strainer into a clean container, catching any curds that may have formed. The liquid—whey—will be cloudy. Carefully strain it a second time, using the same strainer, into a clean airtight container, one cup at a time. This process is tedious as the strainer fills with solids and the liquid drips through slowly. Bottle and store the clarified punch for several months in the refrigerator.",
+      "glass": "nick-nora",
+      "frozen": false,
+      "presentation": {
+        "vessel": "nick-nora",
+        "color": "#fee4a8",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": [
+          "mint-sprig"
+        ]
+      },
+      "_originalName": "Minero Milk Punch"
     },
     {
       "name": "Mistletoe Martini",
@@ -3565,6 +3839,48 @@
         "garnish": [],
         "extras": []
       }
+    },
+    {
+      "name": "Oaxaca Old Fashioned",
+      "credit": "Phil Ward",
+      "ingredients": [
+        {
+          "amount": "1 1/2",
+          "unit": "oz",
+          "item": "Reposado Tequila"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Del Maguey Chichicapa Single Village Mezcal"
+        },
+        {
+          "amount": "1",
+          "unit": "tsp",
+          "item": "Agave Nectar"
+        },
+        {
+          "amount": "1",
+          "unit": "dash",
+          "item": "Angostura Bitters"
+        }
+      ],
+      "method": "Combine all the ingredients, except the garnish, in a mixing glass filled with ice and stir until well chilled. Strain into a rocks glass over one large ice cube. In one hand hold a lighted match over the drink and, in the other hand, hold the orange peel with the orange side facing the flame about an inch away. Carefully and quickly squeeze the orange peel until its oils spark, then drop the peel into the cocktail.",
+      "glass": "rocks",
+      "frozen": false,
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#B8860B",
+        "float": null,
+        "ice": "huge",
+        "citrus": "orange-peel",
+        "garnish": [],
+        "extras": [
+          "flamed orange peel"
+        ],
+        "slushie": false
+      },
+      "_originalName": "Oaxaca Old Fashioned"
     },
     {
       "name": "Obituary",
@@ -4582,6 +4898,54 @@
         "extras": []
       },
       "frozen": true
+    },
+    {
+      "name": "Tia Mia",
+      "credit": "Ivy Mix",
+      "ingredients": [
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Del Maguey Vida Single Village Mezcal"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Appleton Estate Signature Blend Jamaican Rum"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Pierre Ferrand Dry Curaçao"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Orgeat Works T'Orgeat Toasted Almond Syrup"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Freshly Squeezed Lime Juice"
+        }
+      ],
+      "method": "This is a wordplay and a riff on a Mai Tai.\nCombine all ingredients in a cocktail shaker filled with ice and give a short shake so as not to dilute the contents too much. Strain into a double rocks glass over crushed ice. Garnish with the orchid, lime wheel, and mint sprig.",
+      "glass": "rocks",
+      "frozen": false,
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#b1dd8b",
+        "float": null,
+        "ice": "crushed",
+        "citrus": "lime-wedge",
+        "garnish": [],
+        "extras": [
+          "orchid",
+          "mint sprig",
+          "mint-sprig"
+        ]
+      },
+      "_originalName": "Tia Mia"
     },
     {
       "name": "Tom Collins",
