@@ -4134,7 +4134,7 @@ async function buildShareCard(recipe) {
 
     ctx.font      = '18px "Lora", Georgia, serif';
     ctx.fillStyle = '#7a5c3a';
-    ctx.fillText(`🧊 NINJA SLUSHIE · ${shareMachine.label.toUpperCase()} · ${shareMachine.abvCeil}% ABV`, BX + 8, y + 28);
+    ctx.fillText(`🧊 Ninja ${shareMachine.label} · ${shareMachine.abvCeil}% ABV`, BX + 8, y + 28);
 
     // Scaled ingredients line
     const scaledIngs = (recipe.ingredients || [])
