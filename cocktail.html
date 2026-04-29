@@ -57,7 +57,7 @@
 
     body {
       font-family: var(--serif-body);
-      background: var(--parchment);
+      background: var(--ink);
       color: var(--ink);
       min-height: 100%;
       height: 100%;
@@ -326,6 +326,12 @@
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
+    }
+    /* Pad content when PWA nav bar is showing so last content isn't hidden */
+    @media (display-mode: standalone) {
+      body.pwa-detail-active #content {
+        padding-bottom: calc(60px + max(16px, env(safe-area-inset-bottom)));
+      }
     }
 
     /* ═══════════════════════════════════════
@@ -1241,6 +1247,47 @@
     /* ═══════════════════════════════════════
        FOOTER
     ═══════════════════════════════════════ */
+    /* ── PWA prev/next nav ── */
+    #pwa-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      box-sizing: content-box;
+      height: 44px;
+      padding-bottom: max(16px, env(safe-area-inset-bottom));
+      background: var(--ink);
+      border-top: 1px solid rgba(193,127,58,0.25);
+      justify-content: space-between;
+      align-items: center;
+    }
+    #pwa-nav.visible {
+      display: flex;
+      pointer-events: all;
+    }
+    #pwa-prev, #pwa-next {
+      background: none;
+      border: 1px solid rgba(193,127,58,0.45);
+      border-radius: 8px;
+      color: var(--amber);
+      font-size: 1.4rem;
+      font-family: var(--serif-display);
+      padding: 6px 20px;
+      margin: 0 12px;
+      cursor: pointer;
+      min-width: 64px;
+      min-height: 36px;
+      line-height: 1;
+    }
+    #pwa-prev:active, #pwa-next:active {
+      background: rgba(193,127,58,0.15);
+    }
+    @media not all and (display-mode: standalone) {
+      #pwa-nav { display: none !important; }
+    }
+
     #bottom-nav {
       background: var(--ink);
       border-top: 1px solid rgba(255,255,255,0.08);
@@ -1336,7 +1383,7 @@
 
   <!-- ── HEADER ── -->
   <header id="header" style="padding:0;position:relative;border-bottom:3px solid var(--amber);background:var(--ink);padding-top:env(safe-area-inset-top,0px);">
-    <button id="back-btn" aria-label="Back" style="position:absolute;left:8px;bottom:8px;z-index:10;display:none;background:none;border:none;color:var(--amber);font-size:22px;cursor:pointer;padding:2px 6px;">←</button>
+    <button id="back-btn" aria-label="Back" style="position:absolute;left:8px;bottom:8px;z-index:10;background:none;border:none;color:var(--amber);font-size:22px;cursor:pointer;padding:2px 6px;">←</button>
     <div style="position:relative;width:100%;line-height:0;">
       <img src="https://trillnjoy.github.io/Proof_In_Practice/Images/CocktailHeader.png"
            alt="Proof In Practice"
@@ -1407,8 +1454,14 @@
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
     <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-28 18:00 UTC</div>
+    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-29 11:00 UTC</div>
   </footer>
+
+  <!-- PWA prev/next nav — shown only in standalone mode when viewing a recipe detail -->
+  <div id="pwa-nav">
+    <button id="pwa-prev" aria-label="Previous recipe">←</button>
+    <button id="pwa-next" aria-label="Next recipe">→</button>
+  </div>
 
 
   <!-- ── SETTINGS DRAWER ── -->
@@ -1677,9 +1730,14 @@ function buildFilterChips() {
    FILTER + SEARCH LOGIC
 ══════════════════════════════════════════════ */
 function getFilteredRecipes() {
-  let recipes = [...allRecipes];
+  let recipes = getFilteredRecipes();
+}
 
-  // Search
+/* ══════════════════════════════════════════════
+   RENDER RECIPE LIST
+══════════════════════════════════════════════ */
+function getFilteredRecipes() {
+  let recipes = [...allRecipes];
   if (searchQuery.length > 0) {
     const q = searchQuery.toLowerCase();
     recipes = recipes.filter(r => {
@@ -1689,8 +1747,6 @@ function getFilteredRecipes() {
       return nameMatch || ingMatch || methMatch;
     });
   }
-
-  // Filter chip
   if (activeFilter && activeFilter !== 'all') {
     if (activeFilter === 'mine') {
       recipes = recipes.filter(r => r.credit && r.credit.toLowerCase().includes('troy'));
@@ -1705,14 +1761,9 @@ function getFilteredRecipes() {
       );
     }
   }
-
-  // Sort A-Z
   return recipes.sort((a, b) => a.name.localeCompare(b.name));
 }
 
-/* ══════════════════════════════════════════════
-   RENDER RECIPE LIST
-══════════════════════════════════════════════ */
 function renderRecipeList() {
   const recipes = getFilteredRecipes();
   recipeCount.textContent = `${recipes.length} recipe${recipes.length !== 1 ? 's' : ''}`;
@@ -2880,6 +2931,10 @@ function showView(view) {
   backBtn.classList.toggle('visible', isDetail);
   const logoWrap = $('logo-wrap');
   if (logoWrap) logoWrap.style.display = isDetail ? 'none' : '';
+  // PWA prev/next nav — visible only on detail view
+  const pwaNav = $('pwa-nav');
+  if (pwaNav) pwaNav.classList.toggle('visible', isDetail);
+  document.body.classList.toggle('pwa-detail-active', isDetail);
   // Close editor when leaving detail view
   if (!isDetail) closeEditor();
 
@@ -2935,6 +2990,19 @@ backBtn.addEventListener('click', () => {
   showView('recipes');
   renderRecipeList();
 });
+
+/* ── PWA prev/next navigation ── */
+function navigateRecipe(direction) {
+  const filtered = getFilteredRecipes();
+  if (!filtered.length || !detailRecipe) return;
+  const idx = filtered.findIndex(r => r.name === detailRecipe.name);
+  if (idx === -1) return;
+  const next = filtered[(idx + direction + filtered.length) % filtered.length];
+  if (next) showDetail(next);
+}
+
+$('pwa-prev').addEventListener('click', () => navigateRecipe(-1));
+$('pwa-next').addEventListener('click', () => navigateRecipe(1));
 
 /* ══════════════════════════════════════════════
    BOTTOM NAV EVENTS
