@@ -3978,7 +3978,7 @@ ${url}`,
 
 async function buildShareCard(recipe) {
   const CARD_W  = 720;   // 2× for retina — renders at 360 CSS px
-  const BAND_H  = 296;   // dark band height
+  const BAND_H  = 330;   // dark band height
   const BODY_H  = 520;   // parchment body height (scales with content)
   const CARD_H  = BAND_H + BODY_H;
   const RADIUS  = 32;
@@ -4004,9 +4004,9 @@ async function buildShareCard(recipe) {
   ctx.fillRect(0, 0, CARD_W, BAND_H);
 
   // ── DR glass visual (SVG → Image) ──
-  const drSvg  = DR.render(recipe.presentation || {}, 240, 296);
-  const drImg  = await svgToImage(drSvg, 240, 296);
-  ctx.drawImage(drImg, 0, 0, 240, 296);
+  const drSvg  = DR.render(recipe.presentation || {}, 220, 272);
+  const drImg  = await svgToImage(drSvg, 220, 272);
+  ctx.drawImage(drImg, 0, 50, 220, 272);
 
   // ── PiP wordmark ──
   ctx.font      = 'bold 22px "Playfair Display", Georgia, serif';
