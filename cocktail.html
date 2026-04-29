@@ -1329,7 +1329,7 @@
 
   <!-- ── HEADER ── -->
   <header id="header" style="padding:0;position:relative;border-bottom:3px solid var(--amber);background:var(--ink);padding-top:env(safe-area-inset-top,0px);">
-    <div id="back-btn" style="position:absolute;left:0;right:0;bottom:0;z-index:10;display:none;align-items:center;justify-content:space-between;padding:0 8px 6px;">
+    <div id="back-btn" style="position:absolute;left:0;right:0;bottom:0;z-index:10;align-items:center;justify-content:space-between;padding:0 8px 6px;">
       <button id="nav-prev" aria-label="Previous recipe" style="background:none;border:none;color:var(--amber);font-size:22px;cursor:pointer;padding:4px 8px;line-height:1;font-family:var(--serif-display);">←</button>
       <button id="nav-back" aria-label="Back to list" style="background:none;border:none;color:var(--amber);font-family:var(--serif-display);font-size:0.62rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;padding:4px 12px;line-height:1;">Back to List</button>
       <button id="nav-next" aria-label="Next recipe" style="background:none;border:none;color:var(--amber);font-size:22px;cursor:pointer;padding:4px 8px;line-height:1;font-family:var(--serif-display);">→</button>
@@ -1403,8 +1403,10 @@
 
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
-    <div id="recipe-count" class="recipe-count"></div>
-    <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;text-align:center;padding-bottom:2px;">2026-04-29 14:00 UTC</div>
+    <div style="text-align:center;line-height:1.6;">
+      <div id="recipe-count" class="recipe-count"></div>
+      <div style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.22);letter-spacing:0.06em;">2026-04-29 15:00 UTC</div>
+    </div>
   </footer>
 
 
