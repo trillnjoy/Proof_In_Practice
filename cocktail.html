@@ -448,6 +448,7 @@
       display: flex;
       align-items: flex-start;
       opacity: 0.92;
+      margin-bottom: -22px;
     }
 
     .detail-name {
@@ -456,7 +457,7 @@
       font-weight: 700;
       line-height: 1.15;
       color: var(--parchment);
-      margin: 4px 0 4px;
+      margin: 0 0 4px;
     }
 
     .detail-credit {
@@ -1238,11 +1239,12 @@
     #bottom-nav {
       background: var(--ink);
       border-top: 1px solid rgba(255,255,255,0.08);
-      padding: 7px 16px calc(var(--safe-bottom) + 7px);
+      padding: 7px 0 calc(var(--safe-bottom) + 7px);
       flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: center;
+      text-align: center;
     }
 
     .recipe-count {
@@ -1406,7 +1408,10 @@
 
   <!-- ── FOOTER ── -->
   <footer id="bottom-nav">
-    <div id="recipe-count" class="recipe-count" style="text-align:center;"></div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;">
+      <span id="recipe-count" class="recipe-count"></span>
+      <span id="build-stamp" style="font-family:var(--sans);font-size:0.52rem;color:var(--rule);opacity:0.5;letter-spacing:0.06em;font-style:normal;text-transform:none;">2026-04-29 18:00 UTC</span>
+    </div>
   </footer>
 
 
@@ -1713,7 +1718,7 @@ function getFilteredRecipes() {
 
 function renderRecipeList() {
   const recipes = getFilteredRecipes();
-  recipeCount.innerHTML = `${recipes.length} recipe${recipes.length !== 1 ? 's' : ''}<br><span style="font-family:var(--sans);font-size:0.52rem;color:rgba(255,255,255,0.35);letter-spacing:0.06em;font-style:normal;">2026-04-29 17:00 UTC</span>`;
+  recipeCount.textContent = `${recipes.length} recipe${recipes.length !== 1 ? 's' : ''}`;
 
   if (recipes.length === 0) {
     recipeGrid.innerHTML = `
