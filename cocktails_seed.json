@@ -563,18 +563,10 @@
       "category": "Rum",
       "bottles": [
         {
-          "name": "Plantation Original Dark",
-          "notes": null,
-          "rating": 2,
-          "imageUrl": null,
-          "abv": 40,
-          "cost": "$$"
-        },
-        {
           "name": "Bacardi Superior",
           "notes": null,
           "rating": 1,
-          "imageUrl": null,
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/BacardiWhite_216.png",
           "abv": 40,
           "cost": "$"
         },
@@ -625,6 +617,13 @@
           "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/KahluaLiqueur_216.png",
           "abv": 20,
           "cost": "$$"
+        },
+        {
+          "name": "Flor De Cana Gold",
+          "notes": null,
+          "rating": 1,
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/FlorDeCanaGold_216.png",
+          "abv": 40
         }
       ]
     },
@@ -720,7 +719,7 @@
           "name": "Hornitos Reposado Tequila",
           "notes": null,
           "rating": 2,
-          "imageUrl": null,
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/HornitosReposado_216.png",
           "abv": 40,
           "cost": "$$"
         },
@@ -765,7 +764,7 @@
           "name": "Stolichnaya",
           "notes": null,
           "rating": 1,
-          "imageUrl": null,
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/Stoli_216.png",
           "abv": 40,
           "cost": "$"
         },
@@ -773,7 +772,7 @@
           "name": "SKYY",
           "notes": null,
           "rating": 1,
-          "imageUrl": null,
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/SkyVodka_216.png",
           "abv": 40,
           "cost": "$"
         },
@@ -802,25 +801,71 @@
           "cost": "$$"
         },
         {
-          "name": "Stolichnaya Pomagranate",
+          "name": "Ketel One Citroen",
           "notes": null,
           "rating": 1,
-          "imageUrl": null,
-          "abv": 40,
-          "cost": "$"
-        },
-        {
-          "name": "Stolichnaya Citroen",
-          "notes": null,
-          "rating": 1,
-          "imageUrl": null,
-          "abv": 40,
-          "cost": "$"
+          "imageUrl": "https://trillnjoy.github.io/Proof_In_Practice/Images/KetelCitroen_216.png",
+          "abv": 40
         }
       ]
     }
   ],
   "recipes": [
+    {
+      "name": "A Portal To Mezcal",
+      "credit": "Setal Seth",
+      "ingredients": [
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Mezcal"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Pressed Tomato"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Lemon"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Simple Syrup"
+        },
+        {
+          "amount": "1",
+          "unit": "pinch",
+          "item": "Roasted Cumin"
+        },
+        {
+          "amount": "1",
+          "unit": "pinch",
+          "item": "Black Pepper"
+        },
+        {
+          "amount": "0.5",
+          "unit": "tsp",
+          "item": "Doppelt Kummel Extra Liqueur"
+        }
+      ],
+      "method": "Add all ingredients except tomato to a shaker with ice. Press tomato through a chinoise strainer into shaker. Shake vigorously and double strain into an old fashioned glass with ice.",
+      "glass": "rocks",
+      "frozen": false,
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#E8A870",
+        "float": null,
+        "ice": "cubes",
+        "citrus": null,
+        "garnish": [],
+        "extras": [],
+        "slushie": false
+      },
+      "_originalName": "A Portal To Mezcal"
+    },
     {
       "name": "Airmail",
       "credit": null,
@@ -4365,6 +4410,23 @@
           "cherry",
           "pineapple-wedge"
         ],
+        "extras": []
+      }
+    },
+    {
+      "name": "Portal to Mezcal",
+      "credit": null,
+      "ingredients": [],
+      "method": "",
+      "glass": "rocks",
+      "frozen": false,
+      "presentation": {
+        "vessel": "rocks",
+        "color": null,
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
         "extras": []
       }
     },
