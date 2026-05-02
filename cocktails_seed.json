@@ -2039,6 +2039,63 @@
       "_originalName": "Dark 'N' Stormy"
     },
     {
+      "name": "Devil May Care",
+      "credit": "Apotheke",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Tequila"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Cointreau"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Ginger Mix"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Sour Mix"
+        },
+        {
+          "amount": "2",
+          "unit": "dash",
+          "item": "Orange Blossom Water"
+        },
+        {
+          "amount": "1",
+          "unit": null,
+          "item": "Orange Wedge"
+        },
+        {
+          "amount": "1",
+          "unit": null,
+          "item": "Cabernet"
+        }
+      ],
+      "method": "Add all measured ingredients to a shaker with ice. Shake vigorously. Rub the rim of a rocks glass with an orange wedge, rim the glass with Himalayan sea salt, and fill it with fresh ice. Strain the cocktail into the rocks glass and float the wine using a bar spoon. Garnish with the salted lime wheel.",
+      "glass": "rocks",
+      "frozen": false,
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#e94d65",
+        "float": "Cabernet",
+        "ice": "cubes",
+        "citrus": "orange-wedge",
+        "garnish": [],
+        "extras": [
+          "Pink Himalayan Sea Salt Rim",
+          "Salted Lime Wheel"
+        ]
+      },
+      "_originalName": "Devil May Care"
+    },
+    {
       "name": "Dirty Martini",
       "credit": null,
       "ingredients": [
@@ -2073,6 +2130,47 @@
         "slushie": false
       },
       "_originalName": "Dirty Martini"
+    },
+    {
+      "name": "Dr. Ruth",
+      "credit": "Apotheke",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Rosemary-Infused Vodka"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Strawberry Purée"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Sour Mix"
+        },
+        {
+          "amount": null,
+          "unit": null,
+          "item": "Champagne"
+        }
+      ],
+      "method": "Combine all of the measured ingredients in a shaker with ice. Shake vigorously and strain into a coupe glass. Top with Champagne and garnish with a rosemary sprig.",
+      "glass": "coupe",
+      "frozen": false,
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#e8988c",
+        "float": "Champagne",
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": [
+          "rosemary sprig"
+        ]
+      },
+      "_originalName": "Dr. Ruth"
     },
     {
       "name": "Dragon Smoke & Fire",
@@ -4184,6 +4282,57 @@
       "_originalName": "Old Sport"
     },
     {
+      "name": "Paid Vacation",
+      "credit": "Apotheke",
+      "ingredients": [
+        {
+          "amount": "3",
+          "unit": null,
+          "item": "Cucumber Wheels"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Blanco Tequila"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Mezcal"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Hickory-Smoked Pineapple Purée"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Sour Mix"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Habanero Tincture"
+        }
+      ],
+      "method": "Muddle the cucumber wheels in a shaker. Add all of the measured ingredients to the shaker with ice. Shake vigorously. Double strain into a coupe glass. Garnish with a pineapple leaf.",
+      "glass": "coupe",
+      "frozen": false,
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#b8d4a8",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [
+          "pineapple-wedge"
+        ],
+        "extras": []
+      },
+      "_originalName": "Paid Vacation"
+    },
+    {
       "name": "Perfect Manhattan",
       "credit": null,
       "ingredients": [
@@ -4325,6 +4474,47 @@
         "slushie": false
       },
       "_originalName": "Pimm's Cup"
+    },
+    {
+      "name": "Pink Panther",
+      "credit": "Apotheke",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Palo Santo-Smoked Rum"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Guava-Blood Orange Purée"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Sweetened Coconut Milk"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Sour Mix"
+        }
+      ],
+      "method": "Add all measured ingredients to a shaker with ice. Shake vigorously and strain into a Collins glass with fresh ice. Garnish with a dehydrated blood orange wheel.",
+      "glass": "highball",
+      "frozen": true,
+      "presentation": {
+        "vessel": "highball",
+        "color": "#ff6b9d",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "orange-wedge",
+        "garnish": [],
+        "extras": [
+          "dehydrated blood orange wheel"
+        ]
+      },
+      "_originalName": "Pink Panther"
     },
     {
       "name": "Pisco Sour",
@@ -4702,6 +4892,54 @@
       }
     },
     {
+      "name": "Sitting Buddha",
+      "credit": "Apotheke",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Lemongrass-Infused Vodka"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Pineapple Purée"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Ginger Mix"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Sour Mix"
+        },
+        {
+          "amount": "3",
+          "unit": null,
+          "item": "Cilantro Sprigs"
+        }
+      ],
+      "method": "Add all measured ingredients and the three sprigs of cilantro to a shaker with ice. Shake vigorously and strain into a rocks glass with fresh ice. Garnish with a sprig of cilantro.",
+      "glass": "rocks",
+      "frozen": false,
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#cfd140",
+        "float": null,
+        "ice": "cubes",
+        "citrus": null,
+        "garnish": [
+          "cilantro"
+        ],
+        "extras": [
+          "mint-sprig"
+        ]
+      },
+      "_originalName": "Sitting Buddha"
+    },
+    {
       "name": "Sleigh Ride Sidecar",
       "credit": null,
       "ingredients": [
@@ -4816,6 +5054,209 @@
         "slushie": false
       },
       "_originalName": "Spritz Veneziano"
+    },
+    {
+      "name": "Strange Brew",
+      "credit": "Troy",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Tanqueray No. Ten Gin"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Velvet Falernum"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Pineapple Juice"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Lemon Juice"
+        },
+        {
+          "amount": null,
+          "unit": null,
+          "item": "FrogTown Painkiller IPA Beer"
+        }
+      ],
+      "method": "Short shake all the ingredients (except the IPA) with 3 ice cubes, then strain into a pilsner glass filled with crushed ice. Top with IPA. Garnish with the mint and serve with a straw.",
+      "glass": "highball",
+      "frozen": false,
+      "presentation": {
+        "vessel": "highball",
+        "color": "#f4d03f",
+        "float": null,
+        "ice": "crushed",
+        "citrus": null,
+        "garnish": [
+          "mint sprig"
+        ],
+        "extras": [
+          "straw",
+          "mint-sprig"
+        ]
+      },
+      "_originalName": "Strange Brew"
+    },
+    {
+      "name": "Stunt Double",
+      "credit": "Apotheke",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Bourbon"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Hickory-Smoked White Peach Purée"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Sour Mix"
+        },
+        {
+          "amount": "1",
+          "unit": "dash",
+          "item": "Absinthe"
+        }
+      ],
+      "method": "Add all measured ingredients to a shaker with ice. Shake vigorously and double strain into a coupe glass. Garnish with star anise.",
+      "glass": "coupe",
+      "frozen": false,
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#f4a460",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [
+          "star anise"
+        ],
+        "extras": []
+      },
+      "_originalName": "Stunt Double"
+    },
+    {
+      "name": "Sunburned Hand Of The Man",
+      "credit": "Apotheke",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": null,
+          "item": "Celery Stalks"
+        },
+        {
+          "amount": "2",
+          "unit": null,
+          "item": "Kumquats"
+        },
+        {
+          "amount": "1",
+          "unit": "pinch",
+          "item": "Sea Salt"
+        },
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Buddha's Hand-Infused Gin"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Rosolio Di Bergamotto"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Passion Fruit Purée"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Lime Juice"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Simple Syrup"
+        }
+      ],
+      "method": "Muddle the celery and kumquats in a shaker. Add a pinch of sea salt. Add all measured ingredients to the shaker with ice. Shake vigorously. Strain ingredients into a rocks glass with fresh ice. Add the garnish.",
+      "glass": "rocks",
+      "frozen": false,
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#e6d27a",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "orange-wedge",
+        "garnish": [
+          "celery"
+        ],
+        "extras": []
+      },
+      "_originalName": "Sunburned Hand Of The Man"
+    },
+    {
+      "name": "Sundara Sour",
+      "credit": "Apotheke",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Sundara-Infused Gin"
+        },
+        {
+          "amount": "2 3/4",
+          "unit": "oz",
+          "item": "Mango Lassi Purée"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Sour Mix"
+        },
+        {
+          "amount": null,
+          "unit": "oz",
+          "item": "Lime Wedge"
+        },
+        {
+          "amount": null,
+          "unit": "oz",
+          "item": "Curry Salt"
+        },
+        {
+          "amount": null,
+          "unit": "oz",
+          "item": "Purple Orchid"
+        }
+      ],
+      "method": "Add the gin, Mango Lassi, and Sour Mix to a shaker with ice and shake. Use a lime wedge to coat half the circumference of the rim of a coupe glass and then dip it into the curry salt. Strain the contents of the shaker into the coupe glass. Garnish with the orchid.",
+      "glass": "coupe",
+      "frozen": false,
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#ffb84d",
+        "float": null,
+        "ice": null,
+        "citrus": "lime-wedge",
+        "garnish": [],
+        "extras": [
+          "curry salt rim",
+          "purple orchid"
+        ]
+      },
+      "_originalName": "Sundara Sour"
     },
     {
       "name": "Sweet Lordy Vader",
