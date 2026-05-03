@@ -1106,6 +1106,55 @@
       }
     },
     {
+      "name": "Autumn Daiquiri",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Mount Gay Eclipse Rum"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Lime Juice"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Pineapple Juice"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Demerara Syrup"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Cinnamon Bark Syrup"
+        },
+        {
+          "amount": "1",
+          "unit": "dash",
+          "item": "Angostura Bitters"
+        }
+      ],
+      "method": "Shake all the ingredients with ice, then strain into a coupe. No garnish.",
+      "glass": "coupe",
+      "frozen": false,
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#d4a574",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      },
+      "_originalName": "Autumn Daiquiri"
+    },
+    {
       "name": "Aviation",
       "credit": null,
       "ingredients": [
@@ -2592,6 +2641,42 @@
       "_originalName": "El Último Guerrero Azteca"
     },
     {
+      "name": "Elder Fashion",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Plymouth Gin"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "St-Germain"
+        },
+        {
+          "amount": "2",
+          "unit": "dash",
+          "item": "House Orange Bitters"
+        }
+      ],
+      "method": "Stir all the ingredients over ice, then strain into a double rocks glass over 1 large ice cube. Garnish with the grapefruit twist.",
+      "glass": "rocks",
+      "frozen": false,
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#F5E6D3",
+        "float": null,
+        "ice": "huge",
+        "citrus": "lemon-wedge",
+        "garnish": [],
+        "extras": [
+          "grapefruit twist"
+        ]
+      },
+      "_originalName": "Elder Fashion"
+    },
+    {
       "name": "Electric Lemonade",
       "credit": null,
       "ingredients": [
@@ -2979,6 +3064,52 @@
         ]
       },
       "_originalName": "Golden Beautiful"
+    },
+    {
+      "name": "Great Northern",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Linie Aquavit"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Lillet Blanc"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Cointreau"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Lemon Juice"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Acacia Honey Syrup"
+        }
+      ],
+      "method": "Short shake all the ingredients with 3 ice cubes, then strain into a double rocks glass filled with crushed ice. Garnish with the orange crescents.",
+      "glass": "rocks",
+      "frozen": false,
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#f4d03f",
+        "float": null,
+        "ice": "crushed",
+        "citrus": "orange-wedge",
+        "garnish": [],
+        "extras": [
+          "2 orange crescents"
+        ]
+      },
+      "_originalName": "Great Northern"
     },
     {
       "name": "Gypsy Eyes",
@@ -3838,6 +3969,55 @@
         "slushie": false
       },
       "_originalName": "Lake Como Christmas"
+    },
+    {
+      "name": "Latin Quarter",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": null,
+          "unit": null,
+          "item": "Vieux Pontarlier Absinthe"
+        },
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Zacapa 23-Year Rum"
+        },
+        {
+          "amount": "1",
+          "unit": "tsp",
+          "item": "Cane Sugar Syrup"
+        },
+        {
+          "amount": "3",
+          "unit": "dash",
+          "item": "House Peychaud's Bitters"
+        },
+        {
+          "amount": "1",
+          "unit": "dash",
+          "item": "Angostura Bitters"
+        },
+        {
+          "amount": "1",
+          "unit": "dash",
+          "item": "Bittermens Xocolatl Mole Bitters"
+        }
+      ],
+      "method": "Rinse a double rocks glass with absinthe and dump. Stir the remaining ingredients (except the lemon twist) over ice, then strain into the glass. Squeeze the lemon twist over the drink and discard. No garnish.",
+      "glass": "rocks",
+      "frozen": false,
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#8B4513",
+        "float": null,
+        "ice": null,
+        "citrus": "lemon-twist",
+        "garnish": [],
+        "extras": []
+      },
+      "_originalName": "Latin Quarter"
     },
     {
       "name": "Lemon Drop",
@@ -6314,6 +6494,45 @@
       "_originalName": "Spritz Veneziano"
     },
     {
+      "name": "St-Germain Redux",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Beefeater London Dry Gin, Appleton Estate V/X rum, Siembra Azul Blanco Tequila, Calvados, or Hine H Cognac"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Dry Champagne"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "St-Germain"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Club Soda"
+        }
+      ],
+      "method": "Combine all the ingredients in a wine glass filled with ice cubes and stir until cold. Garnish with the lemon twist.",
+      "glass": "wine",
+      "frozen": false,
+      "presentation": {
+        "vessel": "snifter",
+        "color": "#f4f1d8",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "lemon-twist",
+        "garnish": [],
+        "extras": []
+      },
+      "_originalName": "St-Germain Redux"
+    },
+    {
       "name": "Strange Brew",
       "credit": "Troy",
       "ingredients": [
@@ -6635,6 +6854,60 @@
         "extras": []
       },
       "_originalName": "Tatooine Sunrise"
+    },
+    {
+      "name": "Tea Time At Guillermo's",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Fortaleza Reposado Tequila"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Scarlet Ibis Rum"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Queen Of Earl Tea-Infused Siembra Azul Reposado Tequila"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Drambuie"
+        },
+        {
+          "amount": "1",
+          "unit": "tsp",
+          "item": "Maple Syrup"
+        },
+        {
+          "amount": "1",
+          "unit": "dash",
+          "item": "House Orange Bitters"
+        },
+        {
+          "amount": "1",
+          "unit": "dash",
+          "item": "Fee Brothers Whiskey Barrel-Aged Bitters"
+        }
+      ],
+      "method": "Stir all the ingredients over ice, then strain into an old-fashioned glass over 1 large ice cube. No garnish.",
+      "glass": "rocks",
+      "frozen": false,
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#8B4513",
+        "float": null,
+        "ice": "huge",
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      },
+      "_originalName": "Tea Time At Guillermo's"
     },
     {
       "name": "The Brightsider",
