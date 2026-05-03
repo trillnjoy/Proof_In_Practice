@@ -1327,6 +1327,50 @@
       "_originalName": "Between the Sheets"
     },
     {
+      "name": "Bitter French",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Plymouth Gin"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Campari"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Lemon Juice"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Simple Syrup"
+        },
+        {
+          "amount": null,
+          "unit": null,
+          "item": "Dry Champagne"
+        }
+      ],
+      "method": "Shake all the ingredients (except the champagne and grapefruit twist) with ice, then strain into a flute. Top with champagne. Squeeze the grapefruit twist over the drink and discard. No garnish.",
+      "glass": "flute",
+      "frozen": false,
+      "presentation": {
+        "vessel": "flute",
+        "color": "#ffb3cc",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      },
+      "_originalName": "Bitter French"
+    },
+    {
       "name": "Blood & Sand",
       "credit": null,
       "ingredients": [
@@ -1812,6 +1856,50 @@
       "_originalName": "Champagne Cocktail"
     },
     {
+      "name": "Chingón",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Siete Leguas Reposado Tequila"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Bénédictine"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Orange Juice"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Lime Juice"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Orgeat"
+        }
+      ],
+      "method": "Shake all the ingredients with ice, then strain into a coupe. Garnish with the orange twist.",
+      "glass": "coupe",
+      "frozen": false,
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#f4a261",
+        "float": null,
+        "ice": null,
+        "citrus": "orange-twist",
+        "garnish": [],
+        "extras": []
+      },
+      "_originalName": "Chingón"
+    },
+    {
       "name": "Corpse Reviver",
       "credit": null,
       "ingredients": [
@@ -2010,6 +2098,45 @@
       "frozen": true
     },
     {
+      "name": "Dark 'N' Bubbly",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "1 1/2",
+          "unit": "oz",
+          "item": "Gosling's Black Seal Rum"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Lime Juice"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Curried Ginger Syrup"
+        },
+        {
+          "amount": null,
+          "unit": null,
+          "item": "Dry Champagne"
+        }
+      ],
+      "method": "Shake all the ingredients (except the champagne) with ice, then strain into a flute. Top with champagne. No garnish.",
+      "glass": "flute",
+      "frozen": false,
+      "presentation": {
+        "vessel": "flute",
+        "color": "#8B4513",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      },
+      "_originalName": "Dark 'N' Bubbly"
+    },
+    {
       "name": "Dark 'N' Stormy",
       "credit": null,
       "ingredients": [
@@ -2096,6 +2223,55 @@
       "_originalName": "Devil May Care"
     },
     {
+      "name": "Dick and Jane",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "1 1/2",
+          "unit": "oz",
+          "item": "Tanqueray No. Ten Gin"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "St-Germain"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Lemon Juice"
+        },
+        {
+          "amount": "1/6",
+          "unit": "oz",
+          "item": "Hibiscus Syrup"
+        },
+        {
+          "amount": "2",
+          "unit": "dash",
+          "item": "House Peychaud's Bitters"
+        },
+        {
+          "amount": null,
+          "unit": null,
+          "item": "Dry Champagne"
+        }
+      ],
+      "method": "Shake all the ingredients (except the champagne) with ice, then strain into a flute. Top with champagne. Garnish with the lemon twist.",
+      "glass": "flute",
+      "frozen": false,
+      "presentation": {
+        "vessel": "flute",
+        "color": "#f4c2c2",
+        "float": null,
+        "ice": null,
+        "citrus": "lemon-twist",
+        "garnish": [],
+        "extras": []
+      },
+      "_originalName": "Dick and Jane"
+    },
+    {
       "name": "Dirty Martini",
       "credit": null,
       "ingredients": [
@@ -2130,6 +2306,114 @@
         "slushie": false
       },
       "_originalName": "Dirty Martini"
+    },
+    {
+      "name": "Dos Besitos",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "El Tesoro Reposado Tequila"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Siete Leguas Blanco Tequila"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Pineapple Juice"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Lime Juice"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Agave Syrup"
+        },
+        {
+          "amount": "1",
+          "unit": "tsp",
+          "item": "Grenadine"
+        }
+      ],
+      "method": "Shake all the ingredients with ice, then strain into a coupe. No garnish.",
+      "glass": "coupe",
+      "frozen": false,
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#ffb6c1",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      },
+      "_originalName": "Dos Besitos"
+    },
+    {
+      "name": "Dr. Feelgood",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Fig-Infused Elijah Craig Bourbon"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Clear Creek Apple Brandy"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Grand Marnier"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Lemon Juice"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Granny Smith Apple Juice"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Orgeat"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Ginger Syrup"
+        },
+        {
+          "amount": "1",
+          "unit": "dash",
+          "item": "Angostura Bitters"
+        }
+      ],
+      "method": "Shake all the ingredients with ice, then strain into a large coupe. No garnish.",
+      "glass": "coupe",
+      "frozen": false,
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#D2691E",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      },
+      "_originalName": "Dr. Feelgood"
     },
     {
       "name": "Dr. Ruth",
@@ -2529,6 +2813,62 @@
       "frozen": true
     },
     {
+      "name": "Get Lucky",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "3",
+          "unit": null,
+          "item": "Blackberries"
+        },
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Flor De Caña Extra-Dry White Rum"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Lemon Juice"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Ginger Syrup"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Orgeat"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Acacia Honey Syrup"
+        },
+        {
+          "amount": "1",
+          "unit": "dash",
+          "item": "House Peychaud's Bitters"
+        }
+      ],
+      "method": "In a pilsner glass, gently muddle the blackberries. Fill the glass with crushed ice. In a shaker, whip the remaining ingredients, shaking with a few pieces of crushed ice just until incorporated. Strain into the glass. Garnish with a thin layer of bitters and serve with a straw.",
+      "glass": "highball",
+      "frozen": false,
+      "presentation": {
+        "vessel": "highball",
+        "color": "#4a2c5a",
+        "float": "House Peychaud's Bitters",
+        "ice": "crushed",
+        "citrus": null,
+        "garnish": [],
+        "extras": [
+          "straw"
+        ]
+      },
+      "_originalName": "Get Lucky"
+    },
+    {
       "name": "Ginger Irishman",
       "credit": null,
       "ingredients": [
@@ -2588,6 +2928,57 @@
         "garnish": [],
         "extras": []
       }
+    },
+    {
+      "name": "Golden Beautiful",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Siete Leguas Reposado Tequila"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Campari"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Lime Juice"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Vanilla Syrup"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Passion Fruit Syrup"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Club Soda"
+        }
+      ],
+      "method": "Short shake all the ingredients (except the club soda) with 3 ice cubes, then strain into a snifter over 1 large ice cube. Top with the club soda. Garnish with a fine grating of lime zest over the top.",
+      "glass": "wine",
+      "frozen": false,
+      "presentation": {
+        "vessel": "snifter",
+        "color": "#d4a574",
+        "float": null,
+        "ice": "huge",
+        "citrus": null,
+        "garnish": [],
+        "extras": [
+          "lime zest grating"
+        ]
+      },
+      "_originalName": "Golden Beautiful"
     },
     {
       "name": "Gypsy Eyes",
@@ -2719,6 +3110,60 @@
       }
     },
     {
+      "name": "Honshu Punch",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Yamazaki 12-Year Whiskey"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Lemon Juice"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Pineapple Juice"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Cane Sugar Syrup"
+        },
+        {
+          "amount": "2",
+          "unit": "dash",
+          "item": "Fee Brothers Whiskey Barrel-Aged Bitters"
+        },
+        {
+          "amount": "2",
+          "unit": "dash",
+          "item": "Bitter Truth Aromatic Bitters"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Club Soda"
+        }
+      ],
+      "method": "Shake all the ingredients (except the club soda), then strain into a snifter over 1 large ice cube. Pour in the club soda. No garnish.",
+      "glass": "wine",
+      "frozen": false,
+      "presentation": {
+        "vessel": "snifter",
+        "color": "#D4A574",
+        "float": null,
+        "ice": "huge",
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      },
+      "_originalName": "Honshu Punch"
+    },
+    {
       "name": "Hot Buttered Rum",
       "credit": null,
       "ingredients": [
@@ -2766,6 +3211,62 @@
         "slushie": false
       },
       "_originalName": "Hot Buttered Rum"
+    },
+    {
+      "name": "Hot Lips",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Jalapeño-Infused Siembra Azul Blanco Tequila"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Los Amantes Joven Mezcal"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Lemon Juice"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Pineapple Juice"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Vanilla Syrup"
+        },
+        {
+          "amount": "1",
+          "unit": "tsp",
+          "item": "Cane Sugar Syrup"
+        },
+        {
+          "amount": "1",
+          "unit": "pinch",
+          "item": "Kosher Salt"
+        }
+      ],
+      "method": "Rim half of a fancy fizz glass with salt and add 2 ice cubes. Stir the remaining ingredients over ice, then strain into the glass. No garnish.",
+      "glass": "highball",
+      "frozen": false,
+      "presentation": {
+        "vessel": "highball",
+        "color": "#f4e6a1",
+        "float": null,
+        "ice": "cubes",
+        "citrus": null,
+        "garnish": [],
+        "extras": [
+          "salt rim"
+        ]
+      },
+      "_originalName": "Hot Lips"
     },
     {
       "name": "Hot Toddy",
@@ -2869,6 +3370,47 @@
         ],
         "extras": []
       }
+    },
+    {
+      "name": "In-Sandiary",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Siembra Azul Blanco Tequila"
+        },
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Watermelon Juice"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Lime Juice"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Simple Syrup"
+        }
+      ],
+      "method": "Rim a highball glass with spicy sugar and salt. Shake the remaining ingredients with ice, then pour into a highball glass filled with ice cubes. Serve with a straw. No garnish.",
+      "glass": "highball",
+      "frozen": false,
+      "presentation": {
+        "vessel": "highball",
+        "color": "#ff6b85",
+        "float": null,
+        "ice": "cubes",
+        "citrus": null,
+        "garnish": [],
+        "extras": [
+          "straw"
+        ]
+      },
+      "_originalName": "In-Sandiary"
     },
     {
       "name": "Irish Coffee",
@@ -3148,6 +3690,65 @@
         "extras": []
       },
       "frozen": true
+    },
+    {
+      "name": "La Valentina",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "3",
+          "unit": null,
+          "item": "Raspberries"
+        },
+        {
+          "amount": "1 1/4",
+          "unit": "oz",
+          "item": "Don Julio Blanco Tequila"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Grapefruit Juice"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Lime Juice"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Simple Syrup"
+        },
+        {
+          "amount": "Pinch",
+          "unit": null,
+          "item": "Kosher Salt"
+        },
+        {
+          "amount": "1 1/4",
+          "unit": "oz",
+          "item": "Blanche De Bruxelles Beer"
+        }
+      ],
+      "method": "In a shaker, gently muddle the raspberries. Add the remaining ingredients (except the beer) and short shake with 3 ice cubes. Double strain into a pilsner glass filled with crushed ice, then pour in the beer. Garnish with the raspberries and serve with a straw.",
+      "glass": "highball",
+      "frozen": false,
+      "presentation": {
+        "vessel": "highball",
+        "color": "#E6B3C7",
+        "float": null,
+        "ice": "crushed",
+        "citrus": null,
+        "garnish": [
+          "raspberry",
+          "strawberry"
+        ],
+        "extras": [
+          "straw"
+        ]
+      },
+      "_originalName": "La Valentina"
     },
     {
       "name": "La Vida Buena",
@@ -4010,6 +4611,45 @@
       "_originalName": "Moscow Mule"
     },
     {
+      "name": "Mrs. Doyle",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Redbreast 12-Year Irish Whiskey"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Kronan Swedish Punsch"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Lemon Juice"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Simple Syrup"
+        }
+      ],
+      "method": "Shake all the ingredients with ice, then strain into a coupe. No garnish.",
+      "glass": "coupe",
+      "frozen": false,
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#d4af37",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      },
+      "_originalName": "Mrs. Doyle"
+    },
+    {
       "name": "Musso & Frank's Martini",
       "credit": "Musso & Frank Grill",
       "ingredients": [
@@ -4331,6 +4971,50 @@
       "_originalName": "Old Sport"
     },
     {
+      "name": "Paddy Melt",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "1 1/2",
+          "unit": "oz",
+          "item": "Knappogue Castle 12-Year Irish Whiskey"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Chamomile-Infused Old Overholt Rye"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Amaro Meletti"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Lemon Juice"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Cane Sugar Syrup"
+        }
+      ],
+      "method": "Shake all the ingredients with ice, then strain into a fancy fizz glass.",
+      "glass": "highball",
+      "frozen": false,
+      "presentation": {
+        "vessel": "highball",
+        "color": "#f4e6a1",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      },
+      "_originalName": "Paddy Melt"
+    },
+    {
       "name": "Paid Vacation",
       "credit": "Apotheke",
       "ingredients": [
@@ -4572,6 +5256,52 @@
         "slushie": false
       },
       "_originalName": "Pimm's Cup"
+    },
+    {
+      "name": "Pinche Chivo",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "3",
+          "unit": null,
+          "item": "Cucumber Wheels"
+        },
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Cabrito Blanco Tequila"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Sage-Infused Dolin Blanc Vermouth"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Lime Juice"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Acacia Honey Syrup"
+        }
+      ],
+      "method": "In a shaker, muddle the cucumber wheels. Add the remaining ingredients and shake with ice, then strain into a coupe. Garnish with the cucumber ribbon on a cocktail pick.",
+      "glass": "coupe",
+      "frozen": false,
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#d4e6a8",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [
+          "cucumber-slice"
+        ],
+        "extras": []
+      },
+      "_originalName": "Pinche Chivo"
     },
     {
       "name": "Pink Panther",
@@ -5016,6 +5746,57 @@
       "_originalName": "Sazerac"
     },
     {
+      "name": "Scotch Lady",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "1 1/2",
+          "unit": "oz",
+          "item": "Famous Grouse Scotch"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Laird's Bonded Apple Brandy"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Lemon Juice"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Simple Syrup"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Grenadine"
+        },
+        {
+          "amount": "1",
+          "unit": null,
+          "item": "Egg White"
+        }
+      ],
+      "method": "Dry shake all the ingredients, then shake again with ice. Double strain into a coupe and garnish with the cherry.",
+      "glass": "coupe",
+      "frozen": false,
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#d4a574",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [
+          "cherry"
+        ],
+        "extras": []
+      },
+      "_originalName": "Scotch Lady"
+    },
+    {
       "name": "Sea Breeze",
       "credit": null,
       "ingredients": [
@@ -5046,6 +5827,138 @@
         "garnish": [],
         "extras": []
       }
+    },
+    {
+      "name": "Seda De Naranja",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "El Tesoro Reposado Tequila"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Grand Marnier"
+        },
+        {
+          "amount": "1",
+          "unit": "dash",
+          "item": "House Orange Bitters"
+        },
+        {
+          "amount": null,
+          "unit": null,
+          "item": "Dry Champagne"
+        }
+      ],
+      "method": "Stir all the ingredients (except the champagne) over ice, then strain into a coupe. Top with champagne. No garnish.",
+      "glass": "coupe",
+      "frozen": false,
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#f4a460",
+        "float": "Dry Champagne",
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      },
+      "_originalName": "Seda De Naranja"
+    },
+    {
+      "name": "Shattered Glasser",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "El Tesoro Reposado Tequila"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Los Amantes Joven Mezcal"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Carpano Antica Formula Vermouth"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Van Oosten Batavia Arrack"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "St. Elizabeth Allspice Dram"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Bénédictine"
+        },
+        {
+          "amount": "2",
+          "unit": "dash",
+          "item": "Bittermens Xocolatl Mole Bitters"
+        }
+      ],
+      "method": "Stir all the ingredients over ice, then strain into a coupe. No garnish.",
+      "glass": "coupe",
+      "frozen": false,
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#8B4513",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      },
+      "_originalName": "Shattered Glasser"
+    },
+    {
+      "name": "Short Rib",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Jalapeño-Infused Siembra Azul Blanco Tequila"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Lime Juice"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Simple Syrup"
+        },
+        {
+          "amount": "3/4",
+          "unit": "tsp",
+          "item": "Pomegranate Molasses"
+        }
+      ],
+      "method": "Shake all the ingredients with ice, then strain into a coupe. No garnish.",
+      "glass": "coupe",
+      "frozen": false,
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#8B4513",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      },
+      "_originalName": "Short Rib"
     },
     {
       "name": "Sidecar",
@@ -5272,6 +6185,101 @@
       "_originalName": "Smashing, Baby (Yoda)"
     },
     {
+      "name": "Smoked Horchata",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Fortaleza Reposado Tequila"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Del Maguey Crema De Mezcal"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "Cinnamon Bark Syrup"
+        },
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "House Horchata"
+        },
+        {
+          "amount": "1",
+          "unit": "dash",
+          "item": "Angostura Bitters"
+        }
+      ],
+      "method": "Shake all the ingredients with ice, then strain into a double rocks glass over 1 large ice cube. Garnish with the cinnamon stick.",
+      "glass": "rocks",
+      "frozen": false,
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#E8D5B7",
+        "float": null,
+        "ice": "cubes",
+        "citrus": null,
+        "garnish": [
+          "cinnamon stick"
+        ],
+        "extras": []
+      },
+      "_originalName": "Smoked Horchata"
+    },
+    {
+      "name": "Southern Exposure",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "1 1/2",
+          "unit": "oz",
+          "item": "Jalapeño-Infused Siembra Azul Blanco Tequila"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Los Amantes Joven Mezcal"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Lime Juice"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Cane Sugar Syrup"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Red Bell Pepper Puree"
+        },
+        {
+          "amount": "1",
+          "unit": "pinch",
+          "item": "Kosher Salt"
+        }
+      ],
+      "method": "Shake all the ingredients with ice, then strain into a coupe. No garnish.",
+      "glass": "coupe",
+      "frozen": false,
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#cc4444",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      },
+      "_originalName": "Southern Exposure"
+    },
+    {
       "name": "Spritz Veneziano",
       "credit": null,
       "ingredients": [
@@ -5394,6 +6402,50 @@
         "extras": []
       },
       "_originalName": "Stunt Double"
+    },
+    {
+      "name": "Summer Shack",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "1 1/2",
+          "unit": "oz",
+          "item": "Martin Miller's Westbourne-Strength Gin"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Lillet Blanc"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Sauvignon Blanc"
+        },
+        {
+          "amount": "1/4",
+          "unit": "oz",
+          "item": "St-Germain"
+        },
+        {
+          "amount": "1",
+          "unit": "tsp",
+          "item": "Simple Syrup"
+        }
+      ],
+      "method": "Stir all the ingredients (except the orange twist) over ice, then strain into a coupe. Squeeze the orange twist over the drink and discard. No garnish.",
+      "glass": "coupe",
+      "frozen": false,
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#f5f2e8",
+        "float": null,
+        "ice": null,
+        "citrus": "orange-twist",
+        "garnish": [],
+        "extras": []
+      },
+      "_originalName": "Summer Shack"
     },
     {
       "name": "Sunburned Hand Of The Man",
@@ -5960,6 +7012,48 @@
         "garnish": [],
         "extras": []
       }
+    },
+    {
+      "name": "Whirling Tiger",
+      "credit": "Death & Co",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Buffalo Trace Bourbon"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Fuji Apple Juice"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Lemon Juice"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Ginger Syrup"
+        }
+      ],
+      "method": "Shake all the ingredients with ice, then strain into a highball glass filled with ice cubes. Garnish with the apple slice and serve with a straw.",
+      "glass": "highball",
+      "frozen": false,
+      "presentation": {
+        "vessel": "highball",
+        "color": "#E6C77A",
+        "float": null,
+        "ice": "cubes",
+        "citrus": null,
+        "garnish": [],
+        "extras": [
+          "apple slice",
+          "straw"
+        ]
+      },
+      "_originalName": "Whirling Tiger"
     },
     {
       "name": "White Lady",
