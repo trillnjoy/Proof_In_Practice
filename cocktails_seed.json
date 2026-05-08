@@ -2114,6 +2114,67 @@
       }
     },
     {
+      "name": "Cucumber-Cilantro Margarita",
+      "credit": null,
+      "ingredients": [
+        {
+          "amount": "1",
+          "unit": "tbsp",
+          "item": "Sugar"
+        },
+        {
+          "amount": "1",
+          "unit": "tsp",
+          "item": "Finely Chopped Fresh Cilantro"
+        },
+        {
+          "amount": "1",
+          "unit": null,
+          "item": "Lime Wedge"
+        },
+        {
+          "amount": "3",
+          "unit": null,
+          "item": "Cucumber Slices"
+        },
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Silver Tequila"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Fresh Lime Juice"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Orange-Flavor Liqueur"
+        },
+        {
+          "amount": "1/2",
+          "unit": "oz",
+          "item": "Cilantro Simple Syrup"
+        }
+      ],
+      "method": "To make Cilantro Simple Syrup:\nIn a blender combine water and cilantro. Cover and blend until cilantro is very finely chopped. Strain through a fine-mesh sieve into a screw-top jar, pressing cilantro to extract liquid; discard cilantro. Add sugar to jar. Add lid and shake until sugar is dissolved. Store in the refrigerator up to 2 weeks.\nRim glass with lime wedge, sugar, cilantro, and 1 Tbsp. kosher salt.\nIn a cocktail shaker muddle cucumber slices well, extracting as much liquid as possible. Add enough ice to fill the shaker half full. Add tequila, lime juice, orange-flavor liqueur, and Cilantro Simple Syrup. Cover; shake until very cold. Strain into prepared glass. Garnish with lime wheel and cucumber ribbon.",
+      "glass": "rocks",
+      "frozen": false,
+      "presentation": {
+        "vessel": "rocks",
+        "color": "#90EE90",
+        "float": null,
+        "ice": "cubes",
+        "citrus": "lime-wedge",
+        "garnish": [
+          "cucumber-slice"
+        ],
+        "extras": []
+      },
+      "_originalName": "Cucumber-Cilantro Margarita"
+    },
+    {
       "name": "Daiquiri",
       "credit": null,
       "ingredients": [
@@ -6009,13 +6070,13 @@
       }
     },
     {
-      "name": "Seda De Naranja",
-      "credit": "Death & Co",
+      "name": "Seda No Seca De Naranja",
+      "credit": "Troy",
       "ingredients": [
         {
           "amount": "3/4",
           "unit": "oz",
-          "item": "El Tesoro Reposado Tequila"
+          "item": "Reposado Tequila"
         },
         {
           "amount": "3/4",
@@ -6025,12 +6086,17 @@
         {
           "amount": "1",
           "unit": "dash",
-          "item": "House Orange Bitters"
+          "item": "Orange Bitters"
         },
         {
           "amount": null,
-          "unit": null,
+          "unit": "oz",
           "item": "Dry Champagne"
+        },
+        {
+          "amount": "0.25",
+          "unit": "oz",
+          "item": "Agave Syrup"
         }
       ],
       "method": "Stir all the ingredients (except the champagne) over ice, then strain into a coupe. Top with champagne. No garnish.",
@@ -6349,14 +6415,14 @@
           "item": "Black Olives"
         }
       ],
-      "method": "May The Fourth Be With You. Add all ingredients except cucumber spears to shaker with ice. Shake vigorously and double filter into cocktail glass garnished with 2 black olive eyes flanked by 2 opposing cucumber spears to resemble Yoda's ears.",
+      "method": "May The Fourth Be With You. Add all ingredients except cucumber spears to shaker with ice. Shake vigorously and double filter into cocktail glass garnished with 2 black olive eyes flanked by 2 opposing lime wedges or cucumber spears to resemble Yoda's ears.",
       "glass": "coupe",
       "presentation": {
         "vessel": "coupe",
         "color": "#d4e8c0",
         "float": null,
         "ice": null,
-        "citrus": null,
+        "citrus": "lime-wedge",
         "garnish": [
           "olive"
         ],
@@ -6850,7 +6916,9 @@
         "float": null,
         "ice": null,
         "citrus": null,
-        "garnish": [],
+        "garnish": [
+          "cherry"
+        ],
         "extras": []
       },
       "_originalName": "Tatooine Sunrise"
@@ -6985,7 +7053,7 @@
         "color": "#1a7ab0",
         "float": null,
         "ice": null,
-        "citrus": null,
+        "citrus": "lemon-wedge",
         "garnish": [],
         "extras": []
       },
