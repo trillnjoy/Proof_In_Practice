@@ -5673,23 +5673,6 @@
       }
     },
     {
-      "name": "Portal to Mezcal",
-      "credit": null,
-      "ingredients": [],
-      "method": "",
-      "glass": "rocks",
-      "frozen": false,
-      "presentation": {
-        "vessel": "rocks",
-        "color": null,
-        "float": null,
-        "ice": null,
-        "citrus": null,
-        "garnish": [],
-        "extras": []
-      }
-    },
-    {
       "name": "Ramble",
       "credit": "Death & Co",
       "ingredients": [
