@@ -7027,6 +7027,52 @@
       "_originalName": "The Brightsider"
     },
     {
+      "name": "The Eastside",
+      "credit": "Food & Wine",
+      "ingredients": [
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Gin"
+        },
+        {
+          "amount": "1",
+          "unit": "oz",
+          "item": "Lime Juice"
+        },
+        {
+          "amount": "3/4",
+          "unit": "oz",
+          "item": "Simple Syrup"
+        },
+        {
+          "amount": "4",
+          "unit": null,
+          "item": "Cucumber Slices"
+        },
+        {
+          "amount": "6",
+          "unit": null,
+          "item": "Mint Leaves"
+        }
+      ],
+      "method": "Muddle cucumber and mint with syrup in a cocktail shaker. Add gin and lime juice. Double-strain into a chilled coupe and garnish with a cucumber slice.",
+      "glass": "coupe",
+      "frozen": false,
+      "presentation": {
+        "vessel": "coupe",
+        "color": "#ebebeb",
+        "float": null,
+        "ice": null,
+        "citrus": null,
+        "garnish": [
+          "cucumber-slice"
+        ],
+        "extras": []
+      },
+      "_originalName": "The Eastside"
+    },
+    {
       "name": "The Lightsaber",
       "credit": "Troy",
       "ingredients": [
