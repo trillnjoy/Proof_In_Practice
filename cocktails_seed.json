@@ -1949,6 +1949,35 @@
       "_originalName": "Chingón"
     },
     {
+      "name": "Coconut Puck in a Cup",
+      "credit": "Kathy Andreeff",
+      "ingredients": [
+        {
+          "amount": "6",
+          "unit": "oz",
+          "item": "Coconut pineapple Ice Drink"
+        },
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Malibu Rum"
+        }
+      ],
+      "method": "Add ice cubes to plastic tumbler. Add rum then pour Ice drink over and stir lightly with plastic chopstick. Enjoy in your plastic wading pool",
+      "glass": "highball",
+      "frozen": false,
+      "presentation": {
+        "vessel": "highball",
+        "color": "#fffbb9",
+        "float": null,
+        "ice": "cubes",
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      },
+      "_originalName": "Coconut Puck in a Cup"
+    },
+    {
       "name": "Corpse Reviver",
       "credit": null,
       "ingredients": [
