@@ -7161,6 +7161,35 @@
       "_originalName": "The Penicillin"
     },
     {
+      "name": "The Rusty Tack",
+      "credit": "Kathy Andreeff",
+      "ingredients": [
+        {
+          "amount": "6",
+          "unit": "oz",
+          "item": "Pink Grapefruit sparkling Ice drink"
+        },
+        {
+          "amount": "2",
+          "unit": "oz",
+          "item": "Bombay Sapphire Gin"
+        }
+      ],
+      "method": "Plave ice cubes into plastic tumbler. Add gin then pour Ice Drink and stir gently with metal chopstick. Enjoy on the double wide veranda in full view of neighbors with pride. Remember to lift your pinky.",
+      "glass": "highball",
+      "frozen": false,
+      "presentation": {
+        "vessel": "highball",
+        "color": "#ffb5af",
+        "float": null,
+        "ice": "cubes",
+        "citrus": null,
+        "garnish": [],
+        "extras": []
+      },
+      "_originalName": "The Rusty Tack"
+    },
+    {
       "name": "The Sherpa",
       "credit": null,
       "ingredients": [
